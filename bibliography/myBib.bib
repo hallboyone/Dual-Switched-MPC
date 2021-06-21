@@ -1,0 +1,143 @@
+\bibliographystyle{./IEEEtran}
+\bibliography{./IEEEabrv,./IEEEexample}
+
+@STRING{CUP  = "Cambridge U. Press"}
+@STRING{ACC  = "Proc. ACC"}
+@STRING{IRE  = "IRE Trans. Info. Theory"}
+
+@article{Monasterios2019,
+abstract = {The use of available disturbance predictions within a nominal model predictive control formulation is studied. The main challenge that arises is the loss of recursive feasibility and stability guarantees when a persistent disturbance is present in the model and on the system. We show how standard stabilizing terminal conditions may be modified to account for the use of disturbances in the prediction model. Robust stability and feasibility are established under the assumption that the disturbance change across sampling instances is limited.},
+archivePrefix = {arXiv},
+arxivId = {1807.11288},
+author = {Monasterios, Pablo Rodolfo Baldivieso and Trodden, Paul Anthony},
+doi = {10.1109/TAC.2018.2886156},
+eprint = {1807.11288},
+file = {:Users/richardhall/Documents/Mendeley Library/mpc{\_}w{\_}preview.pdf:pdf},
+issn = {15582523},
+journal = {IEEE Transactions on Automatic Control},
+keywords = {Constrained control,Linear systems,Predictive control for linear systems,Uncertain systems},
+number = {9},
+pages = {3831--3838},
+title = {{Model predictive control of linear systems with preview information: Feasibility, stability, and inherent robustness}},
+volume = {64},
+year = {2019}
+}
+
+@article{Lavaei2021,
+abstract = {Dwell-time restrictions are critical to overcoming infeasibility caused by arbitrary switches in constrained time-dependent switched systems, especially when the system equilibrium is mode dependent. However, existing approaches to enforce constraints are not applicable in presence of disturbances. In this letter, a recursively feasible switched tube-based MPC (TMPC) is designed for constrained linear modes subject to polytopic-bounded additive disturbances. Control-invariant sets that are robust to mode switches and disturbances are proposed to select terminal constraints and identify feasible initial states. The method is distinguished by the admission of mode-dependent equilibria, user-specified prediction horizons, non-reliance on a preview of the switching signal, and online computations equal to that of a non-switched TMPC.},
+author = {Lavaei, Reza and Hall, Richard and Danielson, Claus and Bridgeman, Leila},
+doi = {10.1109/LCSYS.2020.3045391},
+file = {:Users/richardhall/Documents/Mendeley Library/reza{\_}2020.pdf:pdf},
+issn = {24751456},
+journal = {IEEE Control Systems Letters},
+keywords = {Predictive control for linear systems,control-invariant sets,robust control,switched systems},
+number = {5},
+pages = {1789--1794},
+title = {{Constraint Enforcement via Tube-Based MPC Exploiting Switching Restrictions}},
+volume = {5},
+year = {2021}
+}
+
+@article{Danielson2019,
+author = {Danielson, Claus and Bridgeman, Leila J. and {Di Cairano}, Stefano},
+doi = {10.1002/rnc.4509},
+file = {:Users/richardhall/Library/Application Support/Mendeley Desktop/Downloaded/Danielson, Bridgeman, Di Cairano - 2019 - Necessary and sufficient conditions for constraint satisfaction in switched systems using swit.pdf:pdf},
+issn = {10991239},
+journal = {International Journal of Robust and Nonlinear Control},
+keywords = {constrained control,model predictive control,switched systems},
+mendeley-groups = {Switched MPC},
+number = {9},
+pages = {2589--2602},
+title = {{Necessary and sufficient conditions for constraint satisfaction in switched systems using switch-robust control invariant sets}},
+volume = {29},
+year = {2019}
+}
+
+@misc{Kolmanovsky1998,
+abstract = {This paper considers the characterization and computation of invariant sets for discrete-time, time-invariant, linear systems with disturbance inputs whose values are confined to a specified compact set but are otherwise unknown. The emphasis is on determining maximal disturbance-invariant sets X that belong to a specified subset $\Gamma$ of the state space. Such d-invariant sets have important applications in control problems where there are pointwise-in-time state constraints of the form x(t) ∈ $\Gamma$. One purpose of the paper is to unite and extend in a rigorous way disparate results from the prior literature. In addition there are entirely new results. Specific contributions include: exploitation of the Pontryagin set difference to clarify conceptual matters and simplify mathematical developments, special properties of maximal invariant sets and conditions for their finite determination, algorithms for generating concrete representations of maximal invariant sets, practical computational questions, extension of the main results to general Lyapunov stable systems, applications of the computational techniques to the bounding of state and output response. Results on Lyapunov stable systems are applied to the implementation of a logic-based, nonlinear multimode regulator. For plants with disturbance inputs and state-control constraints it enlarges the constraint-admissible domain of attraction. Numerical examples illustrate the various theoretical and computational results.},
+author = {Kolmanovsky, Ilya and Gilbert, Elmer G.},
+booktitle = {Mathematical Problems in Engineering},
+doi = {10.1155/S1024123X98000866},
+file = {:Users/richardhall/Documents/Mendeley Library/934097.pdf:pdf},
+issn = {1024123X},
+keywords = {Algorithms,Bounded inputs,Discrete-time,Disturbance inputs,Invariant sets,Linear systems},
+number = {4},
+pages = {317--367},
+title = {{Theory and computation of disturbance invariant sets for discrete-time linear systems}},
+volume = {4},
+year = {1998}
+}
+
+@article{Rakovic2005,
+abstract = {This note provides results on approximating the minimal ro- bust positively invariant (mRPI) set (also known as the 0-reachable set) of an asymptotically stable discrete-time linear time-invariant system. It is as- sumed that the disturbance is bounded, persistent and acts additively on the state and that the constraints on the disturbance are polyhedral. Results are given that allowfor the computation of a robust positively invariant, outer approximation of the mRPI set. Conditions are also given that allowone to a priori specify the accuracy of this approximation.},
+author = {Rakovi{\'{c}}, Sa{\v{s}}a V. and Kerrigan, E. C. and Kouramas, Konstantinos I and Mayne, D Q},
+doi = {10.1109/CDC.2007.4434165},
+file = {:Users/richardhall/Documents/Mendeley Library/01406138 2.pdf:pdf},
+isbn = {1424414989},
+issn = {01912216},
+journal = {IEEE Transactions on Automatic Control},
+number = {3},
+pages = {406--410},
+title = {{Invariant approximations of the minimal robust positively invariant set}},
+volume = {50},
+year = {2005}
+}
+
+@article{Ahandani2020,
+abstract = {This paper proposes a decentralized switched model-based predictive control (DeSwMPC) for handling coupling among subsystems in a distributed switched large-scale system composed of physically interconnected subsystems. In the distributed switched large-scale systems, interactions among subsystems vary over time according to an exogenous input signal named switching signal. The proposed controller aims at stabilizing the origin of the whole closed-loop system while guaranteeing the satisfaction of constraints in the presence of a switching signal. In the DeSwMPC, to consider switching signal effect in variation of network topology, a robust tube-based switched model-based predictive control (SwMPC) is employed as local controller. The SwMPC controllers with switch-robust control invariant (switch-RCI) set as its target set are robust to unknown mode switching. In the employed decentralized model-based predictive control (DeMPC), by assuming interconnections as the additive disturbances, the effect of switch is only reflected on local constraint sets of the nominal subsystems. Simulations are performed on two typical examples. In the first case, the switching times are unknown a priori but the neighborhood sets after switch are known a priori. In the second case, both of them are assumed to be unknown a priori. The obtained results demonstrate that the proposed DeSwMPC satisfies the input and state constraints at all times. They also validate that the closed-loop system converges to the origin.},
+author = {Ahandani, Morteza Alinia and Kharrati, Hamed and Hashemzadeh, Farzad and Baradarannia, Mahdi},
+doi = {10.1016/j.nahs.2020.100912},
+file = {:Users/richardhall/Documents/Mendeley Library/1-s2.0-S1751570X20300595-main.pdf:pdf},
+issn = {1751570X},
+journal = {Nonlinear Analysis: Hybrid Systems},
+keywords = {Decentralized switched model-based predictive cont,Distributed switched large-scale system,Network topology,Switching signal},
+pages = {100912},
+publisher = {Elsevier Ltd},
+title = {{Decentralized switched model-based predictive control for distributed large-scale systems with topology switching}},
+url = {https://doi.org/10.1016/j.nahs.2020.100912},
+volume = {38},
+year = {2020}
+}
+
+@article{Farina2012,
+abstract = {This paper presents a novel Distributed Predictive Control (DPC) algorithm for linear discrete-time systems. This method enjoys the following properties: (i) state and input constraints can be considered; (ii) under mild assumptions, convergence of the closed loop control system is proved; (iii) it is not necessary for each subsystem to know the dynamical models of the other subsystems; (iv) the transmission of information is limited, in that each subsystem only needs the reference trajectories of the state variables of its neighbors. A simulation example is reported to illustrate the main characteristics and performance of the algorithm. {\textcopyright} 2012 Elsevier Ltd. All rights reserved.},
+author = {Farina, Marcello and Scattolini, Riccardo},
+doi = {10.1016/j.automatica.2012.03.020},
+file = {:Users/richardhall/Documents/Mendeley Library/1-s2.0-S000510981200129X-main.pdf:pdf},
+issn = {00051098},
+journal = {Automatica},
+keywords = {Distributed control,Large-scale MPC,Model predictive control,Non cooperative algorithms,Robust model predictive control},
+number = {6},
+pages = {1088--1096},
+publisher = {Elsevier Ltd},
+title = {{Distributed predictive control: A non-cooperative algorithm with neighbor-to-neighbor communication for linear systems}},
+url = {http://dx.doi.org/10.1016/j.automatica.2012.03.020},
+volume = {48},
+year = {2012}
+}
+
+@book{Borrelli2017,
+abstract = {The major contribution of this book is to show how the nonlinear optimal feed- back controller can be calculated efficiently for some important classes of systems, namely linear systems with constraints and switched linear systems or, more gen- erally, hybrid systems. Traditionally, the design of feedback controllers for linear systems with constraints, for example anti-windup techniques, was ad hoc requiring both much experience and trial and error. Though significant progress has been achieved on anti-windup schemes over the last decade, these techniques deal with input constraints only and cannot be extended easily.},
+author = {Borrelli, F and Bemporad, A and Morari, M},
+doi = {10.1017/9781139061759},
+file = {:Users/richardhall/Library/Application Support/Mendeley Desktop/Downloaded/Borrelli, Bemporad, Morari - 2015 - Predictive control for linear and hybrid systems.pdf:pdf},
+publisher = {Cambridge University Press},
+title = {{Predictive control for linear and hybrid systems}},
+url = {http://scholar.google.com/scholar?hl=en&btnG=Search&q=intitle:Predictive+Control+for+linear+and+hybrid+systems#0},
+year = {2017}
+}
+
+@article{Mayne2005,
+abstract = {This paper provides a novel solution to the problem of robust model predictive control of constrained, linear, discrete-time systems in the presence of bounded disturbances. The optimal control problem that is solved online includes, uniquely, the initial state of the model employed in the problem as a decision variable. The associated value function is zero in a disturbance invariant set that serves as the 'origin' when bounded disturbances are present, and permits a strong stability result, namely robust exponential stability of the disturbance invariant set for the controlled system with bounded disturbances, to be obtained. The resultant online algorithm is a quadratic program of similar complexity to that required in conventional model predictive control. {\textcopyright} 2004 Elsevier Ltd. All rights reserved.},
+author = {Mayne, D. Q. and Seron, M. M. and Rakovi{\'{c}}, S. V.},
+doi = {10.1016/j.automatica.2004.08.019},
+file = {:Users/richardhall/Library/Application Support/Mendeley Desktop/Downloaded/Mayne, Seron, Rakovi{\'{c}} - 2005 - Robust model predictive control of constrained linear systems with bounded disturbances.pdf:pdf},
+issn = {00051098},
+journal = {Automatica},
+keywords = {Bounded disturbances,Robust model predictive control,Robustness},
+number = {2},
+pages = {219--224},
+title = {{Robust model predictive control of constrained linear systems with bounded disturbances}},
+volume = {41},
+year = {2005}
+}

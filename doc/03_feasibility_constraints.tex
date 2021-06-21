@@ -1,0 +1,12 @@
+Without care, switches in either the local system or the disturbance error could cause the system to become infeasible. This will be addressed by first examining the case when $\ss{p}(\cdot)=s$ for all time (the disturbance set never switches from mode $s$). This scenario was addressed in \cite{Lavaei2021}. Next, the possibility of large preview errors dictated by the signal $\ss{p}$ will be added.
+
+\subsection{Set Operations}
+Before moving on, basic set definitions and operations should be reviewed. Consider a system 
+$$x^+=f_i(x,u)+\omega$$
+where $\omega\in\mathbb{W}$ and $i$ denotes the active mode. A set, $\mathcal{S}$, is robust control invariant (RCI) if $x\in\mathcal{S}$ implies that there exists a $u\in\mathcal{U}$ such that $x^+\in\mathcal{S}$ for all possible disturbances. If the system is instead autonomous under a control law $u=\kappa(x)$ but still satisfies the above condition, then it is robust positive invariant (RPI). Finally, a set is admissible RPI if it is RPI, $\mathcal{S}\subseteq\mathcal{X}$ and $\kappa(\mathcal{S})\subseteq\mathcal{U}$ where $\mathcal{X}$ and $\mathcal{U}$ are some state and input constraints. 
+Robust pre-sets of a set $\mathcal{S}$ under the dynamics of mode $i\in\mathbb{Z}_{[1,M]}$ are those that satisfy
+\begin{align*}
+    \text{Pre}_i^0&(\mathcal{S},\mathbb{W}) \triangleq\mathcal{S}\\
+    \text{Pre}_i^k&(\mathcal{S},\mathbb{W})\triangleq \{x\ |\ \exists\ u\in\mathcal{U}\ \text{s.t. }\\ x^+&= \left(f_i(x,u)+\omega\right)\in\text{Pre}_i^{k-1}(\mathcal{S}),\ \forall\omega\in\mathbb{W}\}\ \forall k\in\mathbb{Z}_{\geq1}
+\end{align*}
+Autonomous versions follow immediately. If the disturbance set is empty, then it can be omitted entirely from the pre-set notation. The pre-set operator is used to compute the RCI and RPI sets mentioned above \cite{Borrelli2017}.

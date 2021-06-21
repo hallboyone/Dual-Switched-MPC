@@ -1,0 +1,10 @@
+The previous section assumed that $\ss{p}(t)=s\ \forall\ t\in\mathbb{Z}_{\geq 0}$. If, as originally stated, this error is allowed to be larger for a single time-step, then the system could possibly become infeasible even with the DS-RCI sets. Here, additional conditions are described that ensure persistent feasibility even under this large occasional disturbance.
+
+At time $t$, Denote the remaining dwell time until a dynamics switch is allowed as $\zeta_x(t)$ and likewise for the preview errors as $\zeta_p(t)$. For each dynamics mode $i\in\mathbb{Z}_{[1,M]}$, denote its DS-RCI set as $\mathcal{C}_i^0$ and the $k$-step pre set of this as $\mathcal{C}_m^k$. Finally, use the Minkowski difference to define sets $\tilde{\mathcal{C}}^{k,j}_m\triangleq\text{Pre}^m_j(\mathcal{C}_m^k\ominus \widehat{\mathbb{W}}_l)$. Using these definitions, we have the following observations.
+\begin{enumerate}
+    \item To maintain feasibility under dynamics switching, we must always be within $\mathcal{C}_i^{\zeta_x}$.
+    \item To maintain feasibility under the disturbance impulse, we must always be within $\tilde{\mathcal{C}}^{\max\{0, \zeta_x-\zeta_p\},\zeta_p}_i$. Suppose that $\zeta_p=0$. Then this is the set $\tilde{\mathcal{C}}^{\zeta_x,0}_m$ (i.e. the set $\mathcal{C}_i^{\zeta_x}$ with an additional ``buffer'' for the possible large error). 
+    \item Combining these two, we have the constraint that $x(t)\in \mathcal{C}_i^{\zeta_x(t)}\cap \tilde{\mathcal{C}}^{\max\{0, \zeta_x(t)-\zeta_p(t)\},\zeta_p(t)}_i$.
+    \item This creates the need for many pre-set operations but they can all be done offline.
+\end{enumerate}
+By supplementing the works such as \cite{Danielson2019} with the state constraints described above, the system could be made to reject sudden large affine disturbances. 

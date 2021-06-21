@@ -1,0 +1,82 @@
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf}
+\pdfminorversion=4
+\IEEEoverridecommandlockouts
+\overrideIEEEmargins 
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage{bm}
+\let\proof\relax
+\let\endproof\relax
+\usepackage{amsthm}
+    \newtheorem{theorem}{\textbf{Theorem}}
+    \newtheorem{corollary}{\textbf{Corollary}}
+    \newtheorem{definition}{Definition}
+    \newtheorem{assumption}{Assumption}
+    \newtheorem*{remark}{Remark}
+    
+\usepackage{bigstrut}
+\usepackage{multirow}
+\usepackage{pifont}
+\usepackage[font=small, 
+            labelfont=it,
+            textfont=it]{caption}
+\usepackage[normalem]{ulem} % added for strikethrough
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\newcommand{\x}[1]{x_{#1|t}}
+\renewcommand{\ss}[1]{{\sigma_{#1}}}
+\renewcommand{\u}[1]{u_{#1|t}}
+
+\newcommand{\norm}[1]{||#1||}
+\newcommand{\alert}[1]{\textbf{\color{red}{\MakeUppercase{#1}}\color{black}}}
+\begin{document}
+
+\title{\LARGE \bf MPC with Externally-Triggered Dual Switching in Dynamics and Disturbance
+}
+
+\author{Richard Hall$^{1}$ and Leila Bridgeman$^{1}$% 
+\thanks{$^{1}$ Richard Hall (PhD student) and Leila Bridgeman (Assistant Professor) are with the Mechanical Engineering and Materials Science Department, 
+        Duke University, Durham, NC 27708, USA,
+        (e-mail: rah75@duke.edu, phone: (919) 660-5310).}%
+}
+
+\maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+
+\begin{abstract}
+\input{doc/00_abstract}
+\end{abstract}
+\alert{Update horizon so that it is consistent across switches and nodes}
+
+\alert{Make sure to remove the mathfrak w and replace with p}
+
+\section{Introduction}
+    \input{doc/01_introduction}
+\section{Preliminaries}
+    \subsection{Notation}
+        \input{doc/02a_notation}
+    \subsection{MPC Overview}
+        \input{doc/02b_mpc_overview}
+    \subsection{System Description}
+        \input{doc/02b_system_description}
+    \subsection{Transformation to Linear Disturbed System}\label{sec:prelim:transform}
+        \input{doc/02c_transformation}
+\section{Establishing Persistent Feasibility}
+    \input{doc/03_feasibility_constraints}
+    \subsection{Switched MPC with Additive Disturbance}
+        \input{doc/03a_switch_robust_mpc}
+    \subsection{Dual-Switch/Disturbance Robust MPC}
+        \input{doc/03b_dual_switch_robust_mpc}  
+\section{RPI Set Computation}
+    \input{doc/04_RPI_set_computation}
+\section{Conclusion}
+\input{doc/08_conclusion}
+
+\bibliographystyle{./bibliography/IEEEtran}
+\bibliography{./bibliography/IEEEabrv,./bibliography/myBib}
+\end{document}

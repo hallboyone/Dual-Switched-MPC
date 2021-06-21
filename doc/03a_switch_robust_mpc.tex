@@ -1,0 +1,17 @@
+Omitting the occasional large preview errors, this section focuses on switched linear systems with additive bounded disturbances. This was the focus of \cite{Lavaei2021} which built upon \cite{Danielson2019}. The key ideas are reproduced here. For notational convenience, consider the simplified model
+\begin{equation}\label{eq:simple_dist_model}
+    x(t+1)=A_\sigma x(t)+B_\sigma u(t) + \omega(t),\quad \omega\in\mathcal{W}.
+\end{equation}
+This has had much of the superfluous notation stripped compared with  \eqref{eq:aug_model}.
+
+Suppose \eqref{eq:simple_dist_model} is controlled using MPC. Without any disturbance, feasibility can be ensured by finding the switch-robust control invariant (switch-RCI) sets $\{\mathcal{C}_i\}_{i=1}^M$ that correspond the the system's modes \cite{Danielson2019}. 
+\begin{definition}[Switch-RCI Sets]\label{def:switch-rci}
+    Given a collection of modes, $\mathcal{M}=\{\mathcal{M}_i\}_{i=0}^M$, a M-MDT set, $d_x$, and the allowable switches $\mathcal{G}$, a collection of $M$ sets, $\{\mathcal{C}_i\}^M_{i=1}$ are Switch-RCI if they satisfy the following
+    \begin{enumerate}
+        \item $\mathcal{C}_i$ is RCI under the dynamics of mode $i$.
+        \item $\mathcal{C}_{i}\subseteq \text{Pre}^{d_{x,j}}_j(\mathcal{C}_j)$ for all $(i,j)\in\mathcal{G}$.
+    \end{enumerate}
+\end{definition}
+The definition of switch-RCI sets ensure that the system is persistently feasible while dwelling and that, before a switch can occur, the state can enter a set in which a switch won't be problematic. An algorithm to find the switch-RCI sets is given in \cite{Danielson2019}. As suggested in \cite{Lavaei2021}, this can be expanded to the robust case. The authors merge tube based MPC \cite{Mayne2005} with the concepts described above. Suppose that the set $\mathcal{Z}_i$ is an RPI set for \eqref{eq:simple_dist_model} given some control law $u=k_{\mathcal{Z}_i}x$. In traditional tube-based MPC, this is used to create a tube around the nominal trajectory that the disturbed trajectory will always be within. In \cite{Lavaei2021}, these RPI sets where also used to change condition 2 in definition \ref{def:switch-rci} into
+$$\mathcal{C}_i\oplus \mathcal{Z}_i\subset \text{Pre}^{d_{x,j}}_j(\mathcal{C}_j)\oplus \mathcal{Z}_j\quad \forall (i,j)\in\mathcal{G}.$$
+Sets that satisfy this updated condition are called disturbance-switched-RCI (DS-RCI) sets. It was shown that, by constraining the system with these sets and tightening the input and state constraints (as is typical in tube-MPC), the system could be persistently feasible under switching respecting the dwell times $d_x$ and transitions $\mathcal{G}$.

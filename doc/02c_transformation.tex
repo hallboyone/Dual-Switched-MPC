@@ -1,0 +1,16 @@
+The model, as written in \eqref{eq:basic_model}, is not convenient for analysis under MPC due to its time-varying affine nature from the disturbance preview. It can be transformed, however, into a higher dimension, disturbed linear system. First, notice that, from \eqref{eq:preview_dyn}, the preview evolves according to the linear disturbed system,
+$$\mathfrak{p}(t+1)=\underbrace{\begin{bmatrix}
+0 & I & 0 & \cdots & 0\\
+0 & 0 & I & \cdots & 0\\
+\vdots & \vdots & \vdots & \ddots & \vdots\\
+0 & 0 & 0 & \cdots & I\\
+0 & 0 & 0 & \cdots & G_f
+\end{bmatrix}}_{G}\mathfrak{p}(t)+\mathfrak{w}(t)$$
+where $\mathfrak{w}$ is a column vector made by the stacking the preview errors. Define a new state variable, $z\triangleq[x;\mathfrak{p}]$. Then the entire system can be written as
+\begin{align}
+    z(t+1) &= \begin{bmatrix}A_\ss{x} & [E,\ 0]\\0 & G\end{bmatrix}z(t)+\begin{bmatrix}B_\ss{x}\\0\end{bmatrix}u(t) + \begin{bmatrix}0 \\ \mathfrak{w}(t)\end{bmatrix}\nonumber\\
+    &= \hat{A}_\ss{x}z(t)+\hat{B}_\ss{x}u(t)+\hat{\mathfrak{w}}(t)\label{eq:aug_model}.
+\end{align}
+Written in this form, the system becomes a linear disturbed system. The new disturbance, $\hat{\mathfrak{w}}\in\widehat{\mathbb{W}}_\ss{p}\triangleq\ \{0\times\{\mathbb{W}_\ss{p}\}^{N+1}\}$ represents the error on the previewed disturbance from the initial system. Note that the new system is in $\mathbb{R}^{n+(N+1)m}$ compared with the original dimension of $\mathbb{R}^n$. This increased dimension will be problematic in future sections where set operations are required. It will be shown, however, how the structure of $\hat{A}_\ss{x}$ can be leveraged to circumvent the issues that arise. 
+
+The contributions of this work are twofold. First, we use the transformed form above to extend previous works, such as \cite{Lavaei2021}, to ensure feasibility in the face of the dual switching signals. Second, it is shown that the transformation to higher dimensions does not increase the computational load at the exponential rate that would be expected given a naive implementation.

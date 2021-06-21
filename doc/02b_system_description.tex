@@ -1,0 +1,29 @@
+This work explores systems taking the form 
+\begin{equation}\label{eq:basic_model}
+     x(t+1)=A_{\ss{x}(t)}x(t)+B_{\ss{x}(t)}u(t)+Ep_0(t)\in\mathbb{R}^n
+\end{equation}
+where $p_0(t) \in \mathcal{P}_0\subset\mathbb{R}^m$ is some bounded disturbance and the dynamics and input matrices switch between $M$ modes according to $\ss{x}:\mathbb{Z}_{\geq0}\rightarrow \mathbb{Z}_{[1,M]}$. For brevity, the switching signal's explicit time dependence will be dropped in the future. The system has both state constraints, $x(\cdot)\in\mathcal{X}_\ss{x}$, and input constraints, $u(\cdot)\in\mathcal{U}_\ss{x}$. Note that the constraints also switch according to $\ss{x}(t)$. Additionally, the objective cost weights are also allowed to switch. In total, each mode can be defined as the tuple, 
+$$\mathcal{M}_i\triangleq\{\underbrace{A_i,B_i}_{\text{Dynamics}},\underbrace{\mathcal{X}_i, \mathcal{U}_i}_\text{Constraints}, \underbrace{Q_i,R_i,P_i}_\text{Cost Weights}\}$$
+
+At time $t\in\mathbb{Z}_{\geq0}$, the system receives a preview of the next $N$ disturbances, $\mathfrak{p}(t)=\{p_0(t),...,p_{N}(t)\}$. The next previewed disturbance to be ``felt'' by the system, $p_0(t)$, is called the system's immediate preview. The preview evolves according to the disturbed dynamics 
+\begin{equation}
+\begin{aligned}\label{eq:preview_dyn}
+    p_i(t+1) &= p_{i+1}(t)+\omega_{i}(t)\quad \forall i\in\mathbb{Z}_{[0,N-1]}\\
+    p_{N}(t+1) &= G_fp_{N}(t)+\omega_{N}(t)
+\end{aligned}
+\end{equation}
+where $\omega_{i}\in\mathcal{W}_\ss{p}$ is a bounded error on the disturbance preview. The error set, $\mathcal{W}_\ss{p}$, switches between a nominal set, $\mathcal{W}_{n}$ and a larger set, $\mathcal{W}_{l}$ according to a second switching signal, $\ss{p}:\mathbb{Z}_{\geq0}\rightarrow \{s,l\}$. The preview is constrained within the set $\mathcal{P}=\{\mathcal{P}_0\times...\times\mathcal{P}_N\}$ where $\mathcal{P}_{i-i}\subseteq\mathcal{P}_i$ and $\mathcal{P}_N$ is positive invariant under $G_f\in\mathbb{R}^{m\times m}$.
+
+The switching signals, $\ss{x}(t)$ and $\ss{p}(t)$, are external to the system and provide no preview. Their values at the current time, however, are known immediately and without error. Furthermore, they are constrained both in the rate of switching and the possible switches. The constraints on $\ss{x}$ are given as the mode dependent minimum dwell times (M-MDT), $d_x=\{d_{x,0},...,d_{x,M}\}\in\{\mathbb{Z}_{\geq0}\}^M$. These dwell times imply that if $\ss{x}(t-1)\neq \ss{x}(t)=i$, then $\ss{x}(t+\tau)=i\ \forall\ \tau\in\mathbb{Z}_{[0,d_{x,i}]}$. In words, the system will dwell for $d_{x,i}$ time steps before switching out of mode $i$. 
+
+The preview error's switching signal has both a minimum dwell time, $d_p=\{d_{p,s},0\}$ and a maximum dwell time, $D_p=\{\infty, 0\}$. Note that these constraints imply that, when $\sigma_p(t)=l$, the signal will immediately switch back to $\sigma_p(t+1)=s$ and dwell for at least $d_{p,s}$ time steps before the next switch.
+
+In addition to the switching rate constraints above, the allowable switches are also constrained. These constraints are represented by a binary matrix $\mathcal{G}\in \{0,1\}^{M\times M}$. If an element, $\mathcal{G}(i,j)=1$, then the system can switch from mode $i$ to mode $j$. Else, it cannot switch between them. For notational convenience, we say that $(i,j)\in\mathcal{G}$ if $\mathcal{G}(i,j)=1$.
+
+The set of all dynamic switching signals that respect a set of M-MDTs, $d_x$, and the possible switches in $\mathcal{G}$ is denoted $\Sigma_x(d_x,\mathcal{G})$. Likewise, the set of all preview switching signals respecting the M-MDT $d_{p}$ is denoted $\Sigma_p(d_{p})$. 
+
+Assume $d_x$, $d_p$, and $\mathcal{G}$ are provided. The objective of this work is to implement MPC that will remain feasible under all the allowable combinations of $\sigma_x\in\Sigma_x(d_x,\mathcal{G})$ and $\sigma_p\in\Sigma(d_p)$. This problem is motivated by distributed systems experiencing external switching. If the subsystems are loosely coupled, then a viable control scheme is to treat the coupling as local bounded disturbances \alert{CITE}. Performance can be improved if the distributed controllers share their local, state-trajectory predictions with the coupled nodes so that the local controllers can better select their inputs \alert{CITE}. At each time-step, these predictions can be expected to change only a small amount (hence the small error set for the disturbance previews). When local switching is introduced, however, its trajectory preview can change suddenly and, as a result, the disturbance preview being shared with any neighbors can change as well. Since each system only switches at a rate slower than their dwell times, this large error will only occur at a bounded rate and for a single step. This motivates the intermittent property of the disturbance prediction error.
+
+\begin{remark}
+This idea that the disturbance preview comes from a neighboring, stable node motivates the assumption that the terminal preview evolves according to stable, linear dynamics $G_f$.
+\end{remark}

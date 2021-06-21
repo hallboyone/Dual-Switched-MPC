@@ -1,0 +1,13 @@
+Given a constrained system, $x(t+1)=f(x(t),u(t))$, state constraints, $x\in\mathcal{X}$, and input constraints, $u\in\mathcal{U}$, a model predictive controller will look for the best input sequence over the next $N\in\mathbb{Z}_{\geq1}$ time steps. To do this, it uses the model of the system to generate predictions of future states. The set of allowable input sequences that respect the system's constraints over the trajectory starting at $x_0$ is denoted $\mathcal{U}^N(x_0)$. Given a feasible input sequence, $ \mathfrak{u}\in\mathcal{U}^{N}(x(t))$, and initial condition, $x(t)$, the  predicted state after $k\in\mathbb{Z}_{[0,N]}$ steps is denoted $\phi_\sigma(x(t),\mathfrak{u}:k)$ or $\x{k} \triangleq \phi_\sigma(x(t),\mathfrak{u}:k)$ when the input sequence and initial value are clear from context. 
+
+In addition to the system model, the MPC controller is equipped with an objective function that quantifies the merits of an input trajectory and its resulting state trajectory. The one considered here is
+\begin{align}  \label{eq:objective_fun}
+    J_\ss{x}(x_0,\mathfrak{u})\triangleq& \underbrace{\x{N}^TP \x{N}}_{\text{Terminal Cost}}+\\
+    &\sum_{k=0}^{N-1} \underbrace{\x{k}^TQ \x{k}+\u{k}^TR \u{k}}_{\text{Running Cost}}.\nonumber
+\end{align}
+The weight matrices, $Q,\ R$ and $P$, are assumed to be positive definite. MPC uses this objective function to find an optimal input sequence, $\mathfrak{u}^*(x_0)\in\mathcal{U}^N(x_0)$, that minimizes $J(x_0,\mathfrak{u})$ by solving
+\begin{align}\label{eq:basic_min}
+&J^*(x_0)=\min_{\mathfrak{u}\in\mathcal{U}^{N}(x_0)}J(x_0,\mathfrak{u})
+\end{align}
+
+Denote the set of all states at which \eqref{eq:basic_min} is feasible as $\mathcal{F} \subseteq \mathcal{X}$. After finding $\mathfrak{u}^*(x_0)$, its first element is applied to the system. Then \eqref{eq:basic_min} is re-solved at the new state and the process is repeated. %This results in an implicit optimal feedback control law, $\kappa^*(x)=u^*_0$ and state update equation $x^+=f^{MPC}(x)$.

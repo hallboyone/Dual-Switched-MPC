@@ -1,0 +1,13 @@
+This work explores externally triggered switched linear systems under model predictive control (MPC) that are provided with a preview of future disturbances. The preview is imperfect though this is nominally by a relatively small amount. Occasionally, however, the preview can have a much larger error. The system, then, has two sources of switching. The first is in the local dynamics while the second is in the allowable preview error set. 
+
+A system receiving a preview of future disturbances has been used in a number of fields to improve system performance. It has been used style of preview arises in certain distributed control frameworks where the individual nodes receive a preview from their neighbors to better select their inputs \cite{Farina2012}.
+
+When the nodes are allowed to switch by some external signal, the preview may change suddenly. This generates two 
+
+Model predictive control (MPC) has shown itself to be a valuable control scheme in a wide variety of applications. Its value stems from its inherent near-optimal nature and constraint satisfaction. These desirable properties come at the cost, however, of increased complexity. This complexity makes the application of MPC to certain classes of systems difficult. For this reason, much of the recent work in MPC during recent years has focused on overcoming this complexity burden in a wide variety of applications. 
+
+One such class of systems are ``imperfect'' distributed systems. Two possible sources of these imperfections are sudden changes to the systems dynamics and additive disturbances. Thus far, the literature has examined any 
+
+In \cite{Monasterios2019}, the authors apply MPC to unswitched, disturbed, linear systems with a preview of the system's disturbances. The authors were also motivated by this system's application to distributed MPC. This work established the system's feasibility using bounds on the system's cost function's max rate of change. 
+
+Distributed MPC with switching was handled in \cite{Ahandani2020}. The authors used the principles of decentralized control were the effects of a node's neighbors are treated as an unknown disturbance. The set that this disturbance could be drawn experienced external switching when the communication topology changed. This work relies on weak coupling so the disturbance sets are not prohibitively large.

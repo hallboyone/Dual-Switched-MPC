@@ -1,0 +1,58 @@
+Finding the exact, minimal RPI set, $\mathcal{Z}$, for the system
+$$x^+=Ax+\omega,\quad \omega\in\mathbb{W}$$
+requires an incomputable, infinite Minkowski sum \cite{Kolmanovsky1998}. Instead, an arbitrarily close $\delta$-approximation of the system's RPI set, $\mathcal{Z}^\delta$, can be found by terminating the infinite algorithm early and scaling up the result \cite{Rakovic2005}. This process, however, still requires the computation of many Minkowski sums, an expensive prospect for higher dimensional systems. As mentioned in \autoref{sec:prelim:transform}, the transformed model proposed in \eqref{eq:aug_model} will be in a relatively high dimension even for physically simple systems. In this section, a new process is proposed to find a  $\delta$-RPI set for \eqref{eq:aug_model} that is much less computationally taxing.
+
+Let $\mathcal{Z}_N^\delta$ be an $\delta$-RPI set for the system $p_N(t+1)=G_fp_N(t)+\omega_N(t)$. Note that these are the dynamics in the last block-row of \eqref{eq:aug_model}. Using this, a full $\delta$-RPI set for the preview dynamics can be constructed as follows. If $p_N(t)\in\mathcal{Z}_N^\delta$, then $p_{N-1}(t+1)\in\mathcal{Z}_N^\delta\oplus \widehat{\mathbb{W}}_s \triangleq \mathcal{Z}_{N-1}^\delta$. Continuing this idea, the full preview, $\mathfrak{p}$ call be contained within the RPI set
+$$\mathcal{Z}_{\mathfrak{p}}^\delta\triangleq \{\mathcal{Z}_N^\delta\oplus N\widehat{\mathbb{W}}_s\}\times\{\mathcal{Z}_N^\delta\oplus (N-1)\widehat{\mathbb{W}}_s\} \times \cdots\times \{\mathcal{Z}_N^\delta\}.$$
+
+The set $\mathcal{Z}_{\mathfrak{p}}^\delta$ creates a tube around the nominal preview trajectory, $\mathfrak{p}(t+1)=A_\omega\mathfrak{p}(t)$. This tube contains all the possible values of the preview as the system evolves under disturbances. The final set, $\mathcal{Z}^\delta_{0}\triangleq\{\mathcal{Z}_{N}^\delta\oplus N\widehat{\mathbb{W}}_s\}$, creates a tube around the next preview to be felt by the system, $p_0(t)$. It may not be intuitive that these dimensions would be where the tube has the largest cross-section. After all, it will be ``felt'' the soonest and so should have the least time to differ from reality. However, this tube does not define the largest error between $\omega_0(t)$ and $\omega_0(t+1)$. Instead, it is the largest error that can occur between the nominal value of $\omega_0$ and the actual disturbed value for all time. After $N$ steps in the nominal system, the disturbed preview will still be within the tube defined by $\mathcal{Z}_0$ around the nominal value.
+
+Next, the immediate preview's $\delta$-RPI set, $\mathcal{Z}_0^\delta$, is used to find the $\delta$-RPI set for the local state space. For some control law, $K_x$, use $\mathcal{Z}_x^\delta$ to denote a set that is RPI under the dynamics
+\begin{equation}\label{eq:local-error}
+    x(t+1) = (A_x - BK_x)x(t) + \omega_x(t)
+\end{equation}
+with the constraint $\omega_x(t)\in E\mathcal{Z}_0^\delta$. Denote the nominal values of the local states' trajectory under a certain input trajectory, $\hat{u}(t)$, as $\hat{x}(t)$ and denote the nominal immediate preview trajectory as $\hat{p}(t)$. Suppose that the actual trajectories are given by $x(t)=\hat{x}(t)+e_x(t)$ and $p(t)=\hat{p}(t)+e_p(t)$ and the input is augmented as $u(t)=\hat{u}(t)-K_xe_x(t)$. Then we have
+\begin{align*}
+    &x(t+1)\\
+    &=A_xx(t) + Ep_0(t) + Bu(t)\\
+    &=A_x\left(\hat{x}(t)+e_x(t)\right) + E\left(\hat{p}_0(t)+e_p(t)\right)\\ 
+    &\qquad+ B\left(\hat{u}(t)-K_xe_x(t)\right)\\
+    &= \left(A_x\hat{x}(t)+E\hat{p}_0(t)+B\hat{u}(t)\right)\\
+    &\qquad + \underbrace{(A_x-BK_x)e_x(t)+E\hat{e}_p(t)}_{\text{Matches dynamics in \eqref{eq:local-error}}}\\
+    &=\hat{x}(t+1)+e_x(t+1)
+\end{align*}
+By assuming that $e_x(0)\in\mathcal{Z}_x^\delta$, we know that $e_x(t)\in\mathcal{Z}_x^\delta$ for all time. This establishes that the local states are contained within a tube around the nominal trajectory. This set can then be merged with the preview's $\delta$-RPI set to create the full $\delta$-RPI set, $\mathcal{Z}=\{\mathcal{Z}_x^\delta\times \mathcal{Z}_{\mathfrak{p}}^\delta\}$. This creates a tube around all dimensions that the disturbed dynamics will always be within, assuming the nominal input is augmented with the control law $K_x$ applied to the error.
+
+By breaking the RPI set computation into smaller parts, the computational complexity is greatly reduced without introducing any conservatism. While the original system required finding the RPI set for a system in $\mathbb{R}^{n+(N+1)*m}$, the method proposed above requires finding two RPI sets, one in $\mathbb{R}^n$ and the other in $\mathbb{R}^m$. These, along with $N$ Minkowski sum operations, are all that are required. This allows the transformed systems RPI set to be found without an exponential growth in the nominal dynamics.
+
+% \section{Switch-Disturbance RCI Set Computation}
+% \subsection{Terminal Sets}
+% The standard procedure to find the terminal sets of a tube based controller consists of first finding the RPI sets for the system, tightening the state and input constraints based on the RPI set, and then computing the maximal PI set given some terminal control law. This creates terminal constraints that, if the nominal controller can reach them, ensure the disturbed system will always be near. In the case of this work, however, the preview dimensions can be handled differently. From inspection, we can see that the nominal terminal set for the terminal dimensions is given by
+% \begin{equation}
+%     \hat{\mathcal{T}}_p \triangleq \{\mathcal{P}_{N}\times A_{f}\mathcal{P}_N\times\cdots\times A_{f}^N\mathcal{P}_N\}.
+% \end{equation}
+% With these terminal constraints on the preview, we now turn to finding the terminal constraints on the local states. Under the nominal dynamics, the terminal set must satisfy the following
+% \begin{enumerate}
+%     \item Positive invariant under some terminal control law.
+%     \item Inside the state constraints with a margin of the RPI set.
+%     \item Generate inputs within the input constraints with a margin dictated by the RPI set.
+% \end{enumerate}
+% These conditions must hold regardless of the location of the previews within their terminal sets because these states are uncontrollable. 
+
+% Consider the linear terminal control law, 
+% $$u(t)=\left[K_x,K_p\right]\begin{bmatrix} x(t)\\p(t) \end{bmatrix}.$$ 
+% Then the terminal dynamics are given by 
+% \begin{align*}
+%     x(t+1)=&(A_\ss{x}-B_\ss{x}K_\ss{x})x(t)+(E_\ss{x}-B_\ss{x}K_{p_0})p_0\\
+%     &\qquad+\sum_{i=1}^N -B_\ss{x}K_{p_i}p_i.
+% \end{align*}
+
+% Since the only insurances we have about $p_i,\ i\in\mathbb{Z}_{[0,N]}$ is that they will be within their terminal sets, the terms containing these values can be treated as a disturbance. The disturbances will be bound within the set
+% $$\mathcal{W}_{\mathcal{T}_p} = (E_\ss{x}-B_\ss{x}K_{p_0})\mathcal{P}_0 \oplus \bigoplus_{i=1}^NB_\ss{x}K_{p_i}\mathcal{P}_i.$$
+% Rewriting the terminal system, we now have
+% $$x(t+1)=(A_\ss{x}-B_\ss{x}K_\ss{x})x(t)+\omega_{\mathcal{T}_p}.$$
+% The terminal region for the local states, $\mathcal{T}_x$ can then be found as the robust PI set using the algorithm from \cite{Borrelli2017}. The full terminal region is constructed as $\mathcal{T} = \{\mathcal{T}_x\times\mathcal{T}_p\}$.
+% \subsection{Feasible Regions}
+% Given the terminal sets from the previous section, the feasible region can be found 
+% \subsection{Switch-Disturbance RCI Sets}
+% Finally use Reza's algorithm to find the SD-RCI sets.
