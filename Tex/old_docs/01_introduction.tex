@@ -1,0 +1,23 @@
+Previous works studying the control of constrained, externally switched systems required the distinct modes to be sustainable (stable and persistently feasible). This allowed the switched system to inherint the stability and feasibility of its modes by restricting the rate of switching. This work, however, explores two new classes of switched systems that have modes that are either not persistently feasible or are unstable.  \Ac{MPC} is used to control these systems and assurances that the system will not remain in an unsustainable system for ``too long'' allows persistently feasibility to be established.
+
+The first of the two classes explored simply switches between modes that can be persistently feasible and those that cannot. The system must remain in the sustainable modes for some minimum length of time and cannot remain in the unsustainable modes for some maximum length of time. This class of system could be used to temporarily overdrive a system when needed for some outside objective. For example, an IT system could be tasked with solving more than it could normally do without overheating if the load will be reduced before the system fails.
+
+The second class we will explore has an additive disturbance that usually is drawn form some small set but can switch for a time and be drawn from a larger set. This can be viewed either as a sudden large outside disturbance or a sudden jump in the system's state. Either way, there are many useful applications for this class of system. A sudden change to a system's reference point could be viewed as a sudden change in the signal's error. In networked systems, a change to the system can be modeled as a large disturbance stemming from the changing dynamics. In addition to the additive disturbance switching, we will show how dynamics switch can also be handled simultaneously.
+
+There are several points of novelty laid out above. First, switching that takes into account unsustainable modes has not been explored previously. Second, this work introduces switching in the form of large additive disturbances, not just in changes to the system's dynamics. Finally, having multiple switching sources, as mentioned in the previous paragraph, generalizes previous works and improves the richness of the applications suitable for switched \Ac{MPC}.
+
+\subsection{Paper design}
+I three directions I could go: 2D
+%This work explores externally triggered switched linear systems under model predictive control (MPC) that are provided with a preview of future disturbances. The preview is imperfect though this is nominally by a relatively small amount. Occasionally, however, the preview can have a much larger error. The system, then, has two sources of switching. The first is in the local dynamics while the second is in the allowable preview error set. 
+%
+%A system receiving a preview of future disturbances has been used in a number of fields to improve system performance. It has been used style of preview arises in certain distributed control frameworks where the individual nodes receive a preview from their neighbors to better select their inputs \cite{Farina2012}.
+%
+%When the nodes are allowed to switch by some external signal, the preview may change suddenly. This generates two 
+%
+%Model predictive control (MPC) has shown itself to be a valuable control scheme in a wide variety of applications. Its value stems from its inherent near-optimal nature and constraint satisfaction. These desirable properties come at the cost, however, of increased complexity. This complexity makes the application of MPC to certain classes of systems difficult. For this reason, much of the recent work in MPC during recent years has focused on overcoming this complexity burden in a wide variety of applications. 
+%
+%One such class of systems are ``imperfect'' distributed systems. Two possible sources of these imperfections are sudden changes to the systems dynamics and additive disturbances. Thus far, the literature has examined any 
+%
+%In \cite{Monasterios2019}, the authors apply MPC to unswitched, disturbed, linear systems with a preview of the system's disturbances. The authors were also motivated by this system's application to distributed MPC. This work established the system's feasibility using bounds on the system's cost function's max rate of change. 
+%
+%Distributed MPC with switching was handled in \cite{Ahandani2020}. The authors used the principles of decentralized control were the effects of a node's neighbors are treated as an unknown disturbance. The set that this disturbance could be drawn experienced external switching when the communication topology changed. This work relies on weak coupling so the disturbance sets are not prohibitively large.

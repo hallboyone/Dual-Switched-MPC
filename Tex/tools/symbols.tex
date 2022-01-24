@@ -1,0 +1,136 @@
+% ========================== Basic ==========================
+\newcommand{\dyn}[1]{\ensuremath{#1^x}}        % Related to system dynamics
+\newcommand{\dst}[1]{\ensuremath{#1^\sigma}}   % Related to system disturbance 
+
+% =========================== Sets ==========================
+\renewcommand{\int}{\ensuremath{\mathbb{Z}}}
+\newcommand{\real}{\ensuremath{\mathbb{R}}}
+\newcommand{\nat}{\ensuremath{\mathbb{N}}}
+\newcommand{\cset}{\ensuremath{\mathcal{C}}}
+% ========================== Ranges =========================
+\newcommand{\rgeq}[1]{\ensuremath{_{\geq #1}}}
+\newcommand{\rleq}[1]{\ensuremath{_{\leq #1}}}
+\newcommand{\rg}[1]{\ensuremath{_{>#1}}}
+\newcommand{\rl}[1]{\ensuremath{_{<#1}}}
+\newcommand{\rii}[2]{\ensuremath{_{[#1,#2]}}}
+\newcommand{\rie}[2]{\ensuremath{_{[#1,#2)}}}
+\newcommand{\rei}[2]{\ensuremath{_{(#1,#2]}}}
+\newcommand{\ree}[2]{\ensuremath{_{(#1,#2)}}}
+\newcommand{\elrii}[2]{\ensuremath{_{\{#1,#2\}}}}
+% ===================== Constraint sets =====================
+% \_con ----- Produces the constraint set for the indicated quantity. One optional arg adds a substcript.
+\NewDocumentCommand{\xcon}{ o o }{%
+	\IfNoValueTF{#2}%
+	{		
+	\IfNoValueTF{#1}%
+		{\ensuremath{\mathcal{X}}}%
+		{\ensuremath{\mathcal{X}_{#1}}}}
+		{\ensuremath{\mathcal{X}{(#1,#2)}}}}
+\NewDocumentCommand{\ucon}{ o }{%
+	\IfNoValueTF{#1}%
+		{\ensuremath{\mathcal{U}}}%
+		{\ensuremath{\mathcal{U}_{#1}}}}
+\NewDocumentCommand{\tcon}{ o }{%
+	\IfNoValueTF{#1}%
+		{\ensuremath{\mathcal{T}}}%
+		{\ensuremath{\mathcal{T}_{#1}}}}
+\NewDocumentCommand{\wcon}{ o }{%
+	\IfNoValueTF{#1}%
+		{\ensuremath{\mathcal{W}}}%
+		{\ensuremath{\mathcal{W}_{#1}}}}
+
+% ==================== Switching signals ====================
+% \ss --------- General switching signal
+% \sucset ----- Successor matrix associated with signal #1. Ex. \sucmat{\dyn\ss}
+% \sucsetel --- Successor matrix element (#2,#3) associated with signal #1. Ex. \sucset{\dyn\ss}{\dyn\modeidx_i}{\dyn\modeidx_j}
+
+% \mindts ----- Vector of the mode-dependent min-DTs for signal #1. Ex \mindts{\dst\ss}
+% \maxdts ----- Vector of the mode-dependent max-DTs for signal #1. Ex \maxdts{\dst\ss}
+% \mindt ------ The mode-dependent min-DT for signal #1, mode #2. Ex \mindt{\dst\ss}{\dst\modeidx}
+% \maxdt ------ The mode-dependent max-DT for signal #1, mode #2. Ex \maxdt{\dst\ss}{\dst\modeidx}
+% \sucsetcon -- Succesoor matrix constraint
+
+% \mindtscon -- Vector of min-dt constraints
+% \maxdtscon -- Vector of max-dt constraints
+% \mindtcon --- Single min-dt constraint
+% \maxdtcon --- Single max-dt constraint
+% \ssset     -- Set of switching signals that respects up to three constraint elements
+
+% \sstimer   -- Ss timer. Maps the time and a ss to the number of steps since a switch that new information was gleaned
+% \sstimerval - A Value of switching signal timer
+% \sstimermax - Maximum value of the switching signal timer in mode #1
+% \sspairset -- The set of possible pairs given a mode #1 and timer value #2
+% \sscount ---- The number of times the switching signal has changed at some time t
+
+\renewcommand{\ss}{\ensuremath{{\sigma}}}
+\newcommand{\sucset}[1]{\ensuremath{\mathcal{S}^{#1}}}
+\newcommand{\sucsetrow}[2]{\ensuremath{\sucset{#1}_{#2}}}
+\newcommand{\sucsetel}[3]{\ensuremath{{s_{#2,#3}^{#1}}}}
+
+\newcommand{\mindts}[1]{\ensuremath{\underline{\mathcal{D}}^{#1}}}
+\newcommand{\maxdts}[1]{\ensuremath{\overline{\mathcal{D}}^{#1}}}
+\newcommand{\mindt}[2]{\ensuremath{{\underline{\delta}_{#2}^{#1}}}}
+\newcommand{\maxdt}[2]{\ensuremath{{\overline{\delta}_{#2}^{#1}}}}
+\newcommand{\sucsetcon}{\ensuremath{{S}}}
+\newcommand{\sucsetconrow}[1]{\ensuremath{{S_{#1}}}}
+
+\newcommand{\mindtscon}{\ensuremath{\underline{D}}}
+\newcommand{\maxdtscon}{\ensuremath{\overline{D}}}
+\newcommand{\mindtcon}[1]{\ensuremath{{\underline{d}_{#1}}}}
+\newcommand{\maxdtcon}[1]{\ensuremath{{\overline{d}_{#1}}}}
+%\newcommand{\ssset}[3]{\ensuremath{\Sigma(#1,#2,#3)}}
+\NewDocumentCommand{\ssset}{ o o o }{%
+	\IfNoValueTF{#3}%
+		{\IfNoValueTF{#2} %no 3
+			{\IfNoValueTF{#1}%no 2, no 3
+				{\ensuremath{\Sigma}}
+				{\ensuremath{\Sigma(#1)}}
+			}
+			{\ensuremath{\Sigma(#1,#2)}}%no 3 but 1 and 2
+		}
+		{\ensuremath{\Sigma(#1,#2,#3)}}}
+		
+\newcommand{\sstimer}{\ensuremath{{T}}}
+\newcommand{\sstimerval}{\ensuremath{\tau}}
+\newcommand{\sstimermax}[1]{\ensuremath{{\overline{\sstimerval}_{#1}}}}
+\newcommand{\sspairset}[2]{\ensuremath{{\Lambda((#1,#2))}}}
+\newcommand{\sscount}{\ensuremath{{\ss^\#}}}
+
+\newcommand{\switchtimes}[1]{\ensuremath{\tau^{#1}}}
+\newcommand{\switchtime}[2]{\ensuremath{{\switchtimes{#1}_{#2}}}}
+\newcommand{\lastswitchtime}[1]{\switchtimes{#1}_+}
+
+% ================== System Modes ==================
+% \modes -------- A collection of modes
+% \mode --------- A single mode indexed by #1
+% \nummodes --- Number of modes 
+% \modeidx ------ Index of a single mode \ss(t)=\modeidx
+
+% \nx ------------- The state dimension
+% \nu ------------- The input dimension
+
+\newcommand{\modes}{\ensuremath{\mathcal{M}}}
+\newcommand{\mode}[1]{\ensuremath{\modes_{#1}}}
+\newcommand{\nummodes}{\ensuremath{M}}
+\newcommand{\modeidx}{{\ensuremath{\mu}}}
+
+\newcommand{\nx}{\ensuremath{{n_x}}}
+\renewcommand{\nu}{\ensuremath{{n_u}}}
+\NewDocumentCommand{\futstate}{ o o o o}{%
+	\IfNoValueTF{#3}%
+		{\ensuremath{x{(#1,#2)}}}
+		{\ensuremath{\phi(#1;#2,#3,#4)}}}
+\NewDocumentCommand{\useq}{}{\ensuremath{\mathfrak{u}}}
+\NewDocumentCommand{\feasuseq}{mmm}{%
+	\ensuremath{\mathfrak{U}(#1,#2,#3)}
+	}
+	
+% ==================== Safe sets ====================
+\newcommand{\safesets}{\ensuremath{\mathcal{S}}}
+\newcommand{\safeset}[2]{\ensuremath{\safesets_{(#1,#2)}}}
+
+
+
+
+% ==================== Misc ====================
+\newcommand{\narroweq}{\ensuremath{\scalerel[1ex]{=}{\phantom{=}\hspace{-0.17cm}}}}
