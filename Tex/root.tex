@@ -7,6 +7,29 @@
 \title{Persitent Feasibility in Dual Switched Systems}
 \begin{document}
 \maketitle
+Consider a system with the following form
+\begin{equation}
+\begin{bmatrix}x_1(t+1)\\x_2(t+1)\end{bmatrix} = \begin{bmatrix}A_{\ss_1(t)}^{11} & A_{\ss_1(t)}^{12}\\A_{\ss_2(t)}^{21} & A_{\ss_2(t)}^{22}\end{bmatrix}\begin{bmatrix}x_1(t)\\x_2(t)\end{bmatrix}+\begin{bmatrix}B_{\ss_1(t)}^{1} & 0 \\0 & B_{\ss_2(t)}^{2}\end{bmatrix}\begin{bmatrix}u_1(t)\\u_2(t)\end{bmatrix}.
+\end{equation}
+The critical aspect of this system is the existence of two, independent switching signals, each with its own dwell time and successor constraints. Any system with independent switching sources are better suited for this framework. For example, consider a distributed system with local switching at each node. A switch at node 1 could be followed immediately by a switch at node 2 or after a great deal of time making minimum dwell times invalid. Average dwell time could, perhaps, be used instead but feasibility is difficult to establish under this constraint. 
 
+The second important aspect of the system is the block the systems are allowed to switch. This structure switches the dynamics of state $x_i$ according to the respective switching signal, $\ss_i(\cdot)$. 
+
+Our objective is to design safe-set collections that are indexed by the current switching signal states that will ensure persistent feasibility. Recall that every element in a safe-set collection must satisfy be within the one-step preset of all safe-set collection elements indexed by the possible successor switching signal states. The structure of the system under consideration makes this an especially challenging prospect for two reasons. First, the number of successor safe-sets grows exponentially two or more independent switching signals. Second, systems that take this form would tend to be larger than trivial examples. This suggests that set based techniques may not scale well. These concerns will be addressed by splitting the system in two and looking for safe-set collections for each seperatly. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
+
+Looking only at the first block row, the dynamics can be rewritten as 
+\begin{equation}
+x_1(t+1)=A^{11}_{\ss_1(t)}x_1(t)+B^1_{\ss_1(t)}u_1(t)+A^{12}_{\ss_1(t)}x_2(t).
+\end{equation}
+This system has only a single switching signal explicitly appearing, $\ss_1(t)$ and resembles a locally switched system with additive disturbances. However, the set that $x_2$ is drawn from is not obvious. The full state constraints could be used but this would lead to a conservative result. If the safe-set collection and switching signal state associated with $x_2$ were known, then the current safe-set could be used. This however, requires full interaction between the safe-set collections of $x_1$ and $x_2$ leading back to the centralized problem. Furthermore, this level of communication may be undesirable in distributed contexts. Alternatively, the convex hull of the safe-set collection union can be used. This only requires acquiring a single set and does not rely on the switching signal. 
+
+An import distinction arises at this point. In previous works with an external additive disturbance, the disturbance wasn't known until after it was applied. This meant that the input selected had to work for all disturbances. In the case of the original system, however, it is reasonable to assume a preview of $x_2(t)$ at time $t$. This implies that the safe-sets need not be within the robust preset of each of its successors but in the previewed robust preset defined below.
+\begin{definition}[Previewed Robust Preset]
+The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $x^+=Ax+Bu+w$, $x\in\mathcal{X}$, $u\in\mathcal{U}$, $w\in\mathcal{W}$ is given by
+\begin{align}
+\text{Pre}^{0,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\mathcal{S},\\
+\text{Pre}^{k,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\{x\in\mathcal{X}|\forall w\in\mathcal{W},\exists u\in\mathcal{U}\text{ s.t. }Ax+Bu+w\in\text{Pre}^{k-1,\text{\tiny\faEye}}\}.
+\end{align}
+\end{definition}
 \printbibliography
 \end{document}
