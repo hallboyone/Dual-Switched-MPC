@@ -13,21 +13,29 @@
 % Our objective is to find two safe-set collections for the x1 states and
 % x2 states that are indexed by the respective switching signal.
 
+saved_vars = load('rand_dyn.mat');
 A11 = {eye(2) + (0.2*rand(2)-0.1), eye(2) + (0.2*rand(2)-0.1)};
 A22 = {eye(2) + (0.2*rand(2)-0.1), eye(2) + (0.2*rand(2)-0.1)};
 A12 = {0.1*(0.2*rand(2)-0.1), 0.1*(0.2*rand(2)-0.1)};
 A21 = {0.1*(0.2*rand(2)-0.1), 0.1*(0.2*rand(2)-0.1)};
+A = saved_vars.A_good;%{A11, A22};
+Ac = saved_vars.Ac_good;%{A12, A21};
 
 B1 = {[0.1; 0.1] + (0.2*rand(2,1)-0.1), [0.1; 0] + (0.2*rand(2,1)-0.1)};
 B2 = {[0.1; 0.1] + (0.2*rand(2,1)-0.1), [0.1; 0] + (0.2*rand(2,1)-0.1)};
+%B = {B1, B2};
+B = saved_vars.B_good;
 
 X1 = Polyhedron([eye(2); -eye(2)], [1; 2; 1; 2]);
 X2 = Polyhedron([eye(2); -eye(2)], [2; 1; 2; 1]);
+X = {X1, X2};
 U1 = Polyhedron([1; -1], 10*[0.5; 0.25]);
 U2 = Polyhedron([1;-1], 10*[0.25; 0.5]);
+U= {U1, U2};
 
 mindt_1 = [3, 4];
 mindt_2 = [4, 3];
+mindt = {mindt_1, mindt_2};
 
 safe_sets_1 = cell(numel(mindt_1), 1);
 for i=1:numel(mindt_1)
@@ -43,66 +51,138 @@ for i=1:numel(mindt_2)
         safe_sets_2{i}{k} = X2;
     end
 end
-safe_sets = {safe_sets_1, safe_sets_2};
+cur_safe_sets = {safe_sets_1, safe_sets_2};
+
+% figure
+% first_run = true;
+% while true
+%     for node=1:2
+%         if node==1
+%             Ac = A12;
+%             A = A11;
+%             B = B1;
+%             U = U1;
+%             X = X1;
+%             mindt = mindt_1;
+%         else
+%             Ac = A21;
+%             A = A22;
+%             B = B2;
+%             U = U2;
+%             X = X2;
+%             mindt = mindt_2;
+%         end
+%         if first_run
+%             W = {Polyhedron.emptySet(2), Polyhedron.emptySet(2)};
+%         else
+%             S = convexHullOfUnion(safe_sets{3-node});
+%             W = {Ac{1}*S, Ac{2}*S};
+%             W{1}.minHRep();
+%             W{2}.minHRep();
+%         end
+%         
+%         for mode=1:2
+%             safe_sets{node}{i} = cell(mindt(mode), 1);
+%             for step=1:mindt(mode)
+%                 safe_sets{node}{mode}{step} = X;
+%             end
+%         end
+%         
+%         while true
+%             old_safe_sets = safe_sets{node};
+%             for mode = 1:2
+%                 mode_mindt = numel(safe_sets{node}{mode});
+%                 for step = 1:mode_mindt
+%                     safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
+%                         old_safe_sets{mode}{min(step+1, mode_mindt)},...
+%                         A{mode}, B{mode}, safe_sets{node}{mode}{step},...
+%                         U, W{mode});
+%                     if step == mode_mindt
+%                         safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
+%                             old_safe_sets{3-mode}{1},...
+%                             A{3-mode}, B{3-mode}, safe_sets{node}{mode}{step},...
+%                             U, W{mode});
+%                     end
+%                 end
+%             end
+%             if(areEqual(safe_sets{node},old_safe_sets, 1))
+%                 break
+%             end
+%         end
+%     end
+%     first_run = false;
+% end
+% close(gcf)
 
 figure
-first_run = true;
+new_safe_sets = cur_safe_sets;
+itr = 1;
 while true
+    cur_safe_sets = new_safe_sets;
+    
+    % Initalize the new_safe-set variable to be the full state dynamics
+    S = cell(2,1);
+    W = cell(2,1);
     for node=1:2
-        if node==1
-            Ac = A12;
-            A = A11;
-            B = B1;
-            U = U1;
-            X = X1;
-            mindt = mindt_1;
-        else
-            Ac = A21;
-            A = A22;
-            B = B2;
-            U = U2;
-            X = X2;
-            mindt = mindt_2;
-        end
-        if first_run
-            W = {Polyhedron.emptySet(2), Polyhedron.emptySet(2)};
-        else
-            S = convexHullOfUnion(safe_sets{3-node});
-            W = {Ac{1}*S, Ac{2}*S};
-            W{1}.minHRep();
-            W{2}.minHRep();
-        end
+        S{node} = convexHullOfUnion(cur_safe_sets{3-node});
+        W{node} = {Ac{node}{1}*S{node}, Ac{node}{2}*S{node}};
         
         for mode=1:2
-            safe_sets{node}{i} = cell(mindt(mode), 1);
-            for step=1:mindt(mode)
-                safe_sets{node}{mode}{step} = X;
+            W{node}{mode}.minHRep();
+            for step=1:mindt{node}(mode)
+                new_safe_sets{node}{mode}{step} = X{node};
             end
         end
+    end
+    
+    for node=1:2
+%         % Make the union of the other node's safesets and map thrugh cross
+%         % dynamics
+%         S = convexHullOfUnion(cur_safe_sets{3-node});
+%         W = {Ac{node}{1}*S, Ac{node}{2}*S};
+%         
+%         % Initalize the new_safe-set variable to be the full state dynamics
+%         for mode=1:2
+%             W{mode}.minHRep();
+%             new_safe_sets{node}{mode} = cell(mindt{node}(mode), 1);
+%             for step=1:mindt{node}(mode)
+%                 new_safe_sets{node}{mode}{step} = X{node};
+%             end
+%         end
         
         while true
-            old_safe_sets = safe_sets{node};
+            old_safe_sets = new_safe_sets{node};
             for mode = 1:2
-                mode_mindt = numel(safe_sets{node}{mode});
-                for step = 1:mode_mindt
-                    safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
-                        old_safe_sets{mode}{min(step+1, mode_mindt)},...
-                        A{mode}, B{mode}, safe_sets{node}{mode}{step},...
-                        U, W{mode});
-                    if step == mode_mindt
-                        safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
+                for step = 1:mindt{node}(mode)
+                    new_safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
+                        old_safe_sets{mode}{min(step+1, mindt{node}(mode))},...
+                        A{node}{mode}, B{node}{mode}, new_safe_sets{node}{mode}{step},...
+                        U{node}, W{node}{mode});
+                    if step == mindt{node}(mode)
+                        new_safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
                             old_safe_sets{3-mode}{1},...
-                            A{3-mode}, B{3-mode}, safe_sets{node}{mode}{step},...
-                            U, W{mode});
+                            A{node}{3-mode}, B{node}{3-mode}, new_safe_sets{node}{mode}{step},...
+                            U{node}, W{node}{3-mode});
                     end
                 end
+                new_safe_sets{node}{mode}{step}.minHRep();
+                new_safe_sets{node}{mode}{step}.minVRep();
             end
-            if(areEqual(safe_sets{node},old_safe_sets, 1))
+            if(areEqual(new_safe_sets{node},old_safe_sets, 0))
                 break
             end
         end
     end
-    first_run = false;
+    disp("Finished iteration");
+    if mod(itr, 2)
+        if itr > 1
+            if(areEqual(new_safe_sets{1},odd_safe_sets{1}, 1) && areEqual(new_safe_sets{2},odd_safe_sets{2}, 1))
+                break
+            end
+        end
+        odd_safe_sets = new_safe_sets;
+    end
+    itr = itr + 1;
 end
 close(gcf)
 
