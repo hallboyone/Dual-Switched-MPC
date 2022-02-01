@@ -28,8 +28,27 @@ An import distinction arises at this point. In previous works with an external a
 The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $x^+=Ax+Bu+w$, $x\in\mathcal{X}$, $u\in\mathcal{U}$, $w\in\mathcal{W}$ is given by
 \begin{align}
 \text{Pre}^{0,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\mathcal{S},\\
-\text{Pre}^{k,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\{x\in\mathcal{X}|\forall w\in\mathcal{W},\exists u\in\mathcal{U}\text{ s.t. }Ax+Bu+w\in\text{Pre}^{k-1,\text{\tiny\faEye}}\}.
+\text{Pre}^{k,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\{x\in\mathcal{X}|\forall w\in\mathcal{W},\exists u\in\mathcal{U}\text{ s.t. }Ax+Bu+w\in\text{Pre}^{k-1,\text{\tiny\faEye}}(\mathcal{S})\}.
 \end{align}
 \end{definition}
+The previewed robust preset (PRP) is a superset or equal to the standard robust presets. Both can be found using the following set operations
+\begin{align}
+\text{Pre}^{1}(\mathcal{S}) &= \left(\left(\left(\mathcal{S}\ominus\mathcal{W}\right)\oplus\left(-B\circ\mathcal{U}\right)\right)\circ A\right)\ \cap\ \mathcal{X},\\
+\text{Pre}^{1,\text{\tiny\faEye}}(\mathcal{S}) &= \left(\left(\left(\mathcal{S}\oplus\left(-B\circ\mathcal{U}\right)\right)\ominus\mathcal{W}\right)\circ A\right)\ \cap\ \mathcal{X}.
+\end{align}
+
+A circular dependency arose in the previous discussion -- the safe-set collection for $x_1$ depend on the collection for $x_2$ which depends on the collection for $x_1$. This suggests an iterative algorithm with parallel elements. The basic steps are laid out below.
+\begin{enumerate}
+	\item Assume trivial safe-sets
+	\item Share the convex hulls of the current safe-set collections.
+	\item Compute the resulting safe-set collection (large and invalid).
+	\item Share the convex hulls of the invalid safe-set collections.
+	\item Compute the resulting safe-set collection (conservative and valid?).
+	\item If no change, terminate. Else repeat from (2).
+\end{enumerate} 
+Every node can run steps (3) and (4) in parallel. This means that the algorithms scale very will with the number of nodes so long as their state dimensions remain relatively small.
+
+There are still questions that need to be answered. When will the algorithm converge? Can it be terminated early at step (6)? How conservative is this approach compared with centralized methods when there is a common switching signal (can it be used to solve large dimension switched systems)? Can it be generalized to an arbitrary number of block-rows and switching signals? I will look into these questions in the coming weeks.
+
 \printbibliography
 \end{document}
