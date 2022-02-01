@@ -1,54 +1,35 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[conference]{IEEEtran}
 \input{./tools/packages}
 \bibliography{./bib/bibliography}
-\input{./tools/symbols} 
+\input{./tools/symbols}
+\input{./tools/acros.tex}
+\input{./tools/custom_commands}
 
-\author{Richard Hall}
-\title{Persitent Feasibility in Dual Switched Systems}
+\pgfplotsset{compat=1.17}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
 \begin{document}
+\title{Persistent Feasibility in Dual Switched Systems}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} Richard A Hall}
+\IEEEauthorblockA{\textit{Thomas Lord MEMS Department} \\
+\textit{Duke University}\\
+Durham, NC, USA \\
+0000-0003-3512-6941}
+\and
+\IEEEauthorblockN{2\textsuperscript{nd} Leila Bridgeman}
+\IEEEauthorblockA{\textit{Thomas Lord MEMS Department} \\
+\textit{Duke University}\\
+Durham, NC, USA \\
+0000-0002-9367-7218}
+}
 \maketitle
-Consider a system with the following form
-\begin{equation}
-\begin{bmatrix}x_1(t+1)\\x_2(t+1)\end{bmatrix} = \begin{bmatrix}A_{\ss_1(t)}^{11} & A_{\ss_1(t)}^{12}\\A_{\ss_2(t)}^{21} & A_{\ss_2(t)}^{22}\end{bmatrix}\begin{bmatrix}x_1(t)\\x_2(t)\end{bmatrix}+\begin{bmatrix}B_{\ss_1(t)}^{1} & 0 \\0 & B_{\ss_2(t)}^{2}\end{bmatrix}\begin{bmatrix}u_1(t)\\u_2(t)\end{bmatrix}.
-\end{equation}
-The critical aspect of this system is the existence of two, independent switching signals, each with its own dwell time and successor constraints. Any system with independent switching sources are better suited for this framework. For example, consider a distributed system with local switching at each node. A switch at node 1 could be followed immediately by a switch at node 2 or after a great deal of time making minimum dwell times invalid. Average dwell time could, perhaps, be used instead but feasibility is difficult to establish under this constraint. 
 
-The second important aspect of the system is the block the systems are allowed to switch. This structure switches the dynamics of state $x_i$ according to the respective switching signal, $\ss_i(\cdot)$. 
-
-Our objective is to design safe-set collections that are indexed by the current switching signal states that will ensure persistent feasibility. Recall that every element in a safe-set collection must satisfy be within the one-step preset of all safe-set collection elements indexed by the possible successor switching signal states. The structure of the system under consideration makes this an especially challenging prospect for two reasons. First, the number of successor safe-sets grows exponentially two or more independent switching signals. Second, systems that take this form would tend to be larger than trivial examples. This suggests that set based techniques may not scale well. These concerns will be addressed by splitting the system in two and looking for safe-set collections for each seperatly. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
-
-Looking only at the first block row, the dynamics can be rewritten as 
-\begin{equation}
-x_1(t+1)=A^{11}_{\ss_1(t)}x_1(t)+B^1_{\ss_1(t)}u_1(t)+A^{12}_{\ss_1(t)}x_2(t).
-\end{equation}
-This system has only a single switching signal explicitly appearing, $\ss_1(t)$ and resembles a locally switched system with additive disturbances. However, the set that $x_2$ is drawn from is not obvious. The full state constraints could be used but this would lead to a conservative result. If the safe-set collection and switching signal state associated with $x_2$ were known, then the current safe-set could be used. This however, requires full interaction between the safe-set collections of $x_1$ and $x_2$ leading back to the centralized problem. Furthermore, this level of communication may be undesirable in distributed contexts. Alternatively, the convex hull of the safe-set collection union can be used. This only requires acquiring a single set and does not rely on the switching signal. 
-
-An import distinction arises at this point. In previous works with an external additive disturbance, the disturbance wasn't known until after it was applied. This meant that the input selected had to work for all disturbances. In the case of the original system, however, it is reasonable to assume a preview of $x_2(t)$ at time $t$. This implies that the safe-sets need not be within the robust preset of each of its successors but in the previewed robust preset defined below.
-\begin{definition}[Previewed Robust Preset]
-The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $x^+=Ax+Bu+w$, $x\in\mathcal{X}$, $u\in\mathcal{U}$, $w\in\mathcal{W}$ is given by
-\begin{align}
-\text{Pre}^{0,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\mathcal{S},\\
-\text{Pre}^{k,\text{\tiny\faEye}}(\mathcal{S})&\triangleq\{x\in\mathcal{X}|\forall w\in\mathcal{W},\exists u\in\mathcal{U}\text{ s.t. }Ax+Bu+w\in\text{Pre}^{k-1,\text{\tiny\faEye}}(\mathcal{S})\}.
-\end{align}
-\end{definition}
-The previewed robust preset (PRP) is a superset or equal to the standard robust presets. Both can be found using the following set operations
-\begin{align}
-\text{Pre}^{1}(\mathcal{S}) &= \left(\left(\left(\mathcal{S}\ominus\mathcal{W}\right)\oplus\left(-B\circ\mathcal{U}\right)\right)\circ A\right)\ \cap\ \mathcal{X},\\
-\text{Pre}^{1,\text{\tiny\faEye}}(\mathcal{S}) &= \left(\left(\left(\mathcal{S}\oplus\left(-B\circ\mathcal{U}\right)\right)\ominus\mathcal{W}\right)\circ A\right)\ \cap\ \mathcal{X}.
-\end{align}
-
-A circular dependency arose in the previous discussion -- the safe-set collection for $x_1$ depend on the collection for $x_2$ which depends on the collection for $x_1$. This suggests an iterative algorithm with parallel elements. The basic steps are laid out below.
-\begin{enumerate}
-	\item Assume trivial safe-sets
-	\item Share the convex hulls of the current safe-set collections.
-	\item Compute the resulting safe-set collection (large and invalid).
-	\item Share the convex hulls of the invalid safe-set collections.
-	\item Compute the resulting safe-set collection (conservative and valid?).
-	\item If no change, terminate. Else repeat from (2).
-\end{enumerate} 
-Every node can run steps (3) and (4) in parallel. This means that the algorithms scale very will with the number of nodes so long as their state dimensions remain relatively small.
-
-There are still questions that need to be answered. When will the algorithm converge? Can it be terminated early at step (6)? How conservative is this approach compared with centralized methods when there is a common switching signal (can it be used to solve large dimension switched systems)? Can it be generalized to an arbitrary number of block-rows and switching signals? I will look into these questions in the coming weeks.
+\input{abstract}
+\input{Introduction}
+\input{System_Description}
+\input{Algorithm_Design}
 
 \printbibliography
 \end{document}

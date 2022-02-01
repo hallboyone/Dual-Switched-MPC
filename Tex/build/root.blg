@@ -1,0 +1,17 @@
+[0] Config.pm:304> INFO - This is Biber 2.14
+[0] Config.pm:307> INFO - Logfile is 'build/root.blg'
+[98] biber-darwin:322> INFO - === Thu Jan 27, 2022, 15:23:41
+[122] Biber.pm:415> INFO - Reading 'build/root.bcf'
+[269] Biber.pm:943> INFO - Found 1 citekeys in bib section 0
+[285] Biber.pm:4256> INFO - Processing section 0
+[286] Utils.pm:75> INFO - Globbing data source './bib/bibliography.bib'
+[286] Utils.pm:91> INFO - Globbed data source './bib/bibliography.bib' to ./bib/bibliography.bib
+[298] Biber.pm:4455> INFO - Looking for bibtex format file './bib/bibliography.bib' for section 0
+[299] bibtex.pm:1653> INFO - LaTeX decoding ...
+[305] bibtex.pm:1471> INFO - Found BibTeX data source './bib/bibliography.bib'
+[356] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[356] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[356] Biber.pm:4084> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[356] Biber.pm:4090> INFO - No sort tailoring available for locale 'en-US'
+[359] bbl.pm:652> INFO - Writing 'build/root.bbl' with encoding 'UTF-8'
+[361] bbl.pm:755> INFO - Output to build/root.bbl

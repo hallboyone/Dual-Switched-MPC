@@ -1,0 +1,46 @@
+\section{Algorithm Design}
+We begin with an algorithm to find the safe-sets of a single agent, $\agent{\agentidx}$, assuming the the other agents' safe-sets are fixed. Let $\mathcal{W}_{\tilde{\agentidx}}$, $\tilde{\agentidx}\in\int\rii{1}{\numagents}\setminus\agentidx$ be the convex hull of the union of the safe-sets for each of the other agents and define 
+\begin{equation}
+\wcon[\agentidx][\modeidx]=\bigoplus_{\tilde{\agentidx}\in\int\rii{1}{\numagents}\setminus\agentidx}A_\modeidx^{\agentidx,\tilde{\agentidx}}\mathcal{W}_{\tilde{\agentidx}}.
+\end{equation}
+This represents the set of additive errors agent $\agent{\agentidx}$ can experience while in mode $\modeidx$. Denote the collection of these sets as $\wconset{\agentidx}=\{\wcon[\agentidx][\modeidx]\}_{\modeidx=1}^{\nummodes[\agentidx]}$. With these definitions, the following algorithm is introduced. 
+\begin{algorithm}[t]
+\caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
+\begin{algorithmic}[1]
+\Procedure {NodalSafeSets}{$\agent{\agentidx}$, $\wcon$}
+\State $k\gets0$
+\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\xcon[\modeidx]$ for all $\modeidx\in\int\rii{1}{\nummodes[\agentidx]},\ \sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$.
+\Repeat 
+	\State $k\gets k+1$
+	\For{$\modeidx\in\int\rii{1}{\nummodes[\agentidx]}$}
+		\For{$\sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$}
+			\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\Omega_{(\modeidx,\sstimerval)}^{k-1}$
+			\For{$(\tilde{\modeidx},\tilde{\sstimerval})\in\sspairset{\modeidx}{\sstimerval}$}
+				\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\Omega_{(\modeidx,\sstimerval)}^k\cap\PreviewedPre[\tilde{\modeidx}][1]{\Omega_{(\tilde{\modeidx},\tilde{\sstimerval})}^{k-1}, \wcon[\agentidx][\modeidx]}$
+			\EndFor
+		\EndFor
+	\EndFor
+\Until{$\Omega_{(\modeidx,\sstimerval)}^k=\Omega_{(\modeidx,\sstimerval)}^{k-1}\ \forall\ \modeidx\in\int\rii{1}{\nummodes[\agentidx]},\ \sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$}
+$\safeset{\modeidx}{\sstimerval}\gets\Omega_{(\modeidx,\sstimerval)}^k$ for all $\modeidx\in\int\rii{1}{\nummodes[\agentidx]},\ \sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$.\;
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}[t]
+\caption{Distributed safe-set collection}\label{alg:safe_sets}
+\begin{algorithmic}[1]
+\Procedure {SystemSafeSets}{$\agents$}
+\State $\Omega^0\gets\{\{\{\underline{0}\}_{\tau\in\mathcal{I}_\tau(\agentidx,\modeidx)}\}_{\modeidx\in\mathcal{I}_\modeidx(\agentidx)}\}_{\agentidx\in\mathcal{I}_\agentidx}$
+\State $k\gets0$
+\Repeat 
+	\State $\Phi^k\gets\{\Call{ConHull}{\bigcup\Omega^k_{(\agentidx)}}\}_{\agentidx\in\mathcal{I}_\agentidx}$
+	\For{$\agentidx\in\mathcal{I}_\agentidx$}
+		\State $\Omega^{k+1}_{(\agentidx)}\gets\Call{NodeSafeSets}{\modes[\agentidx], \Phi^k}$
+	\EndFor
+\Until{$\Omega_{(\agentidx)}^k=\Omega_{(\agentidx)}^{k-1}\ \forall\ \agentidx\in\mathcal{I}_\agentidx$}
+
+\State $\safesets\gets\Omega^k$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}

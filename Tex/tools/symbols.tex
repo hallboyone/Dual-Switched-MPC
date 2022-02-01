@@ -7,6 +7,27 @@
 \newcommand{\real}{\ensuremath{\mathbb{R}}}
 \newcommand{\nat}{\ensuremath{\mathbb{N}}}
 \newcommand{\cset}{\ensuremath{\mathcal{C}}}
+
+\NewDocumentCommand{\Pre}{ o o m }{%
+	\IfNoValueTF{#2}{%
+		\IfNoValueTF{#1}{% No #1 or #2
+			\ensuremath{\text{Pre}^1\left(#3\right)}
+		}{% #1 but no #2
+			\ensuremath{\text{Pre}_{#1}^1\left(#3\right)}
+		}}{% #1 and #2
+			\ensuremath{\text{Pre}^{#2}_{#1}\left(#3\right)}
+		}}
+\NewDocumentCommand{\PreviewedPre}{ o o m }{%
+	\IfNoValueTF{#2}{%
+		\IfNoValueTF{#1}{% No #1 or #2
+			\ensuremath{\text{Pre}^{\text{\tiny\faEye},1\hspace{-0.1cm}}\left(#3\right)}
+		}{% #1 but no #2
+			\ensuremath{\text{Pre}_{#1}^{\text{\tiny\faEye},1\hspace{-0.1cm}}\left(#3\right)}
+		}}{% #1 and #2
+			\ensuremath{\text{Pre}^{\text{\tiny\faEye}, #2\hspace{-0.1cm}}_{#1}\left(#3\right)}
+		}}
+		
+			
 % ========================== Ranges =========================
 \newcommand{\rgeq}[1]{\ensuremath{_{\geq #1}}}
 \newcommand{\rleq}[1]{\ensuremath{_{\leq #1}}}
@@ -17,6 +38,7 @@
 \newcommand{\rei}[2]{\ensuremath{_{(#1,#2]}}}
 \newcommand{\ree}[2]{\ensuremath{_{(#1,#2)}}}
 \newcommand{\elrii}[2]{\ensuremath{_{\{#1,#2\}}}}
+
 % ===================== Constraint sets =====================
 % \_con ----- Produces the constraint set for the indicated quantity. One optional arg adds a substcript.
 \NewDocumentCommand{\xcon}{ o o }{%
@@ -34,10 +56,19 @@
 	\IfNoValueTF{#1}%
 		{\ensuremath{\mathcal{T}}}%
 		{\ensuremath{\mathcal{T}_{#1}}}}
-\NewDocumentCommand{\wcon}{ o }{%
-	\IfNoValueTF{#1}%
-		{\ensuremath{\mathcal{W}}}%
-		{\ensuremath{\mathcal{W}_{#1}}}}
+\NewDocumentCommand{\wcon}{ o o }{%
+	\IfNoValueTF{#2}%
+		{
+		\IfNoValueTF{#1}
+			{%
+			\ensuremath{\mathcal{W}}%
+			}{
+			\ensuremath{\mathcal{W}_{#1}}
+			}
+		}{
+		\ensuremath{\mathcal{W}_{#2}^{#1}}
+		}}
+\NewDocumentCommand{\wconset}{ m }{\ensuremath{\mathfrak{W}^{#1}}}
 
 % ==================== Switching signals ====================
 % \ss --------- General switching signal
@@ -92,7 +123,12 @@
 		
 \newcommand{\sstimer}{\ensuremath{{T}}}
 \newcommand{\sstimerval}{\ensuremath{\tau}}
-\newcommand{\sstimermax}[1]{\ensuremath{{\overline{\sstimerval}_{#1}}}}
+%\newcommand{\sstimermax}[1]{\ensuremath{{\overline{\sstimerval}_{#1}}}}
+\NewDocumentCommand{\sstimermax}{o m}{%
+	\IfNoValueTF{#1}{
+		\ensuremath{{\overline{\sstimerval}_{#2}}}
+		}{
+		\ensuremath{{\overline{\sstimerval}_{#2}^{#1}}}}}
 \newcommand{\sspairset}[2]{\ensuremath{{\Lambda((#1,#2))}}}
 \newcommand{\sscount}{\ensuremath{{\ss^\#}}}
 
@@ -100,8 +136,14 @@
 \newcommand{\switchtime}[2]{\ensuremath{{\switchtimes{#1}_{#2}}}}
 \newcommand{\lastswitchtime}[1]{\switchtimes{#1}_+}
 
+% ================== System Agents ==================
+\newcommand{\agents}{\ensuremath{\mathcal{M}}}
+\newcommand{\agent}[1]{\ensuremath{\agents^{#1}}}
+\newcommand{\numagents}{\ensuremath{{C_a}}}
+\newcommand{\agentidx}{\ensuremath{\alpha}}
+
 % ================== System Modes ==================
-% \modes -------- A collection of modes
+% \modes -------- A collection of modes. May optionally specify parent agent.
 % \mode --------- A single mode indexed by #1
 % \nummodes --- Number of modes 
 % \modeidx ------ Index of a single mode \ss(t)=\modeidx
@@ -109,9 +151,21 @@
 % \nx ------------- The state dimension
 % \nu ------------- The input dimension
 
-\newcommand{\modes}{\ensuremath{\mathcal{M}}}
-\newcommand{\mode}[1]{\ensuremath{\modes_{#1}}}
-\newcommand{\nummodes}{\ensuremath{M}}
+\NewDocumentCommand{\modes}{o}{%
+	\IfNoValueTF{#1}{
+		\ensuremath{\mathcal{M}}
+		}{
+		\ensuremath{\mathcal{M}^{#1}}}}
+\NewDocumentCommand{\mode}{o m}{%
+	\IfNoValueTF{#1}{
+		\ensuremath{\modes{M}_{#2}}
+		}{
+		\ensuremath{\modes{M}[#1]_{#2}}}}
+\NewDocumentCommand{\nummodes}{o}{%
+	\IfNoValueTF{#1}{
+		\ensuremath{C_m}
+		}{
+		\ensuremath{{C_m^#1}}}}
 \newcommand{\modeidx}{{\ensuremath{\mu}}}
 
 \newcommand{\nx}{\ensuremath{{n_x}}}
@@ -125,12 +179,17 @@
 	\ensuremath{\mathfrak{U}(#1,#2,#3)}
 	}
 	
+	
 % ==================== Safe sets ====================
 \newcommand{\safesets}{\ensuremath{\mathcal{S}}}
 \newcommand{\safeset}[2]{\ensuremath{\safesets_{(#1,#2)}}}
 
 
-
-
 % ==================== Misc ====================
 \newcommand{\narroweq}{\ensuremath{\scalerel[1ex]{=}{\phantom{=}\hspace{-0.17cm}}}}
+
+% ============== Autoref Titles ================
+\renewcommand{\equationautorefname}{Equation}
+\renewcommand{\sectionautorefname}{Section}
+\newcommand{\remarkautorefname}{Remark}
+\newcommand{\algorithmautorefname}{Algorithm}

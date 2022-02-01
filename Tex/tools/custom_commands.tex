@@ -1,0 +1,22 @@
+\newtheorem{theorem}{\textbf{Theorem}}
+\newtheorem{lemma}{\textbf{Lemma}}
+\newtheorem{corollary}{\textbf{Corollary}}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem{case}{Case}
+\newtheorem{problem}{Problem}
+
+\newcommand{\alert}[1]{\textbf{\color{red}{\MakeUppercase{#1}}\color{black}}}
+
+\renewcommand{\theoremautorefname}{Theorem}
+\renewcommand{\algorithmautorefname}{Algorithm}
+\newcommand{\definitionautorefname}{Def.}
+\newcommand{\lemmaautorefname}{Lemma}
+\newcommand{\assumptionautorefname}{Assumption}
+
+% For do-while algorithm loops (https://tex.stackexchange.com/questions/115709/do-while-loop-in-pseudo-code)
+\algdef{SE}[DOWHILE]{Do}{doWhile}{\algorithmicdo}[1]{\algorithmicwhile\ #1}%
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
