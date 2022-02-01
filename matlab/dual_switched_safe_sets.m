@@ -53,6 +53,102 @@ for i=1:numel(mindt_2)
 end
 cur_safe_sets = {safe_sets_1, safe_sets_2};
 
+figure
+new_safe_sets = cur_safe_sets;
+itr = 1;
+start_time = get_time();
+while true
+    cur_safe_sets = new_safe_sets;
+    
+    % Initalize the new_safe-set variable to be the full state dynamics
+    S = cell(2,1);
+    W = cell(2,1);
+    for node=1:2
+        S{node} = convexHullOfUnion(cur_safe_sets{3-node});
+        W{node} = {Ac{node}{1}*S{node}, Ac{node}{2}*S{node}};
+        
+        for mode=1:2
+            W{node}{mode}.minHRep();
+            for step=1:mindt{node}(mode)
+                new_safe_sets{node}{mode}{step} = X{node};
+            end
+        end
+    end
+    
+    parfor node=1:2
+        while true
+            old_safe_sets = new_safe_sets{node};
+            for mode = 1:2
+                for step = 1:mindt{node}(mode)
+                    new_safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
+                        old_safe_sets{mode}{min(step+1, mindt{node}(mode))},...
+                        A{node}{mode}, B{node}{mode}, new_safe_sets{node}{mode}{step},...
+                        U{node}, W{node}{mode});
+                    if step == mindt{node}(mode)
+                        new_safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
+                            old_safe_sets{3-mode}{1},...
+                            A{node}{3-mode}, B{node}{3-mode}, new_safe_sets{node}{mode}{step},...
+                            U{node}, W{node}{3-mode});
+                    end
+                end
+                new_safe_sets{node}{mode}{step}.minHRep();
+                new_safe_sets{node}{mode}{step}.minVRep();
+            end
+            if(areEqual(new_safe_sets{node},old_safe_sets, 0))
+                break
+            end
+        end
+    end
+    disp("Finished iteration");
+    if mod(itr, 2)
+        if itr > 1
+            if(areEqual(new_safe_sets{1},odd_safe_sets{1}, 1) && areEqual(new_safe_sets{2},odd_safe_sets{2}, 1))
+                break
+            end
+        end
+        odd_safe_sets = new_safe_sets;
+    end
+    itr = itr + 1;
+end
+end_time = get_time();
+close(gcf)
+duration = end_time - start_time;
+dur_min = floor(duration/60);
+dur_sec = duration - dur_min*60;
+fprintf("Finished in %dm, %0.2fs\n", dur_min, dur_sec);
+
+function is_equal = areEqual(safe_sets, old_sets, plot_tf)
+row_len = 0;
+for m=1:numel(safe_sets)
+    row_len = max(row_len, numel(safe_sets{m}));
+end
+is_equal = true;
+    for m=1:2
+        for i=1:numel(safe_sets{m})
+            if plot_tf
+                subplot(2,row_len,(m-1)*row_len+i)
+                plot(safe_sets{m}{i})
+                xlim([-2.5, 2.5])
+                ylim([-2.5, 2.5])
+                xlabel("$c_c$",'Interpreter','latex','fontsize',15);
+                ylabel("$c_k$",'Interpreter','latex','fontsize',15);
+                title(['$\mathcal{S}_{(', num2str(m),',',num2str(i),')}$'],'Interpreter','latex','fontsize',15)
+                hold on
+            end
+            if (old_sets{m}{i} ~= safe_sets{m}{i})
+                is_equal = false;
+            end
+        end
+    end
+if plot_tf
+    drawnow
+end
+end
+
+function time_sec = get_time()
+    t = clock;
+    time_sec = [0 0 86400 3600 60 1]*t';
+end
 % figure
 % first_run = true;
 % while true
@@ -113,103 +209,3 @@ cur_safe_sets = {safe_sets_1, safe_sets_2};
 %     first_run = false;
 % end
 % close(gcf)
-
-figure
-new_safe_sets = cur_safe_sets;
-itr = 1;
-while true
-    cur_safe_sets = new_safe_sets;
-    
-    % Initalize the new_safe-set variable to be the full state dynamics
-    S = cell(2,1);
-    W = cell(2,1);
-    for node=1:2
-        S{node} = convexHullOfUnion(cur_safe_sets{3-node});
-        W{node} = {Ac{node}{1}*S{node}, Ac{node}{2}*S{node}};
-        
-        for mode=1:2
-            W{node}{mode}.minHRep();
-            for step=1:mindt{node}(mode)
-                new_safe_sets{node}{mode}{step} = X{node};
-            end
-        end
-    end
-    
-    for node=1:2
-%         % Make the union of the other node's safesets and map thrugh cross
-%         % dynamics
-%         S = convexHullOfUnion(cur_safe_sets{3-node});
-%         W = {Ac{node}{1}*S, Ac{node}{2}*S};
-%         
-%         % Initalize the new_safe-set variable to be the full state dynamics
-%         for mode=1:2
-%             W{mode}.minHRep();
-%             new_safe_sets{node}{mode} = cell(mindt{node}(mode), 1);
-%             for step=1:mindt{node}(mode)
-%                 new_safe_sets{node}{mode}{step} = X{node};
-%             end
-%         end
-        
-        while true
-            old_safe_sets = new_safe_sets{node};
-            for mode = 1:2
-                for step = 1:mindt{node}(mode)
-                    new_safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
-                        old_safe_sets{mode}{min(step+1, mindt{node}(mode))},...
-                        A{node}{mode}, B{node}{mode}, new_safe_sets{node}{mode}{step},...
-                        U{node}, W{node}{mode});
-                    if step == mindt{node}(mode)
-                        new_safe_sets{node}{mode}{step} = preSetPreviewedDisturbance(...
-                            old_safe_sets{3-mode}{1},...
-                            A{node}{3-mode}, B{node}{3-mode}, new_safe_sets{node}{mode}{step},...
-                            U{node}, W{node}{3-mode});
-                    end
-                end
-                new_safe_sets{node}{mode}{step}.minHRep();
-                new_safe_sets{node}{mode}{step}.minVRep();
-            end
-            if(areEqual(new_safe_sets{node},old_safe_sets, 0))
-                break
-            end
-        end
-    end
-    disp("Finished iteration");
-    if mod(itr, 2)
-        if itr > 1
-            if(areEqual(new_safe_sets{1},odd_safe_sets{1}, 1) && areEqual(new_safe_sets{2},odd_safe_sets{2}, 1))
-                break
-            end
-        end
-        odd_safe_sets = new_safe_sets;
-    end
-    itr = itr + 1;
-end
-close(gcf)
-
-function is_equal = areEqual(safe_sets, old_sets, plot_tf)
-row_len = 0;
-for m=1:numel(safe_sets)
-    row_len = max(row_len, numel(safe_sets{m}));
-end
-is_equal = true;
-    for m=1:2
-        for i=1:numel(safe_sets{m})
-            if plot_tf
-                subplot(2,row_len,(m-1)*row_len+i)
-                plot(safe_sets{m}{i})
-                xlim([-2.5, 2.5])
-                ylim([-2.5, 2.5])
-                xlabel("$c_c$",'Interpreter','latex','fontsize',15);
-                ylabel("$c_k$",'Interpreter','latex','fontsize',15);
-                title(['$\mathcal{S}_{(', num2str(m),',',num2str(i),')}$'],'Interpreter','latex','fontsize',15)
-                hold on
-            end
-            if (old_sets{m}{i} ~= safe_sets{m}{i})
-                is_equal = false;
-            end
-        end
-    end
-if plot_tf
-    drawnow
-end
-end
