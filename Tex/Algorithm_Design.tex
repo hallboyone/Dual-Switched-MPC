@@ -1,9 +1,9 @@
 \section{Algorithm Design}
-We begin with an algorithm to find the safe-sets of a single agent, $\agent{\agentidx}$, assuming the the other agents' safe-sets are fixed. Let $\mathcal{W}_{\tilde{\agentidx}}$, $\tilde{\agentidx}\in\int\rii{1}{\numagents}\setminus\agentidx$ be the convex hull of the union of the safe-sets for each of the other agents and define 
+We begin with an algorithm to find the safe-sets of a single agent, $\agent{\agentidx}$, assuming the the other agents' safe-sets are fixed. Define 
 \begin{equation}
-\wcon[\agentidx][\modeidx]=\bigoplus_{\tilde{\agentidx}\in\int\rii{1}{\numagents}\setminus\agentidx}A_\modeidx^{\agentidx,\tilde{\agentidx}}\mathcal{W}_{\tilde{\agentidx}}.
+\wcon[\agentidx][\modeidx]\triangleq\bigoplus_{\tilde{\agentidx}\in\agentidxset\setminus\agentidx}A_\modeidx^{\agentidx,\tilde{\agentidx}}\Call{ConHull}{\bigcup_{n\in\mathfrak{N}_{\tilde{\agentidx}}}\mathcal{S}_n^{\tilde{\agentidx}}}.
 \end{equation}
-This represents the set of additive errors agent $\agent{\agentidx}$ can experience while in mode $\modeidx$. Denote the collection of these sets as $\wconset{\agentidx}=\{\wcon[\agentidx][\modeidx]\}_{\modeidx=1}^{\nummodes[\agentidx]}$. With these definitions, the following algorithm is introduced. 
+This represents the set of additive errors agent $\agent{\agentidx}$ can experience while in mode $\modeidx$. Denote the collection of these sets as $\wconset{\agentidx}=\{\wcon[\agentidx][\modeidx]\}_{\modeidx=1}^{\nummodes[\agentidx]}$. With these definitions, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for this node. 
 \begin{algorithm}[t]
 \caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
 \begin{algorithmic}[1]
@@ -26,7 +26,31 @@ $\safeset{\modeidx}{\sstimerval}\gets\Omega_{(\modeidx,\sstimerval)}^k$ for all 
 \end{algorithmic}
 \end{algorithm}
 
+\begin{remark}
+An important distinction between this algorithm and previous algorithms focused on robust control is the use of the previewed robust preset operator. This operator is used in place of the more common robust preset operator to increase the size of the resulting safe-sets. Their use only assumes that each block-row is aware to the states of other block-rows prior to selecting a control action. This is a minor assumption often used in distributed control \alert{cite}.
+\end{remark}
+\autoref{alg:node_safe_sets} is supported with the following lemmas. 
+\begin{lemma}
+Given any agent, $\agent{\agentidx}$, and constraint set $\wcon$, $\Call{NodalSafeSets}{\agent{\agentidx},\wcon}$ returns the maximal safe-set collection.
+\end{lemma}
+\begin{proof}
+Follows the logic of \cite[Theorem 2]{Danielson2019} but with previewed preset operations.
+\end{proof}
+\begin{lemma}
+Given an agent, $\agent{\agentidx}$, and the sets $\hat\wcon\subseteq\tilde\wcon$, the relationship{\small
+$$\Call{AgentSafeSets}{\agent{\agentidx},\hat\wcon}\supseteq\Call{AgentSafeSets}{\agent{\agentidx},\tilde\wcon}$$}
+holds element-wise. 
+\end{lemma}
+\begin{proof}
+This is proved by contradiction. Let some index, $i$, exist such that the relationship does not hold, $\hat{\mathcal{S}}_i\subset\tilde{\mathcal{S}}_i$. Since \autoref{alg:node_safe_sets} is subtractive, this implies that $\exists k\in\int\rgeq{0}$ such that $\hat{\Omega}^k_i\subset\tilde{\Omega}^k_i$. By definition, there exists an $x\in\tilde{\Omega}^k_i$ such that $x\not\in\hat{\Omega}$. This requires that at least one of the following statements be true:
+\begin{enumerate}
+\item $x\in\tilde{\Omega}^{k-1}_i$ and $x\not\in\hat{\Omega}^{k-1}_i$ or
+\item There exists an index, $j$, s.t. $x\in\PreviewedPre[j][1]{\tilde{\Omega}^{k-1}_j,\tilde{\mathcal{W}}}$ and $x\not\in\PreviewedPre[j][1]{\hat{\Omega}^{k-1}_j,\hat{\mathcal{W}}}$.
+\end{enumerate}
+If (1) is true, then $\hat{\Omega}^{k-1}_i\subset\tilde{\Omega}^{k-1}_i$. If (2) is true, then $\hat{\Omega}^{k-1}_j\subset\tilde{\Omega}^{k-1}_j$ since $\hat\wcon\subseteq\tilde\wcon$. In either case, the logic can be iterated to continually decrement $k$ until $k=0$. Then the contradictory statement $\xcon = \hat\Omega^0_k\subset\tilde{\Omega}^0_k\xcon$ is arrived at, concluding the proof. 
+\end{proof}
 
+\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned in the previous section, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. 
 \begin{algorithm}[t]
 \caption{Distributed safe-set collection}\label{alg:safe_sets}
 \begin{algorithmic}[1]
@@ -51,20 +75,8 @@ $\safeset{\modeidx}{\sstimerval}\gets\Omega_{(\modeidx,\sstimerval)}^k$ for all 
 \end{algorithmic}
 \end{algorithm}
 
-\begin{lemma}
-Given any agent, $\agent{\agentidx}$, and constraint set $\wcon$, $\Call{AgentSafeSets}{\agent{\agentidx},\wcon}$ returns the maximal safe-set collection.
-\end{lemma}
-\begin{proof}
-Follows the logic of \cite[Theorem 2]{Danielson2019} but with previewed preset operations.
-\end{proof}
-\begin{lemma}
-Given an agent, $\agent{\agentidx}$, and the sets $\hat\wcon\subseteq\tilde\wcon$, the relationship{\small
-$$\Call{AgentSafeSets}{\agent{\agentidx},\hat\wcon}\supseteq\Call{AgentSafeSets}{\agent{\agentidx},\tilde\wcon}$$}
-holds element-wise. 
-\end{lemma}
-\begin{proof}
 
-\end{proof}
+
 \begin{lemma}
 The algorithm $\Call{SystemSafeSets}{\agents}$ produces a valid safe-set collection for every $k\in\int\rgeq{0}$. 
 \end{lemma}
