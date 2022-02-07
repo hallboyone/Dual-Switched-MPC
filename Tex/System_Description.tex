@@ -1,6 +1,7 @@
 \section{System Description}
-Consider consider the collection of external signals  
-$$\ss_\agentidx:\int\rgeq{0}\rightarrow\modeidxset[\agentidx]\triangleq\int\rii{1}{\nummodes[\agentidx]},\ \agentidx\in\agentidxset\triangleq\int\rii{1}{\numagents}.$$ 
+Consider the collection of external switching signals 
+$$\ss_\agentidx(t)\triangleq L(\ssg_\agentidx(t))\quad \agentidx\in\agentidxset\triangleq\int\rii{1}{\numagents}$$
+where $\ssg_\agentidx\in\Sigma(\mathcal{G}(\mathfrak{N}_\agentidx,\mathfrak{E}_\agentidx, \modeidxset[\agentidx]))$ and $\modeidxset[\agentidx]\triangleq\int\rii{1}{\nummodes[\agentidx]}$.
 Then the dynamics of the system being studied take the following form
 \begin{align}
 A(t)&=\begin{bmatrix}
@@ -16,42 +17,15 @@ B^{1}_{\ss_1(t)}&0&\cdots&0,\\
 0 & 0 &\cdots & B^{\numagents}_{\ss_\numagents(t)} 
 \end{bmatrix}.
 \end{align}
-This structure is motivated by dynamically coupled distributed systems. Two features of these dynamics equations are immediately apparent. First, note how each block-row is governed by a single switching signal. This makes intuitive sense because local switching signals are more likely to effect how neighboring states impact the local agent rather then how local states will effect neighboring agents. Second, any dwell time or successor restrictions of the individual switching signals do not transfer to the well to the full system. Any attempt to apply previous analysis techniques to this system will be futile. 
+This structure is motivated by dynamically coupled distributed systems. Note how each block-row is governed by a single switching signal. This makes intuitive sense because local switching signals are more likely to effect how neighboring states impact the local agent rather then how local states will effect neighboring agents.
 
-Our objective is to design safe-set collections that are indexed by the current switching signal states that will ensure persistent feasibility. Recall that every element in a safe-set collection must satisfy be within the one-step preset of all safe-set collection elements indexed by the possible successor switching signal states. The structure of the system under consideration makes this an especially challenging prospect for two reasons. First, the number of successor safe-sets grows exponentially two or more independent switching signals. Second, systems that take this form would tend to be larger than trivial examples. This suggests that set based techniques may not scale well. These concerns will be addressed by splitting the system in two and looking for safe-set collections for each seperatly. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
+Our objective is to design safe-set collections for systems with the above structure. Recall that every element in a safe-set collection must be within the one-step preset of all safe-set collection elements indexed by the possible states of the switching signal after a single time step. The structure of the system under consideration makes this an especially challenging prospect for two reasons. First, the number of successor safe-sets grows exponentially when there are two or more independent switching signals. Second, systems that take this form would tend to be larger than trivial examples. These suggest that previous set based techniques will struggle due to poor scaling in both dimension and the number of modes. These concerns will be addressed by splitting the system into block-rows and looking for safe-set collections for each separately. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
 
-\cite{Schaich2014}
-
-Looking only at the first block row, the dynamics can be rewritten as 
-\begin{equation}
-x_1(t+1)=A^{11}_{\ss_1(t)}x_1(t)+B^1_{\ss_1(t)}u_1(t)+A^{12}_{\ss_1(t)}x_2(t).
-\end{equation}
-This system has only a single switching signal explicitly appearing, $\ss_1(t)$ and resembles a locally switched system with additive disturbances. However, the set that $x_2$ is drawn from is not obvious. The full state constraints could be used but this would lead to a conservative result. If the safe-set collection and switching signal state associated with $x_2$ were known, then the current safe-set could be used. This however, requires full interaction between the safe-set collections of $x_1$ and $x_2$ leading back to the centralized problem. Furthermore, this level of communication may be undesirable in distributed contexts. Alternatively, the convex hull of the safe-set collection union can be used. This only requires acquiring a single set and does not rely on the switching signal. 
-
-An import distinction arises at this point. In previous works with an external additive disturbance, the disturbance wasn't known until after it was applied. This meant that the input selected had to work for all disturbances. In the case of the original system, however, it is reasonable to assume a preview of $x_2(t)$ at time $t$. This implies that the safe-sets need not be within the robust preset of each of its successors but in the previewed robust preset defined below.
-\begin{definition}[Previewed Robust Preset]
-The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $x^+=Ax+Bu+w$, $x\in\mathcal{X}$, $u\in\mathcal{U}$, $w\in\mathcal{W}$ is given by
-\begin{align}
-\PreviewedPre[][0]{\mathcal{S}}&\triangleq\mathcal{S},\\
-\PreviewedPre[][k]{\mathcal{S}}&\triangleq\{x\in\mathcal{X}|\forall w\in\mathcal{W},\exists u\in\mathcal{U}\nonumber\\
-&\text{ s.t. }Ax+Bu+w\in\PreviewedPre[][k-1]{\mathcal{S}}\}.
+\subsection{Block-row Dynamics}
+Looking only at the block row indexed by $\agentidx$, the dynamics can be rewritten as 
+\begin{align}\label{eq:block-row-dyn}
+x_\agentidx(t+1)=A^{\agentidx\agentidx}_{\ss_\agentidx(t)}x_\agentidx(t)&+B^\agentidx_{\ss_\agentidx(t)}u_\agentidx(t)\nonumber\\&+\sum_{\tilde\agentidx\in\agentidxset\setminus \agentidx}A^{\agentidx\tilde\agentidx}_{\ss_\agentidx(t)}x_{\tilde\agentidx(t)}.
 \end{align}
-\end{definition}
-The previewed robust preset (PRP) is a superset or equal to the standard robust presets. Both can be found using the following set operations
-\begin{align}
-\Pre[][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\ominus\mathcal{W}\right)\oplus\left(-B\circ\mathcal{U}\right)\right)\circ A\right)\ \cap\ \mathcal{X},\\
-\PreviewedPre[][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\oplus\left(-B\circ\mathcal{U}\right)\right)\ominus\mathcal{W}\right)\circ A\right)\ \cap\ \mathcal{X}.
-\end{align}
+This system has only a single switching signal explicitly appearing, $\ss_\agentidx(t)$ and resembles a locally switched system with additive disturbances. Previous, robust switched techniques, such as those developed in \cite{Lavaei2021}, may seem like possible solutions. However, these previous techniques rely on bounded additive disturbances and the set that $x_{\tilde{\agentidx}}$ is drawn from is not obvious. The full state constraints could be used but this would lead to a conservative result. Alternatively, the current safe-set containing $x_{\tilde{\agentidx}}$ could be used. This however, returns the system to the centralized problem with its associated drawback. Furthermore, if \autoref{eq:block-row-dyn} represents a distributed system, this level of communication may be undesirable. Balancing these considerations, this work uses the convex hull of the safe-set collection union. This only requires acquiring a single set and does not rely on the state of any switching signal except the local one. 
 
-A circular dependency arose in the previous discussion -- the safe-set collection for $x_1$ depend on the collection for $x_2$ which depends on the collection for $x_1$. This suggests an iterative algorithm with parallel elements. The basic steps are laid out below.
-\begin{enumerate}
-	\item Assume trivial safe-sets
-	\item Share the convex hulls of the current safe-set collections.
-	\item Compute the resulting safe-set collection (large and invalid).
-	\item Share the convex hulls of the invalid safe-set collections.
-	\item Compute the resulting safe-set collection (conservative and valid?).
-	\item If no change, terminate. Else repeat from (2).
-\end{enumerate} 
-Every node can run steps (3) and (4) in parallel. This means that the algorithms scale very will with the number of nodes so long as their state dimensions remain relatively small.
-
-There are still questions that need to be answered. When will the algorithm converge? Can it be terminated early at step (6)? How conservative is this approach compared with centralized methods when there is a common switching signal (can it be used to solve large dimension switched systems)? Can it be generalized to an arbitrary number of block-rows and switching signals? I will look into these questions in the coming weeks.
+A circular dependency arose in the previous discussion -- the safe-set collection for $x_\agentidx$ depend on the collection for $x_{\tilde{\agentidx}}$ which depends on the collection for $x_\agentidx$. This suggests an iterative algorithm with parallel elements. This is developed further in the following section. 
