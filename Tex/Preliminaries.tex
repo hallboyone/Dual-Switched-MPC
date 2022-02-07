@@ -34,7 +34,7 @@ Relying on constant, control invariant sets become difficult in externally switc
 
 The ideas presented in the previous literature can be described using the concepts of safe-set collections. These are collections of sets, indexed by some time varying signal, that serve as the active state constraints of the system. To establish persistent feasibility, they require that every set is witching the 1-step preset of all possible successor sets. This is presented formally in the following definition.
 \begin{definition}[Safe-set collection]
-Let $\ss:\int\rgeq 0\rightarrow \{1,...,\nummodes\}$ be an external signal that selects the current mode of $\mode{}(t)=\{f_{\ss(t)}(x(t),u(t)),\xcon[\ss(t)],\ucon[\ss(t)]\}$ and let $\ss^+$
+Let $\ss:\int\rgeq 0\rightarrow \{1,...,\nummodes\}$ be an external signal that evolves according to a Markov chain with edges $\mathcal{E}$ and node values $\mathcal{N}$ and that selects the current mode of $\mode{}(t)=\{f_{\ss(t)}(x(t),u(t)),\xcon[\ss(t)],\ucon[\ss(t)]\}$ and let $\ss^+:\{1,...,\nummodes\}\rightarrow\mathcal{P}\left(\{1,...,\nummodes\}\right)$ 
 
  a collection of sets, $\mathcal{S}=\{\mathcal{S}_{i_1},...,\mathcal{S}_{i_N}\}$ is a safe-set collection if there exists a mapping between time and the current mode index, $g:\int\rgeq{0}\rightarrow\{i_1,...,i_N\}$ and another mapping between the current time and possible  indicies at the next step, $g^+:\int\rgeq 0\rightarrow\mathcal{P}(\{i_1,...,i_N\})$ such that
 $$\mathcal{S}_{g(t-1)}\subseteq\Pre[\mode{}(t)][1]{\mathcal{S}_{g(t)}}\ \forall\ g(t)\in g^+(t-1)$$
