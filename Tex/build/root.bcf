@@ -2183,7 +2183,11 @@
     <bcf:datasource type="file" datatype="bibtex">./bib/bibliography.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">Schaich2014</bcf:citekey>
+    <bcf:citekey order="1">Borrelli2017</bcf:citekey>
+    <bcf:citekey order="2">Danielson2019</bcf:citekey>
+    <bcf:citekey order="2">Santis2004</bcf:citekey>
+    <bcf:citekey order="3">Schaich2014</bcf:citekey>
+    <bcf:citekey order="4">Danielson2019</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

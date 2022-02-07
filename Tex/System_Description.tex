@@ -1,11 +1,22 @@
 \section{System Description}
-Consider a system with linear dynamics $(A(t),B(t))$ that change according to the external signals $\ss_s,\ s\in\int\rii{1}{S}$ so that they can be written as $(A(\ss_1(t),...,\ss_S(t)),B(\ss_1(t),...,\ss_S(t)))$. Let them take the form
-\begin{equation}
-\begin{bmatrix}x_1(t+1)\\x_2(t+1)\end{bmatrix} = \begin{bmatrix}A_{\ss_1(t)}^{11} & A_{\ss_1(t)}^{12}\\A_{\ss_2(t)}^{21} & A_{\ss_2(t)}^{22}\end{bmatrix}\begin{bmatrix}x_1(t)\\x_2(t)\end{bmatrix}+\begin{bmatrix}B_{\ss_1(t)}^{1} & 0 \\0 & B_{\ss_2(t)}^{2}\end{bmatrix}\begin{bmatrix}u_1(t)\\u_2(t)\end{bmatrix}.
-\end{equation}
-The critical aspect of this system is the existence of two, independent switching signals, each with its own dwell time and successor constraints. Any system with independent switching sources are better suited for this framework. For example, consider a distributed system with local switching at each node. A switch at node 1 could be followed immediately by a switch at node 2 or after a great deal of time making minimum dwell times invalid. Average dwell time could, perhaps, be used instead but feasibility is difficult to establish under this constraint. 
-
-The second important aspect of the system is the block the systems are allowed to switch. This structure switches the dynamics of state $x_i$ according to the respective switching signal, $\ss_i(\cdot)$. 
+Consider consider the collection of external signals  
+$$\ss_\agentidx:\int\rgeq{0}\rightarrow\modeidxset[\agentidx]\triangleq\int\rii{1}{\nummodes[\agentidx]},\ \agentidx\in\agentidxset\triangleq\int\rii{1}{\numagents}.$$ 
+Then the dynamics of the system being studied take the following form
+\begin{align}
+A(t)&=\begin{bmatrix}
+A^{11}_{\ss_1(t)}&A^{12}_{\ss_1(t)}&\cdots&A^{1\numagents}_{\ss_1(t)},\\
+A^{21}_{\ss_2(t)}&A^{22}_{\ss_2(t)}&\cdots&A^{2\numagents}_{\ss_2(t)},\\
+\vdots&\vdots & \ddots & \vdots\\
+A^{\numagents 1}_{\ss_\numagents(t)} & A^{\numagents 2}_{\ss_\numagents(t)} &\cdots & A^{\numagents \numagents}_{\ss_\numagents(t)} 
+\end{bmatrix},\\
+B(t)&=\begin{bmatrix}
+B^{1}_{\ss_1(t)}&0&\cdots&0,\\
+0&B^{2}_{\ss_2(t)}&\cdots&0,\\
+\vdots&\vdots & \ddots & \vdots\\
+0 & 0 &\cdots & B^{\numagents}_{\ss_\numagents(t)} 
+\end{bmatrix}.
+\end{align}
+This structure is motivated by dynamically coupled distributed systems. Two features of these dynamics equations are immediately apparent. First, note how each block-row is governed by a single switching signal. This makes intuitive sense because local switching signals are more likely to effect how neighboring states impact the local agent rather then how local states will effect neighboring agents. Second, any dwell time or successor restrictions of the individual switching signals do not transfer to the well to the full system. Any attempt to apply previous analysis techniques to this system will be futile. 
 
 Our objective is to design safe-set collections that are indexed by the current switching signal states that will ensure persistent feasibility. Recall that every element in a safe-set collection must satisfy be within the one-step preset of all safe-set collection elements indexed by the possible successor switching signal states. The structure of the system under consideration makes this an especially challenging prospect for two reasons. First, the number of successor safe-sets grows exponentially two or more independent switching signals. Second, systems that take this form would tend to be larger than trivial examples. This suggests that set based techniques may not scale well. These concerns will be addressed by splitting the system in two and looking for safe-set collections for each seperatly. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
 
@@ -44,6 +55,3 @@ A circular dependency arose in the previous discussion -- the safe-set collectio
 Every node can run steps (3) and (4) in parallel. This means that the algorithms scale very will with the number of nodes so long as their state dimensions remain relatively small.
 
 There are still questions that need to be answered. When will the algorithm converge? Can it be terminated early at step (6)? How conservative is this approach compared with centralized methods when there is a common switching signal (can it be used to solve large dimension switched systems)? Can it be generalized to an arbitrary number of block-rows and switching signals? I will look into these questions in the coming weeks.
-
-\subsection{Notation}
-Let $\mathcal{S}=\{\{\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}\}_{j\in\mathcal{I}_{J}(i)}\}_{i\in\mathcal{I}_I}$, $\mathcal{S}\subseteq\real^n$ be a nested collection of subsets of the $n$-dimensional, real-valued numbers. The first and second level sub-collections are denoted as $\mathcal{S}_{(i)}=\{\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}\}_{j\in\mathcal{I}_{J}(i)}$ and $\mathcal{S}_{(i,j)}=\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}$. Operations preformed between nested collections require the collections be of equal size and are preformed elementwise. For example, $\mathcal{S}_{(i)}$ equals $\tilde{\mathcal{S}}_{(i)}$ if they are the same size and every element in both are equivalent. Operations preformed between a nested collection and a single element behave as if the single element where an appropriate sized collection with elements equal to the single element. For example, setting $\mathcal{S}=\underline{0}$ sets every element of $\mathcal{S}$ to $\underline{0}$. Finally, union operations are preformed on every element of the nested collection. For example, $\cup \mathcal{S}_{(i)}$ is the union of all the elements of $\mathcal{S}_{(i)}$.

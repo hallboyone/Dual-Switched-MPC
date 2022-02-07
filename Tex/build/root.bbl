@@ -19,6 +19,140 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
+    \entry{Borrelli2017}{book}{}
+      \name{author}{3}{}{%
+        {{hash=4a109de8d875b7e60321865849e47743}{%
+           family={Borrelli},
+           familyi={B\bibinitperiod},
+           given={F},
+           giveni={F\bibinitperiod}}}%
+        {{hash=b6ecf99e2259cba453b26997d42f3e2b}{%
+           family={Bemporad},
+           familyi={B\bibinitperiod},
+           given={A},
+           giveni={A\bibinitperiod}}}%
+        {{hash=022cdef797eb4f1f5e70cdf58b372a8d}{%
+           family={Morari},
+           familyi={M\bibinitperiod},
+           given={M},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{34f5b8dcf0a36b175b6001c13d288102}
+      \strng{fullhash}{34f5b8dcf0a36b175b6001c13d288102}
+      \strng{bibnamehash}{34f5b8dcf0a36b175b6001c13d288102}
+      \strng{authorbibnamehash}{34f5b8dcf0a36b175b6001c13d288102}
+      \strng{authornamehash}{34f5b8dcf0a36b175b6001c13d288102}
+      \strng{authorfullhash}{34f5b8dcf0a36b175b6001c13d288102}
+      \field{sortinit}{1}
+      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The major contribution of this book is to show how the nonlinear optimal feed- back controller can be calculated efficiently for some important classes of systems, namely linear systems with constraints and switched linear systems or, more gen- erally, hybrid systems. Traditionally, the design of feedback controllers for linear systems with constraints, for example anti-windup techniques, was ad hoc requiring both much experience and trial and error. Though significant progress has been achieved on anti-windup schemes over the last decade, these techniques deal with input constraints only and cannot be extended easily.}
+      \field{title}{{Predictive control for linear and hybrid systems}}
+      \field{year}{2017}
+      \verb{doi}
+      \verb 10.1017/9781139061759
+      \endverb
+      \verb{file}
+      \verb :Users/richardhall/Library/Application Support/Mendeley Desktop/Downloaded/Borrelli, Bemporad, Morari - 2015 - Predictive control for linear and hybrid systems.pdf:pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://scholar.google.com/scholar?hl=en&btnG=Search&q=intitle:Predictive+Control+for+linear+and+hybrid+systems#0
+      \endverb
+      \verb{url}
+      \verb http://scholar.google.com/scholar?hl=en&btnG=Search&q=intitle:Predictive+Control+for+linear+and+hybrid+systems#0
+      \endverb
+    \endentry
+    \entry{Danielson2019}{article}{}
+      \name{author}{3}{}{%
+        {{hash=f415f5c9d6747c7cd28cd77268f12d5e}{%
+           family={Danielson},
+           familyi={D\bibinitperiod},
+           given={Claus},
+           giveni={C\bibinitperiod}}}%
+        {{hash=7f0e2f88fe3b83d98d76824f29a87285}{%
+           family={Bridgeman},
+           familyi={B\bibinitperiod},
+           given={Leila\bibnamedelima J.},
+           giveni={L\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+        {{hash=ea76072ae536885bfcfe0a8abaaf435a}{%
+           family={{Di Cairano}},
+           familyi={D\bibinitperiod},
+           given={Stefano},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{60bca1c3ecaced8def8a76978a861e3a}
+      \strng{fullhash}{60bca1c3ecaced8def8a76978a861e3a}
+      \strng{bibnamehash}{60bca1c3ecaced8def8a76978a861e3a}
+      \strng{authorbibnamehash}{60bca1c3ecaced8def8a76978a861e3a}
+      \strng{authornamehash}{60bca1c3ecaced8def8a76978a861e3a}
+      \strng{authorfullhash}{60bca1c3ecaced8def8a76978a861e3a}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{10991239}
+      \field{journaltitle}{International Journal of Robust and Nonlinear Control}
+      \field{number}{9}
+      \field{title}{{Necessary and sufficient conditions for constraint satisfaction in switched systems using switch-robust control invariant sets}}
+      \field{volume}{29}
+      \field{year}{2019}
+      \field{pages}{2589\bibrangedash 2602}
+      \range{pages}{14}
+      \verb{doi}
+      \verb 10.1002/rnc.4509
+      \endverb
+      \verb{file}
+      \verb :Users/richardhall/Library/Application Support/Mendeley Desktop/Downloaded/Danielson, Bridgeman, Di Cairano - 2019 - Necessary and sufficient conditions for constraint satisfaction in switched systems using swit.pdf:pdf
+      \endverb
+      \keyw{constrained control,model predictive control,switched systems}
+    \endentry
+    \entry{Santis2004}{article}{}
+      \name{author}{3}{}{%
+        {{hash=d16c837cd7a834d77a3a35e0e26594b4}{%
+           family={Santis},
+           familyi={S\bibinitperiod},
+           given={Elena\bibnamedelima De},
+           giveni={E\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=e5e5f7b5bfd50a24b34a7c65c1e2dc1d}{%
+           family={{Di Benedetto}},
+           familyi={D\bibinitperiod},
+           given={Maria\bibnamedelima Domenica},
+           giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+        {{hash=1805b68694606fc52a19bb044babf1b1}{%
+           family={Berardi},
+           familyi={B\bibinitperiod},
+           given={Luca},
+           giveni={L\bibinitperiod}}}%
+      }
+      \strng{namehash}{a2284be4d2b77b838940445c1eae5cf8}
+      \strng{fullhash}{a2284be4d2b77b838940445c1eae5cf8}
+      \strng{bibnamehash}{a2284be4d2b77b838940445c1eae5cf8}
+      \strng{authorbibnamehash}{a2284be4d2b77b838940445c1eae5cf8}
+      \strng{authornamehash}{a2284be4d2b77b838940445c1eae5cf8}
+      \strng{authorfullhash}{a2284be4d2b77b838940445c1eae5cf8}
+      \field{sortinit}{2}
+      \field{sortinithash}{ed39bb39cf854d5250e95b1c1f94f4ed}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{IEEE TRANSACTIONS ON AUTOMATIC CONTROL}
+      \field{number}{2}
+      \field{title}{{Computation of Maximal Safe Sets for Switching Systems}}
+      \field{volume}{49}
+      \field{year}{2004}
+      \field{pages}{184\bibrangedash 195}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1109/TAC.2003.822860
+      \endverb
+      \verb{file}
+      \verb :Users/richardhall/Library/Application Support/Mendeley Desktop/Downloaded/Santis, Di Benedetto, Berardi - 2004 - Computation of Maximal Safe Sets for Switching Systems.pdf:pdf
+      \endverb
+      \keyw{Controlled invariance,Hybrid systems,inner approximations,switching systems}
+    \endentry
     \entry{Schaich2014}{article}{}
       \name{author}{3}{}{%
         {{hash=6a8b80d6d9c57e9b18f25f49df9ec0d2}{%
@@ -43,8 +177,8 @@
       \strng{authorbibnamehash}{26139b6c9b7f2161287f9e2631aecec1}
       \strng{authornamehash}{26139b6c9b7f2161287f9e2631aecec1}
       \strng{authorfullhash}{26139b6c9b7f2161287f9e2631aecec1}
-      \field{sortinit}{1}
-      \field{sortinithash}{50c6687d7fc80f50136d75228e3c59ba}
+      \field{sortinit}{3}
+      \field{sortinithash}{a37a8ef248a93c322189792c34fc68c9}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{A method to ensure recursive feasibility and asymptotic stability for a distributed model predictive control scheme in case of temporary communication failure is presented. The considered networks are made up of dynamically uncoupled nonlinear systems, coupled through constraints and objectives. The proposed method substitutes affected coupling constraints in such a way that the scheme can not become infeasible, while a decrease in the cost is guaranteed.}

@@ -138,9 +138,10 @@
 
 % ================== System Agents ==================
 \newcommand{\agents}{\ensuremath{\mathcal{M}}}
-\newcommand{\agent}[1]{\ensuremath{\agents^{#1}}}
+\newcommand{\agent}[1]{\ensuremath{\agents_{(#1)}}}
 \newcommand{\numagents}{\ensuremath{{C_a}}}
 \newcommand{\agentidx}{\ensuremath{\alpha}}
+\newcommand{\agentidxset}{\ensuremath{\mathcal{I}^a}}
 
 % ================== System Modes ==================
 % \modes -------- A collection of modes. May optionally specify parent agent.
@@ -158,16 +159,20 @@
 		\ensuremath{\mathcal{M}^{#1}}}}
 \NewDocumentCommand{\mode}{o m}{%
 	\IfNoValueTF{#1}{
-		\ensuremath{\modes{M}_{#2}}
+		\ensuremath{\modes_{#2}}
 		}{
-		\ensuremath{\modes{M}[#1]_{#2}}}}
+		\ensuremath{\modes[#1]_{#2}}}}
 \NewDocumentCommand{\nummodes}{o}{%
 	\IfNoValueTF{#1}{
 		\ensuremath{C_m}
 		}{
 		\ensuremath{{C_m^#1}}}}
 \newcommand{\modeidx}{{\ensuremath{\mu}}}
-
+\NewDocumentCommand{\modeidxset}{o}{%
+	\IfNoValueTF{#1}{
+		\ensuremath{\ensuremath{\mathcal{I}^m}}
+		}{
+		\ensuremath{\ensuremath{\mathcal{I}_{#1}^m}}}}
 \newcommand{\nx}{\ensuremath{{n_x}}}
 \renewcommand{\nu}{\ensuremath{{n_u}}}
 \NewDocumentCommand{\futstate}{ o o o o}{%

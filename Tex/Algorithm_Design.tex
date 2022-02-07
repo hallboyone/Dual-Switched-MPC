@@ -32,15 +32,48 @@ $\safeset{\modeidx}{\sstimerval}\gets\Omega_{(\modeidx,\sstimerval)}^k$ for all 
 \begin{algorithmic}[1]
 \Procedure {SystemSafeSets}{$\agents$}
 \State $\Omega^0\gets\{\{\{\underline{0}\}_{\tau\in\mathcal{I}_\tau(\agentidx,\modeidx)}\}_{\modeidx\in\mathcal{I}_\modeidx(\agentidx)}\}_{\agentidx\in\mathcal{I}_\agentidx}$
+\State $\Phi^0\gets\{\underline{0}\}_{\agentidx\in\mathcal{I}_\agentidx}$
 \State $k\gets0$
 \Repeat 
-	\State $\Phi^k\gets\{\Call{ConHull}{\bigcup\Omega^k_{(\agentidx)}}\}_{\agentidx\in\mathcal{I}_\agentidx}$
-	\For{$\agentidx\in\mathcal{I}_\agentidx$}
-		\State $\Omega^{k+1}_{(\agentidx)}\gets\Call{NodeSafeSets}{\modes[\agentidx], \Phi^k}$
-	\EndFor
+	\ParFor{$\agentidx\in\mathcal{I}_\agentidx$}
+		\State $\Omega^{k+0.5}_{(\agentidx)}\gets\Call{NodeSafeSets}{\modes[\agentidx], \Phi^k}$
+		\State $\Phi^{k+0.5}_{(\agentidx)}\gets\Call{ConHull}{\bigcup\Omega^{k+0.5}_{(\agentidx)}}$
+	\EndParFor
+	\ParFor{$\agentidx\in\mathcal{I}_\agentidx$}
+		\State $\Omega^{k+1}_{(\agentidx)}\gets\Call{NodeSafeSets}{\modes[\agentidx], \Phi^{k+0.5}}$
+		\State $\Phi^{k+1}_{(\agentidx)}\gets\Call{ConHull}{\bigcup\Omega^{k+1}_{(\agentidx)}}$
+	\EndParFor
+	\State $k\gets k+1$
 \Until{$\Omega_{(\agentidx)}^k=\Omega_{(\agentidx)}^{k-1}\ \forall\ \agentidx\in\mathcal{I}_\agentidx$}
 
 \State $\safesets\gets\Omega^k$
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+\begin{lemma}
+Given any agent, $\agent{\agentidx}$, and constraint set $\wcon$, $\Call{AgentSafeSets}{\agent{\agentidx},\wcon}$ returns the maximal safe-set collection.
+\end{lemma}
+\begin{proof}
+Follows the logic of \cite[Theorem 2]{Danielson2019} but with previewed preset operations.
+\end{proof}
+\begin{lemma}
+Given an agent, $\agent{\agentidx}$, and the sets $\hat\wcon\subseteq\tilde\wcon$, the relationship{\small
+$$\Call{AgentSafeSets}{\agent{\agentidx},\hat\wcon}\supseteq\Call{AgentSafeSets}{\agent{\agentidx},\tilde\wcon}$$}
+holds element-wise. 
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+\begin{lemma}
+The algorithm $\Call{SystemSafeSets}{\agents}$ produces a valid safe-set collection for every $k\in\int\rgeq{0}$. 
+\end{lemma}
+\begin{proof}
+This holds trivially for $\Omega^0$. The following induction steps complete the proof.
+\begin{enumerate}
+	\item Assume $\Omega^k$ is valid under the disturbance constraints $\Phi^k$.
+	\item By Lemma 1, $\Omega^k\subseteq\Omega^{k+0.5}$.
+	\item By Lemma 2, $\Phi^k\subseteq\Phi^{k+0.5}$ implies that $\Omega^{k+1}\subseteq\Omega^{k+0.5}$.
+	\item Since $\Omega^{k+1}$ is valid for $\Phi^{k+0.5}$, it will also be valid for $\Phi^{k+1}\subseteq\Phi^{k+0.5}$.
+\end{enumerate}
+\end{proof}
