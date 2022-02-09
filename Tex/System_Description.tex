@@ -1,8 +1,5 @@
 \section{System Description}
-Consider the collection of external switching signals 
-$$\ss_\agentidx(t)\triangleq L(\ssg_\agentidx(t))\quad \agentidx\in\agentidxset\triangleq\int\rii{1}{\numagents}$$
-where $\ssg_\agentidx\in\Sigma(\mathcal{G}(\mathfrak{N}_\agentidx,\mathfrak{E}_\agentidx, \modeidxset[\agentidx]))$ and $\modeidxset[\agentidx]\triangleq\int\rii{1}{\nummodes[\agentidx]}$.
-Then the dynamics of the system being studied take the following form
+Consider a collection of $\numagents$ external switching signals each respecting their own directed graph, $\ss_\agentidx(t)\in\Sigma(\mathcal{G}_\agentidx)\ \agentidx\in\agentidxset\triangleq\int\rii{1}{\numagents}$. Then the dynamics of the system being studied take the following form
 \begin{align}
 A(t)&=\begin{bmatrix}
 A^{11}_{\ss_1(t)}&A^{12}_{\ss_1(t)}&\cdots&A^{1\numagents}_{\ss_1(t)},\\

@@ -12,6 +12,25 @@
 %
 % Our objective is to find two safe-set collections for the x1 states and
 % x2 states that are indexed by the respective switching signal.
+L1 = [1 1 1 2 2 2 2];
+E1 = [0 1 0 0 0 0 0;
+      0 0 1 0 0 0 0;
+      0 0 1 1 0 0 0;
+      0 0 0 0 1 0 0;
+      0 0 0 0 0 1 0;
+      0 0 0 0 0 0 1;
+      1 0 0 0 0 0 1];
+
+L2 = [1 1 1 1 2 2 2];
+E2 = [0 1 0 0 0 0 0;
+      0 0 1 0 0 0 0;
+      0 0 0 1 0 0 0;
+      0 0 0 1 1 0 0;
+      0 0 0 0 0 1 0;
+      0 0 0 0 0 0 1
+      1 0 0 0 0 0 1];
+G1 = DirectedGraph(E1, L1);
+G2 = DirectedGraph(E2, L2);
 
 saved_vars = load('rand_dyn.mat');
 A11 = {eye(2) + (0.2*rand(2)-0.1), eye(2) + (0.2*rand(2)-0.1)};
@@ -20,6 +39,7 @@ A12 = {0.1*(0.2*rand(2)-0.1), 0.1*(0.2*rand(2)-0.1)};
 A21 = {0.1*(0.2*rand(2)-0.1), 0.1*(0.2*rand(2)-0.1)};
 A = saved_vars.A_good;%{A11, A22};
 Ac = saved_vars.Ac_good;%{A12, A21};
+
 
 B1 = {[0.1; 0.1] + (0.2*rand(2,1)-0.1), [0.1; 0] + (0.2*rand(2,1)-0.1)};
 B2 = {[0.1; 0.1] + (0.2*rand(2,1)-0.1), [0.1; 0] + (0.2*rand(2,1)-0.1)};
@@ -33,9 +53,12 @@ U1 = Polyhedron([1; -1], 10*[0.5; 0.25]);
 U2 = Polyhedron([1;-1], 10*[0.25; 0.5]);
 U= {U1, U2};
 
-mindt_1 = [3, 4];
-mindt_2 = [4, 3];
-mindt = {mindt_1, mindt_2};
+agent = [Agent(G1, [Mode(A11{1}, B1{1}, A12{1}, X1, U1), Mode(A11{2}, B1{2}, A12{2}, X1, U1)]),
+          Agent(G2, [Mode(A22{1}, B2{1}, A21{1}, X2, U2), Mode(A22{2}, B2{2}, A21{2}, X2, U2)])];
+
+W = {repmat(Polyhedron.emptySet(agent(1).nx), agent(1).nummodes, 1),
+     repmat(Polyhedron.emptySet(agent(2).nx), agent(2).nummodes, 1)};
+S = [NodalSafeSets(agent(1), W{1}); NodalSafeSets(agent(2), W{2})];
 
 safe_sets_1 = cell(numel(mindt_1), 1);
 for i=1:numel(mindt_1)

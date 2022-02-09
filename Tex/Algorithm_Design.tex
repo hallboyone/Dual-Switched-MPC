@@ -50,8 +50,8 @@ This is proved by contradiction. Let some index, $i$, exist such that the relati
 If (1) is true, then $\hat{\Omega}^{k-1}_i\subset\tilde{\Omega}^{k-1}_i$. If (2) is true, then $\hat{\Omega}^{k-1}_j\subset\tilde{\Omega}^{k-1}_j$ since $\hat\wcon\subseteq\tilde\wcon$. In either case, the logic can be iterated to continually decrement $k$ until $k=0$. Then the contradictory statement $\xcon = \hat\Omega^0_k\subset\tilde{\Omega}^0_k\xcon$ is arrived at, concluding the proof. 
 \end{proof}
 
-\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned in the previous section, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. 
-\begin{algorithm}[t]
+\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned in the previous section, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. Starting from an initial, trivial guess for feasible, safe-set collections, the algorithm first generates safe-sets that are too large and infeasible and then safe-sets that are small but feasible. This process is repeated until a convergence criteria is met. Critically, the algorithm can be parallelized along the different block-rows. As block-rows are added, the computational complexity grows at a near linear rate as opposed to the exponential rate of the centralized case. Furthermore, The algorithm produces a feasible collection of safe-sets after each complete iteration. This allows the user to terminate after a single iteration if desired producing very short runtimes. 
+\begin{algorithm}[b]
 \caption{Distributed safe-set collection}\label{alg:safe_sets}
 \begin{algorithmic}[1]
 \Procedure {SystemSafeSets}{$\agents$}
@@ -75,8 +75,6 @@ If (1) is true, then $\hat{\Omega}^{k-1}_i\subset\tilde{\Omega}^{k-1}_i$. If (2)
 \end{algorithmic}
 \end{algorithm}
 
-
-
 \begin{lemma}
 The algorithm $\Call{SystemSafeSets}{\agents}$ produces a valid safe-set collection for every $k\in\int\rgeq{0}$. 
 \end{lemma}
@@ -85,7 +83,7 @@ This holds trivially for $\Omega^0$. The following induction steps complete the 
 \begin{enumerate}
 	\item Assume $\Omega^k$ is valid under the disturbance constraints $\Phi^k$.
 	\item By Lemma 1, $\Omega^k\subseteq\Omega^{k+0.5}$.
-	\item By Lemma 2, $\Phi^k\subseteq\Phi^{k+0.5}$ implies that $\Omega^{k+1}\subseteq\Omega^{k+0.5}$.
-	\item Since $\Omega^{k+1}$ is valid for $\Phi^{k+0.5}$, it will also be valid for $\Phi^{k+1}\subseteq\Phi^{k+0.5}$.
+	\item By Lemma 2, $\Phi^k\subseteq\Phi^{k+0.5}$, implying that $\Omega^{k+1}\subseteq\Omega^{k+0.5}$.
+	\item Since $\Omega^{k+1}$ is valid for $\Phi^{k+0.5}$, it will also be valid for $\Phi^{k+1}$ since $\Phi^{k+1}\subseteq\Phi^{k+0.5}$.
 \end{enumerate}
 \end{proof}
