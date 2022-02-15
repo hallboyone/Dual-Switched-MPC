@@ -7,7 +7,7 @@
 \newcommand{\real}{\ensuremath{\mathbb{R}}}
 \newcommand{\nat}{\ensuremath{\mathbb{N}}}
 \newcommand{\cset}{\ensuremath{\mathcal{C}}}
-
+\NewDocumentCommand{\PowerSet}{m}{\ensuremath{\mathcal{P}\left(#1\right)}}
 \NewDocumentCommand{\Pre}{ o o m }{%
 	\IfNoValueTF{#2}{%
 		\IfNoValueTF{#1}{% No #1 or #2
@@ -199,3 +199,9 @@
 \renewcommand{\sectionautorefname}{Section}
 \newcommand{\remarkautorefname}{Remark}
 \newcommand{\algorithmautorefname}{Algorithm}
+
+% ============== Directed Graph ================
+\NewDocumentCommand{\graph}{}{\ensuremath{\mathcal{G}}}
+\NewDocumentCommand{\gnumnodes}{}{\ensuremath{C_n}}
+\NewDocumentCommand{\gnodeedges}{m}{\ensuremath{\mathcal{E}_{#1}}}
+\NewDocumentCommand{\gnodelabel}{m}{\ensuremath{\mathcal{L}_{#1}}}
