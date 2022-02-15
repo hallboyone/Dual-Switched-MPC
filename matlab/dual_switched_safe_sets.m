@@ -42,8 +42,8 @@ G2 = DirectedGraphWith([Node(1, 2),Node(1, 3),Node(1, 4),Node(1, [4,5]),...
                         Node(2, 6),Node(2, 7),Node(2, [7,1])]);
                     
 % Create the array of two agents. Each has a switching graph and two modes.
-system = [Agent(G1, [Mode(A11{1}, B1{1}, A12{1}, X(1), U(1)), Mode(A11{2}, B1{2}, A12{2}, X(1), U(1))]),
-          Agent(G2, [Mode(A22{1}, B2{1}, A21{1}, X(2), U(2)), Mode(A22{2}, B2{2}, A21{2}, X(2), U(2))])];
+system = [Agent(G1, [Mode(A{1}{1}, B{1}{1}, Ac{1}{1}, X(1), U(1)), Mode(A{1}{2}, B{1}{2}, Ac{1}{2}, X(1), U(1))]),
+          Agent(G2, [Mode(A{2}{1}, B{2}{1}, Ac{2}{1}, X(2), U(2)), Mode(A{2}{2}, B{2}{2}, Ac{2}{2}, X(2), U(2))])];
 
 W = {repmat(Polyhedron.emptySet(system(1).nx), system(1).nummodes, 1),
      repmat(Polyhedron.emptySet(system(2).nx), system(2).nummodes, 1)};
