@@ -1,4 +1,4 @@
-function S = NodalSafeSets(agent, W)
+function S = NodalSafeSets(agent, W, draw_plot)
 node = agent.graph.node;
 
 % Initalize the safe-sets with the state constraints
@@ -10,7 +10,9 @@ end
 % Get next iteration of safe-sets.
 S_new = S;
 k = 0;
-figure
+if draw_plot
+    figure
+end
 while true
     fprintf("Inner Iteration %d\n", k);
     k = k+1;
@@ -25,7 +27,7 @@ while true
         end
     end
     % End if converged
-    if compareSets(S_new, S, true)
+    if compareSets(S_new, S, draw_plot)
         break
     end
     S = S_new;
