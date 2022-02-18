@@ -1,7 +1,7 @@
 \section{Algorithm Design}
 We begin with an algorithm to find the safe-sets of a single agent, $\agent{\agentidx}$, assuming the the other agents' safe-sets are fixed. Define 
 \begin{equation}
-\wcon[\agentidx][\modeidx]\triangleq\bigoplus_{\tilde{\agentidx}\in\agentidxset\setminus\agentidx}A_\modeidx^{\agentidx,\tilde{\agentidx}}\Call{ConHull}{\bigcup_{n\in\mathfrak{N}_{\tilde{\agentidx}}}\mathcal{S}_n^{\tilde{\agentidx}}}.
+\wcon[\agentidx][\modeidx]\triangleq\bigoplus_{\tilde{\agentidx}\in\idxset{\numagents}\setminus\agentidx}A_\modeidx^{\agentidx,\tilde{\agentidx}}\Call{ConHull}{\bigcup_{j\in\gnodeedges{i}^\agentidx}\mathcal{S}_i^{\tilde{\agentidx}}}.
 \end{equation}
 This represents the set of additive errors agent $\agent{\agentidx}$ can experience while in mode $\modeidx$. Denote the collection of these sets as $\wconset{\agentidx}=\{\wcon[\agentidx][\modeidx]\}_{\modeidx=1}^{\nummodes[\agentidx]}$. With these definitions, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for this node. 
 \begin{algorithm}[t]
