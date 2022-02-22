@@ -4,7 +4,7 @@ node = agent.graph.node;
 % Initalize the safe-sets with the state constraints
 S = repmat(Polyhedron.emptySet(agent.nx), 1, agent.graph.numnodes);
 for n=1:agent.graph.numnodes
-    S(n) = agent.mode(node(n).label).X;
+    S(n) = agent.mode{node{n}.label}.X;
 end
 
 % Get next iteration of safe-sets.
@@ -17,12 +17,13 @@ while true
     %fprintf("Inner Iteration %d\n", k);
     k = k+1;
     % For each safe-set
-    parfor (n = 1:agent.graph.numnodes, agent.graph.numnodes)
+    %parfor (n = 1:agent.graph.numnodes, agent.graph.numnodes)
+    for n = 1:agent.graph.numnodes
         % and each possible successor safe-set
-        successors = node(n).edges;
+        successors = node{n}.edges;
         for s = successors
             % Update the safe-set with the previewed pre set
-            S_new(n) = S_new(n) & PreviewedPreSet(S(s), agent.mode(node(s).label), W(node(s).label));
+            S_new(n) = S_new(n) & PreviewedPreSet(S(s), agent.mode(node{s}.label), W(node{s}.label));
             S_new(n).minVRep();
         end
     end
