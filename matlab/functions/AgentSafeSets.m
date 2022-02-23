@@ -1,4 +1,4 @@
-function agent = ParNodalSafeSets(agent, W, draw_plot)
+function agent = AgentSafeSets(agent, W, draw_plot, par)
 node = agent.graph.node;
 
 % Compute the local disturbance bounds for each mode
@@ -26,15 +26,29 @@ end
 while true
     %fprintf("Inner Iteration %d\n", k);
     k = k+1;
-    % For each safe-set
-    parfor (n = 1:agent.graph.numnodes, agent.graph.numnodes)
-    %for n = 1:agent.graph.numnodes
-        % and each possible successor safe-set
-        successors = node{n}.edges;
-        for s = successors
-            % Update the safe-set with the previewed pre set
-            S_new(n) = S_new(n) & PreviewedPreSet(S(s), agent.mode{node{s}.label}, net_W{node{s}.label});
-            S_new(n).minVRep();
+    if par
+        % For each safe-set
+        parfor (n = 1:agent.graph.numnodes, agent.graph.numnodes)
+            %for n = 1:agent.graph.numnodes
+            % and each possible successor safe-set
+            successors = node{n}.edges;
+            for s = successors
+                % Update the safe-set with the previewed pre set
+                S_new(n) = S_new(n) & PreviewedPreSet(S(s), agent.mode{node{s}.label}, net_W{node{s}.label});
+                S_new(n).minVRep();
+            end
+        end
+    else
+        % For each safe-set
+        for n = 1:agent.graph.numnodes
+            %for n = 1:agent.graph.numnodes
+            % and each possible successor safe-set
+            successors = node{n}.edges;
+            for s = successors
+                % Update the safe-set with the previewed pre set
+                S_new(n) = S_new(n) & PreviewedPreSet(S(s), agent.mode{node{s}.label}, net_W{node{s}.label});
+                S_new(n).minVRep();
+            end
         end
     end
     % End if converged
