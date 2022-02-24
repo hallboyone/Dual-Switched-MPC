@@ -3,25 +3,23 @@ We begin with an algorithm to find the safe-sets of a single agent, $\agent{\age
 \begin{equation}
 \wcon[\agentidx][\modeidx]\triangleq\bigoplus_{\tilde{\agentidx}\in\idxset{\numagents}\setminus\agentidx}A_\modeidx^{\agentidx,\tilde{\agentidx}}\Call{ConHull}{\bigcup_{j\in\gnodeedges{i}^\agentidx}\mathcal{S}_i^{\tilde{\agentidx}}}.
 \end{equation}
-This represents the set of additive errors agent $\agent{\agentidx}$ can experience while in mode $\modeidx$. Denote the collection of these sets as $\wconset{\agentidx}=\{\wcon[\agentidx][\modeidx]\}_{\modeidx=1}^{\nummodes[\agentidx]}$. With these definitions, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for this node. 
+This represents the set of additive errors agent $\agent{\agentidx}$ can experience while in mode $\modeidx$. Denote the collection of these sets indexed by the agent's mode as $\wconset{\agentidx}=\{\wcon[\agentidx][\modeidx]\}_{\modeidx=1}^{\nummodes[\agentidx]}$. With these definitions, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for this node. 
 \begin{algorithm}[t]
 \caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
 \begin{algorithmic}[1]
-\Procedure {NodalSafeSets}{$\agent{\agentidx}$, $\wcon$}
+\Procedure {AgentSafeSets}{$\agent{\agentidx}$, $\wconset{\agentidx}$}
 \State $k\gets0$
-\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\xcon[\modeidx]$ for all $\modeidx\in\int\rii{1}{\nummodes[\agentidx]},\ \sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$.
+\State $\Omega_{n}^k\gets\xcon[\gnodelabel{n}]$ for all $n\in\idxset{\gnumnodes[\agentidx]}$.
 \Repeat 
 	\State $k\gets k+1$
-	\For{$\modeidx\in\int\rii{1}{\nummodes[\agentidx]}$}
-		\For{$\sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$}
-			\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\Omega_{(\modeidx,\sstimerval)}^{k-1}$
-			\For{$(\tilde{\modeidx},\tilde{\sstimerval})\in\sspairset{\modeidx}{\sstimerval}$}
-				\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\Omega_{(\modeidx,\sstimerval)}^k\cap\PreviewedPre[\tilde{\modeidx}][1]{\Omega_{(\tilde{\modeidx},\tilde{\sstimerval})}^{k-1}, \wcon[\agentidx][\modeidx]}$
+	\For{$n\in\idxset{\gnumnodes[\agentidx]}$}
+		\State $\Omega_{(\modeidx,\sstimerval)}^k\gets\Omega_{(\modeidx,\sstimerval)}^{k-1}$
+		\For{$\tilde{n}\in\gnodeedges[\agentidx]{n}$}
+				\State $\Omega_{n}^k\gets\Omega_{n}^k\cap\PreviewedPre[\gnodelabel{\tilde{n}}][1]{\Omega_{\tilde{n}}^{k-1}, \wcon[\agentidx][\gnodelabel{\tilde{n}}]}$
 			\EndFor
-		\EndFor
 	\EndFor
-\Until{$\Omega_{(\modeidx,\sstimerval)}^k=\Omega_{(\modeidx,\sstimerval)}^{k-1}\ \forall\ \modeidx\in\int\rii{1}{\nummodes[\agentidx]},\ \sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$}
-$\safeset{\modeidx}{\sstimerval}\gets\Omega_{(\modeidx,\sstimerval)}^k$ for all $\modeidx\in\int\rii{1}{\nummodes[\agentidx]},\ \sstimerval\in\int\rii{1}{\sstimermax{\modeidx}}$.\;
+\Until{$\Omega_{n}^k=\Omega_{n}^{k-1}\ \forall\ n\in\idxset{\gnumnodes[\agentidx]}$.}
+\State $\safeset{n}\gets\Omega_{n}^k$ for all $n\in\idxset{\gnumnodes[\agentidx]}$.\;
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
@@ -31,7 +29,7 @@ An important distinction between this algorithm and previous algorithms focused 
 \end{remark}
 \autoref{alg:node_safe_sets} is supported with the following lemmas. 
 \begin{lemma}
-Given any agent, $\agent{\agentidx}$, and constraint set $\wcon$, $\Call{NodalSafeSets}{\agent{\agentidx},\wcon}$ returns the maximal safe-set collection.
+Given any agent, $\agent{\agentidx}$, and constraint set $\wcon$, $\Call{AgentSafeSets}{\agent{\agentidx},\wcon}$ returns the maximal safe-set collection.
 \end{lemma}
 \begin{proof}
 Follows the logic of \cite[Theorem 2]{Danielson2019} but with previewed preset operations.

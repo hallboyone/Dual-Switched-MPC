@@ -140,7 +140,7 @@
 
 % ================== System Agents ==================
 \newcommand{\agents}{\ensuremath{\mathcal{M}}}
-\newcommand{\agent}[1]{\ensuremath{\agents_{(#1)}}}
+\newcommand{\agent}[1]{\ensuremath{\agents^{#1}}}
 \newcommand{\numagents}{\ensuremath{{C_a}}}
 \newcommand{\agentidx}{\ensuremath{\alpha}}
 \newcommand{\agentidxset}{\ensuremath{\mathcal{I}^a}}
@@ -189,8 +189,7 @@
 	
 % ==================== Safe sets ====================
 \newcommand{\safesets}{\ensuremath{\mathcal{S}}}
-\newcommand{\safeset}[2]{\ensuremath{\safesets_{(#1,#2)}}}
-
+\newcommand{\safeset}[1]{\ensuremath{\safesets_{#1}}}
 
 % ==================== Misc ====================
 \newcommand{\narroweq}{\ensuremath{\scalerel[1ex]{=}{\phantom{=}\hspace{-0.17cm}}}}
@@ -203,9 +202,15 @@
 
 % ============== Directed Graph ================
 \NewDocumentCommand{\graph}{}{\ensuremath{\mathcal{G}}}
-\NewDocumentCommand{\gnumnodes}{}{\ensuremath{C_n^{\graph}}}
+\NewDocumentCommand{\gnumnodes}{o}{
+	\IfNoValueTF{#1}
+		{\ensuremath{C_n^{\graph}}}
+		{\ensuremath{C_n^{\graph^{#1}}}}}
 \NewDocumentCommand{\gedges}{}{\ensuremath{\mathcal{E}}}
-\NewDocumentCommand{\gnodeedges}{m}{\ensuremath{\gedges_{#1}}}
+\NewDocumentCommand{\gnodeedges}{o m}{
+	\IfNoValueTF{#1}
+		{\ensuremath{\gedges_{#2}}}
+		{\ensuremath{\gedges_{#2}^{#1}}}}
 \NewDocumentCommand{\glabels}{}{\ensuremath{\mathcal{L}}}
 \NewDocumentCommand{\gnodelabel}{m}{\ensuremath{\glabels_{#1}}}
 \NewDocumentCommand{\gnumlabels}{}{\ensuremath{C_l^{\graph}}}
