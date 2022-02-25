@@ -28,41 +28,41 @@ This represents the set of additive errors agent $\agent{\agentidx}$ can experie
 An important distinction between this algorithm and previous algorithms focused on robust control is the use of the previewed robust preset operator. This operator is used in place of the more common robust preset operator to increase the size of the resulting safe-sets. Their use only assumes that each block-row is aware to the states of other block-rows prior to selecting a control action. This is a minor assumption often used in distributed control \alert{cite}.
 \end{remark}
 \autoref{alg:node_safe_sets} is supported with the following lemmas. 
-\begin{lemma}
-Given any agent, $\agent{\agentidx}$, and constraint set $\wcon$, $\Call{AgentSafeSets}{\agent{\agentidx},\wcon}$ returns the maximal safe-set collection.
+\begin{lemma}\label{lemma:maximal_proof}
+Given any agent, $\agent{\agentidx}$, and the collection of constraints  $\wconset{\agentidx}$, $\Call{AgentSafeSets}{\agent{\agentidx},\wconset{\agentidx}}$ returns the maximal safe-set collection.
 \end{lemma}
 \begin{proof}
 Follows the logic of \cite[Theorem 2]{Danielson2019} but with previewed preset operations.
 \end{proof}
 \begin{lemma}
-Given an agent, $\agent{\agentidx}$, and the sets $\hat\wcon\subseteq\tilde\wcon$, the relationship{\small
-$$\Call{AgentSafeSets}{\agent{\agentidx},\hat\wcon}\supseteq\Call{AgentSafeSets}{\agent{\agentidx},\tilde\wcon}$$}
-holds element-wise. 
+Given an agent, $\agent{\agentidx}$, and the two set collections $\wconset{\agentidx}_1\subseteq\wconset{\agentidx}_2$ where the relationship holds element-wise, the relationship{\small
+$$\Call{AgentSafeSets}{\agent{\agentidx},\wconset{\agentidx}_1}\supseteq\Call{AgentSafeSets}{\agent{\agentidx},\wconset{\agentidx}_2}$$}
+also holds element-wise. 
 \end{lemma}
 \begin{proof}
-This is proved by contradiction. Let some index, $i$, exist such that the relationship does not hold, $\hat{\mathcal{S}}_i\subset\tilde{\mathcal{S}}_i$. Since \autoref{alg:node_safe_sets} is subtractive, this implies that $\exists k\in\int\rgeq{0}$ such that $\hat{\Omega}^k_i\subset\tilde{\Omega}^k_i$. By definition, there exists an $x\in\tilde{\Omega}^k_i$ such that $x\not\in\hat{\Omega}$. This requires that at least one of the following statements be true:
+This is proved by contradiction. Let some index, $i\in\idxset{\gnumnodes[\agentidx]}$, exist such that the relationship does not hold, $\mathcal{S}_{1,i}\subset\mathcal{S}_{2,i}$. Since \autoref{alg:node_safe_sets} is subtractive, this implies that $\exists k\in\int\rgeq{0}$ such that $\hat{\Omega}^k_{1,i}\subset\tilde{\Omega}^k_{2,i}$. By definition, there exists an $x\in\Omega^k_{2,i}$ such that $x\not\in\Omega^k_{1,i}$. This requires that at least one of the following statements be true:
 \begin{enumerate}
-\item $x\in\tilde{\Omega}^{k-1}_i$ and $x\not\in\hat{\Omega}^{k-1}_i$ or
-\item There exists an index, $j$, s.t. $x\in\PreviewedPre[j][1]{\tilde{\Omega}^{k-1}_j,\tilde{\mathcal{W}}}$ and $x\not\in\PreviewedPre[j][1]{\hat{\Omega}^{k-1}_j,\hat{\mathcal{W}}}$.
+\item $x\in\Omega^{k-1}_{2,i}$ and $x\not\in\Omega^{k-1}_{1,i}$ or
+\item There exists an index, $j$, s.t. $x\in\PreviewedPre[j][1]{\Omega^{k-1}_{2,j},\mathcal{W}_{2,j}}$ and $x\not\in\PreviewedPre[j][1]{\Omega^{k-1}_{1,j},\mathcal{W}_{1,j}}$.
 \end{enumerate}
-If (1) is true, then $\hat{\Omega}^{k-1}_i\subset\tilde{\Omega}^{k-1}_i$. If (2) is true, then $\hat{\Omega}^{k-1}_j\subset\tilde{\Omega}^{k-1}_j$ since $\hat\wcon\subseteq\tilde\wcon$. In either case, the logic can be iterated to continually decrement $k$ until $k=0$. Then the contradictory statement $\xcon = \hat\Omega^0_k\subset\tilde{\Omega}^0_k\xcon$ is arrived at, concluding the proof. 
+If (1) is true, then $\Omega^{k-1}_{1,i}\subset\Omega^{k-1}_{2,i}$. If (2) is true, then $\Omega^{k-1}_{1,j}\subset\Omega^{k-1}_{2,j}$ since $\wconset{\agentidx}_1\subseteq\wconset{\agentidx}_2$. In either case, the above logic can be repeated with $k=k-1$ and, if (2) is true, $i=j$. This can continue until $k=0$ and the contradiction $\xcon = \hat\Omega^0_{1,k}\subset\tilde{\Omega}^0_{2,k}=\xcon$ is arrived at, concluding the proof. 
 \end{proof}
 
-\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned in the previous section, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. Starting from an initial, trivial guess for feasible, safe-set collections, the algorithm first generates safe-sets that are too large and infeasible and then safe-sets that are small but feasible. This process is repeated until a convergence criteria is met. Critically, the algorithm can be parallelized along the different block-rows. As block-rows are added, the computational complexity grows at a near linear rate as opposed to the exponential rate of the centralized case. Furthermore, The algorithm produces a feasible collection of safe-sets after each complete iteration. This allows the user to terminate after a single iteration if desired producing very short runtimes. 
+\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned in the previous section, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. Starting from an initial, trivial guess for feasible, safe-set collections, the algorithm first generates safe-sets that are too large and infeasible and then safe-sets that are small but feasible. This process is repeated until a convergence criteria is met. Critically, the algorithm can be parallelized along the different block-rows. As block-rows are added, the computational complexity grows at a near linear rate as opposed to the exponential rate of the centralized case. Furthermore, as shown in the following lemma the algorithm produces a feasible collection of safe-sets after each complete iteration. This allows the user to terminate after any complete iteration and produce valid results. 
 \begin{algorithm}[b]
 \caption{Distributed safe-set collection}\label{alg:safe_sets}
 \begin{algorithmic}[1]
 \Procedure {SystemSafeSets}{$\agents$}
-\State $\Omega^0\gets\{\{\{\underline{0}\}_{\tau\in\mathcal{I}_\tau(\agentidx,\modeidx)}\}_{\modeidx\in\mathcal{I}_\modeidx(\agentidx)}\}_{\agentidx\in\mathcal{I}_\agentidx}$
+\State $\Omega^0\gets\{\{\underline{0}\}_{n\in\idxset{\gnumnodes[\agentidx]}}\}_{\agentidx\in\mathcal{I}_\agentidx}$
 \State $\Phi^0\gets\{\underline{0}\}_{\agentidx\in\mathcal{I}_\agentidx}$
 \State $k\gets0$
 \Repeat 
 	\ParFor{$\agentidx\in\mathcal{I}_\agentidx$}
-		\State $\Omega^{k+0.5}_{(\agentidx)}\gets\Call{NodeSafeSets}{\modes[\agentidx], \Phi^k}$
+		\State $\Omega^{k+0.5}_{(\agentidx)}\gets\Call{AgentSafeSets}{\modes[\agentidx], \Phi^k}$
 		\State $\Phi^{k+0.5}_{(\agentidx)}\gets\Call{ConHull}{\bigcup\Omega^{k+0.5}_{(\agentidx)}}$
 	\EndParFor
 	\ParFor{$\agentidx\in\mathcal{I}_\agentidx$}
-		\State $\Omega^{k+1}_{(\agentidx)}\gets\Call{NodeSafeSets}{\modes[\agentidx], \Phi^{k+0.5}}$
+		\State $\Omega^{k+1}_{(\agentidx)}\gets\Call{AgentSafeSets}{\modes[\agentidx], \Phi^{k+0.5}}$
 		\State $\Phi^{k+1}_{(\agentidx)}\gets\Call{ConHull}{\bigcup\Omega^{k+1}_{(\agentidx)}}$
 	\EndParFor
 	\State $k\gets k+1$
