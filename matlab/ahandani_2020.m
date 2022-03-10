@@ -73,4 +73,7 @@ G = {G1, G2, G3, G4};
 % system{agent}
 system = BuildSystem(A, B, X, U, G); 
 
-system = ComputeSafeSets(system, true, false, false);
+plot_inner = false;
+plot_outer = true;
+par_inner = false;
+system = ComputeSafeSets(system, plot_outer, plot_inner, par_inner);
