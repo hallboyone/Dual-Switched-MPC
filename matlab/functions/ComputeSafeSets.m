@@ -3,8 +3,8 @@ function system = ComputeSafeSets(system, plot_outer, plot_inner, par_inner)
 k = 0;
 S = ExtractFrom(system, "safe_sets");
 while true
-    fprintf("Outer Iteration %d\n", k);
-    k = k+1;
+    
+    
 
     % Save the current safe-sets to compare later
     old_S = S;
@@ -12,6 +12,7 @@ while true
     % Run this twice to return to a valid state (even steps are valid, odd are
     % invalid)
     for i=1:2
+        fprintf("Outer Iteration %d.%d\n", k, 5*(i-1));
         % Extract the union of each agent's safe-sets into a cell array
         safe_set_unions = ExtractFrom(system, "safe_set_union");
         % For each agent, compute its safe-sets using the current safe-set unions
@@ -25,6 +26,7 @@ while true
     if areEqual(S, old_S, plot_outer)
         break
     end
+    k = k+1;
 end
 end
 
