@@ -82,7 +82,7 @@ G4 = DirectedGraphWith({Node(1, 2, 2),Node(1, 3, 2),Node(1, [3,4,7], 2),...
                         Node(2, 5, 2),Node(2, 6, 2),Node(2, [6,7,1], 2),...
                         Node(3, 8, 2),Node(3, 9, 2),Node(3, [9,1,4], 2)});
 %G{agent}
-G = {G1, G2, G3, G4};  
+G = {G1, G2, G3, G4};
 
 % Create the array of agent structures. Each has a switching graph and three modes.
 % system{agent}
