@@ -47,16 +47,19 @@ A set, $\mathcal{S}\subseteq\mathcal{X}_m$ is CI under mode $\mathcal{M}_m$ if f
 
 A final tool used in this paper is the convex hull of a set defined as follows.
 \begin{definition}[Convex Hull]
-\alert{add def}
+Given a set $\mathcal{S}\subset\real^n$, the convex hull is defined as 
+\begin{align*}
+&\Call{ConHull}\left(\mathcal{S}\right)\triangleq\\&\{x\in\real^n\ |\ \exists\ a,b\in\mathcal{S},\ \gamma\in\real\rii{0,1}\ \text{s.t.}\ x=\gamma a + (1-\gamma)b\}.
+\end{align*}
 \end{definition}
 \subsection{Feasibility Analysis}
 In constrained systems, it is extremely important that the controller can satisfy the state constraints using only feasibly inputs. If a feasible input exists such that the resulting state is also feasible, the system is feasible. If feasibility at the current time implies feasibility at all future times, then the system is persistently feasible.
 
-In centralized unswitched systems, persistent feasibility can be established by constraining the system to be within a \ac{ci} set, $\mathcal{C}\subseteq\mathcal{X}$ \alert{cite}. Relying on constant, control invariant sets become difficult in externally switched systems, however. The \ac{ci} set must be common to all system modes else persistent feasibility is lost. This concern can be addressed using time varying, control invariant sets that take advantage of constraints on the switching signal. For example, in \cite{Danielson2019,Santis2004}, time varying, control invariant sets were developed that force the system to move during the dwell time between switches to a region from which a switch to any successor mode will preserve persistent feasibility. By lower bounding the dwell time, the system had additional time to reach these safe regions thereby loosening the state constraints. These results have been further expanded to include the robust case \cite{Lavaei2021}.
+In centralized, unswitched systems, persistent feasibility can be established by constraining the system to be within a \ac{ci} set, $\mathcal{C}\subseteq\mathcal{X}$ \cite{Blanchini1999}. Relying on constant, control invariant sets become difficult in externally switched systems, however. The \ac{ci} set must be common to all system modes or else persistent feasibility is lost. This concern can be addressed using time varying, control invariant sets that take advantage of constraints on the switching signal. For example, in \cite{Danielson2019,Santis2004}, time varying, control invariant sets were developed that force the system to move during the dwell time between switches to a region from which a switch to any successor mode will preserve persistent feasibility. By lower bounding the dwell time, the system had additional time to reach these safe regions thereby loosening the state constraints. These results have been further expanded to include the robust case \cite{Lavaei2021}.
 
 The ideas presented in the previous literature can be described using safe-set collections. These are collections of sets, indexed by some time varying signal, that serve as the active state constraints of the system. To establish persistent feasibility, every safe-set must be within the 1-step preset of all possible successor safe-sets. This is presented formally in the following definition.
 \begin{definition}[Safe-set collection]
-Let the external switching signal, $\ss\in\Sigma(\graph)$ govern the system $\mode{}(t)=\{f_{\ss(t)}(x(t),u(t)),\xcon[\ss(t)],\ucon[\ss(t)]\}$. A collection of sets indexed by the nodes of $\graph$, $\mathcal{S}=\{\mathcal{S}_{i}\}_{i\in\idxset{\gnumnodes}}$ is a safe-set collection if
+Let the external switching signal, $\ss\in\Sigma(\graph)$ for some graph, $\graph$, govern the system $\mode{}(t)=\{f_{\ss(t)}(x(t),u(t)),\xcon[\ss(t)],\ucon[\ss(t)]\}$. A collection of sets indexed by the nodes of $\graph$, $\mathcal{S}=\{\mathcal{S}_{i}\}_{i\in\idxset{\gnumnodes}}$ is a safe-set collection if
 $$\mathcal{S}_{i}\subseteq\Pre[\gnodelabel{j}][1]{\mathcal{S}_{j}}\ \forall\ i\in\idxset{\gnumnodes},\ j\in \gnodeedges{i}$$
 \end{definition}
 Safe set collections create target sets for the system to move into at each time step. The preset condition ensures that, no matter how $\ss$ evolves, the system will always be able to find a feasible input to move into the current target set.
