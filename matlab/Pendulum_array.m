@@ -1,19 +1,23 @@
 addpath ./functions/
 
+Ts = 0.1;
+
 num_modes = 3;
 
 num_row = 2;
-num_col = 4;
+num_col = 2;
 num_elm = num_row*num_col;
 
 % Create A matrix collection
 A = cell(num_modes, 1);
+B = cell(num_modes, 1);
 Mk = zeros(num_elm);
 Mc = zeros(num_elm);
 K = 2.5*rand(num_elm, 4);
 C = 0.05*rand(num_elm, 4);
 for m_idx = 1:num_modes
     m = 5*(1+rand(num_elm, 1))*sqrt(2);
+    B{m_idx} = zeros(2*num_elm, num_elm);
     for n = 1:num_elm
         if n+num_col <= num_elm
             Mk(n,n+num_col) = K(n,1)/m(n);
@@ -39,26 +43,30 @@ for m_idx = 1:num_modes
             Mc(n,n-1) = -C(n,4)/m(n);
             Mc(n,n) = Mc(n,n) - C(n,4)/m(n);
         end
+        B{m_idx}(2*n, n) = 1/m(n);
     end
     A{m_idx} = remapDynamics([zeros(num_elm), eye(num_elm); Mk, Mc]);
+    sys_d = c2d(ss(A{m_idx}, B{m_idx}, eye(num_elm*2), []), Ts);
+    B{m_idx} = sys_d.B;
+    A{m_idx} = sys_d.A;
 end
-A = formatDynamics(A);
+[A, B] = formatDynamics(A, B);
 
-% Create B matrix collection
-B = cell(num_elm, 1);
-for a_idx = 1:num_elm
-    B{a_idx} = cell(num_modes, 1);
-    for m_idx = 1:num_modes
-        B{a_idx}{m_idx} = [0;1];
-    end
-end
+% % Create B matrix collection
+% B = cell(num_elm, 1);
+% for a_idx = 1:num_elm
+%     B{a_idx} = cell(num_modes, 1);
+%     for m_idx = 1:num_modes
+%         B{a_idx}{m_idx} = [0;1];
+%     end
+% end
 
 % Create state constraint collection
 X = cell(num_elm, 1);
 for a_idx = 1:num_elm
     X{a_idx} = cell(num_modes, 1);
     for m_idx = 1:num_modes
-        X{a_idx}{m_idx} = Polyhedron([eye(2);-eye(2)], 20*[1;1;1;1]);
+        X{a_idx}{m_idx} = Polyhedron([eye(2);-eye(2)], 2*[1;1;1;1]);
     end
 end
 
@@ -71,33 +79,21 @@ for a_idx = 1:num_elm
     end
 end
 
-% Min dwell time of 4, max of 8. Complete graph.
+% Min dwell time of 4. Complete graph.
 G = cell(num_elm, 1);
 for a_idx = 1:num_elm
     G{a_idx} = DirectedGraphWith({Node(1, 2, 2),...
-                       Node(1, 3, 2),...
-                       Node(1, 4, 2),...
-                       Node(1, [5,9,17], 2),...
-                       Node(1, [6,9,17], 2),...
-                       Node(1, [7,9,17], 2),...
-                       Node(1, [8,9,17], 2),...
-                       Node(1, [9,17], 2),...
-                       Node(2, 10, 2),...
-                       Node(2, 11, 2),...
-                       Node(2, 12, 2),...
-                       Node(2, [1,13,17], 2),...
-                       Node(2, [1,14,17], 2),...
-                       Node(2, [1,15,17], 2),...
-                       Node(2, [1,16,17], 2),...
-                       Node(2, [1,17], 2),...
-                       Node(3, 18, 2),...
-                       Node(3, 19, 2),...
-                       Node(3, 20, 2),...
-                       Node(3, [1,9,21], 2),...
-                       Node(3, [1,9,22], 2),...
-                       Node(3, [1,9,23], 2),...
-                       Node(3, [1,9,24], 2),...
-                       Node(3, [1,9], 2)});
+                                  Node(1, 3, 2),...
+                                  Node(1, 4, 2),...
+                                  Node(1, [4,5,9], 2),...
+                                  Node(2, 6, 2),...
+                                  Node(2, 7, 2),...
+                                  Node(2, 8, 2),...
+                                  Node(2, [8,9,1], 2),...
+                                  Node(3, 10, 2),...
+                                  Node(3, 11, 2),...
+                                  Node(3, 12, 2),...
+                                  Node(3, [12,1,5], 2)});
 end
 
 system = BuildSystem(A, B, X, U, G); 
@@ -114,18 +110,22 @@ M = M(idx_map, :);
 M = M(:, idx_map);
 end
 
-function formatedA = formatDynamics(A)
+function [formatedA, formatedB] = formatDynamics(A, B)
 num_elm = size(A{1},1)/2;
 num_mode = numel(A);
 
-formatedA = cell(num_elm, 1);
+formatedA = cell(1, num_elm);
+formatedB = cell(1, num_elm);
 for i=1:num_elm
-    formatedA{i} = cell(num_mode, 1);
+    formatedA{i} = cell(1, num_mode);
+    formatedB{i} = cell(1, num_mode);
     for m=1:num_mode
-        formatedA{i}{m} = cell(num_elm, 1);
+        formatedA{i}{m} = cell(1, num_elm);
         for n=1:num_elm
-            formatedA{i}{m}{n} = A{m}(1+2*(m-1):2*m, 1+2*(n-1):2*n);
+            formatedA{i}{m}{n} = A{m}(1+2*(i-1):2*i, 1+2*(n-1):2*n);
         end
+        
+        formatedB{i}{m} = B{m}(1+2*(i-1):2*i, i);
     end
 end
 end
