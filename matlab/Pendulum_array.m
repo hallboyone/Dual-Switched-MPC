@@ -4,8 +4,8 @@ Ts = 0.1;
 
 num_modes = 3;
 
-num_row = 2;
-num_col = 2;
+num_row = 3;
+num_col = 4;
 num_elm = num_row*num_col;
 
 % Create A matrix collection
@@ -13,8 +13,8 @@ A = cell(num_modes, 1);
 B = cell(num_modes, 1);
 Mk = zeros(num_elm);
 Mc = zeros(num_elm);
-K = 2.5*rand(num_elm, 4);
-C = 0.05*rand(num_elm, 4);
+K = 5*rand(num_elm, 4);
+C = 1*rand(num_elm, 4);
 for m_idx = 1:num_modes
     m = 5*(1+rand(num_elm, 1))*sqrt(2);
     B{m_idx} = zeros(2*num_elm, num_elm);
@@ -75,7 +75,7 @@ U = cell(num_elm, 1);
 for a_idx = 1:num_elm
     U{a_idx} = cell(num_modes, 1);
     for m_idx = 1:num_modes
-        U{a_idx}{m_idx} = Polyhedron([1;-1], [0.25, 0.25]');
+        U{a_idx}{m_idx} = Polyhedron([1;-1], 25*[1, 1]');
     end
 end
 
