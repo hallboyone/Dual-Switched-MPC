@@ -5,7 +5,7 @@ Ts = 0.1;
 num_modes = 3;
 
 num_row = 3;
-num_col = 4;
+num_col = 3;
 num_elm = num_row*num_col;
 
 % Create A matrix collection
@@ -13,10 +13,10 @@ A = cell(num_modes, 1);
 B = cell(num_modes, 1);
 Mk = zeros(num_elm);
 Mc = zeros(num_elm);
-K = 5*rand(num_elm, 4);
-C = 1*rand(num_elm, 4);
+K = 1*rand(num_elm, 4);
+C = 0.2*rand(num_elm, 4);
 for m_idx = 1:num_modes
-    m = 5*(1+rand(num_elm, 1))*sqrt(2);
+    m = (1+rand(num_elm, 1))*sqrt(2);
     B{m_idx} = zeros(2*num_elm, num_elm);
     for n = 1:num_elm
         if n+num_col <= num_elm
