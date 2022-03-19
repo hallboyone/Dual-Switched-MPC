@@ -22,5 +22,19 @@ elseif field == "safe_set_union"
         end
         x{a_idx} = U.convexHull();
     end
+elseif field == "figs_to_save"
+    % Extracts an array of structs each with a safe-set index and filename
+    % indicating the safe-sets to be saved.
+    x = {};
+    for a_idx = 1:numel(sys)
+        for n_idx = 1:sys{a_idx}.graph.numnodes
+            if ~isempty(sys{a_idx}.graph.node{n_idx}.save_fig_to)
+                fig_to_save.a_idx = a_idx;
+                fig_to_save.n_idx = n_idx;
+                fig_to_save.filename = sys{a_idx}.graph.node{n_idx}.save_fig_to;
+                x{end+1} = fig_to_save;
+            end
+        end
+    end
 end
 end

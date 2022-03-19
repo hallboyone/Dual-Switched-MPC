@@ -2,3 +2,4 @@ build/
 **/*.asv
 .DS_Store
 Tex/.DS_Store
+*.mat

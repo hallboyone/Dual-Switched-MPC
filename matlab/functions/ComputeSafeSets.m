@@ -3,9 +3,6 @@ function system = ComputeSafeSets(system, plot_outer, plot_inner, par_inner)
 k = 0;
 S = ExtractFrom(system, "safe_sets");
 while true
-    
-    
-
     % Save the current safe-sets to compare later
     old_S = S;
 
@@ -22,6 +19,13 @@ while true
             ppm.increment();
         end
         delete(ppm)
+    end
+
+    % Save any requested figures
+    figs_to_save = ExtractFrom(system, "figs_to_save");
+    for i=1:numel(figs_to_save)
+        S = system{figs_to_save{i}.a_idx}.graph.node{figs_to_save{i}.n_idx}.S;
+        save([figs_to_save{i}.filename, int2str(k)], 'S');
     end
 
     % Get the newly computed safe-sets and compare with the old safe-sets
