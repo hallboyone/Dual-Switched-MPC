@@ -4,52 +4,67 @@ The set of integers and real numbers are denoted $\int$ and $\real$ respectively
 
 Let $\mathcal{S}=\{\{\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}\}_{j\in\mathcal{I}_{J}(i)}\}_{i\in\mathcal{I}_I}$, $\mathcal{S}\subseteq\real^n$ be a nested collection of subsets of the $n$-dimensional, real-valued numbers. The first and second level sub-collections are denoted as $\mathcal{S}_{(i)}=\{\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}\}_{j\in\mathcal{I}_{J}(i)}$ and $\mathcal{S}_{(i,j)}=\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}$. Operations preformed between nested collections require the collections be of equal size and are preformed elementwise. For example, $\mathcal{S}_{(i)}$ equals $\tilde{\mathcal{S}}_{(i)}$ if they are the same size and every element in both is equivalent. Operations preformed between a nested collection and a single element behave as if the single element where an appropriate sized collection with elements equal to the single element. For example, setting $\mathcal{S}=\underline{0}$ sets every element of $\mathcal{S}$ to $\underline{0}$. Finally, union operations are preformed on every element of the nested collection. For example, $\cup \mathcal{S}_{(i)}$ is the union of all the elements of $\mathcal{S}_{(i)}$.
 
+Let the class of all discrete, disturbed dynamics be denoted $\mathcal{D}^{\nx,\nu,\nw}\triangleq\{f:\real^\nx\times\real^\nu\times\real^\nw\rightarrow\real^\nx\}$. 
+
 \subsection{Directed Graphs}
 A directed graph, $\graph$, is comprised of $\gnumnodes\in\int\geq{1}$ nodes. Node $i\in\idxset{\gnumnodes}$ is defined by a list of edges leading to successor nodes, $\gnodeedges{i}\in\PowerSet{\idxset{\gnumnodes}}$, and a label, $\gnodelabel{i}=\idxset{\gnumlabels}^n$, where $\gnumlabels$ is the number of labels in the graph. If $j\in\mathcal{E}_i$, then transitioning from node $i$ to node $j$ is valid in a single time step. A time varying function mapping to nodes, $f:\int\rgeq{0}\rightarrow\idxset{\gnumnodes}$, is said to respect a graph $\mathcal{G}$ if $f(t)=i$ implies that $f(t+1)\in\gnodeedges{i}$. A time varying function mapping to labels, $g:\int\rgeq{0}\rightarrow\idxset{\gnumlabels}$, is said to respect a graph $\mathcal{G}$ if  there exists a function respecting $\mathcal{G}$, $f(t)$, such that $g(t)=\gnodelabel{f(t)}$. The set of all such functions is denoted $\Sigma(\mathcal{G})\triangleq\{g:\int\rgeq{0}\rightarrow\idxset{\gnumlabels}\ |\ g(\cdot)\text{ respects }\graph\}$. 
 
 \subsection{Switching Signals}
-An external switching signal is any function mapping the current time to some index, $\ss:\int\rgeq{0}\rightarrow\int\rii{1}{\nummodes}$. This work does not require prior knowledge of the switching signal but does assume its value at time $t$ is known immediately. Furthermore, the switching signal can be constrained to respect some known graph, $\ss\in\Sigma(\graph)$, where $\gnumlabels=\nummodes$. 
+An external switching signal is any function respecting a graph, $\graph$, that takes the current time as an input, $\left(\ss:\int\rgeq{0}\rightarrow\int\rii{1}{\gnumnodes}\right)\in\Sigma(\graph)$. The state of the switching signal can then be defined by the label of the current node, $\ssl(t)\triangleq \gnodelabel{\ss(t)}$. Prior knowledge of the switching signal is not required, but its value at time $t$ is known immediately.
 \begin{remark}
-This is a generalizations of dwell time and successor constraints from previous literature that allows a richer set of constraints to be represented. For example, the graph below represents a 2-mode system where the first mode has a minimum dwell time of 2 while the second mode can only be left during odd dwell times.
+Using directed graphs to constrain the switching signal is a generalizations of dwell time and successor constraints from previous literature that allows a richer set of constraints to be represented. For example, the graph below represents a 2-mode system where the first mode has a minimum dwell time of 2 while the second mode can only be left during odd dwell times.
 \begin{figure}[h!]
 \centering
 \includegraphics[scale=0.15]{./figures/graph_remark}
 \end{figure}
 \end{remark}
 
+\subsection{General Constrained Switched Systems}
+Switched systems are comprised of modes and switching constraints. Each mode contains the dynamics and constraints that the system must respect while the mode is active. A single mode is denoted using the tuple
+\begin{equation*}
+\mode{\modeidx}\triangleq\{f_\modeidx\in \mathcal{D}^{\nx,\nu,\nw}, \xcon[\modeidx]\subseteq\real^\nx, \ucon[\modeidx]\subseteq\real^\nu, \wcon[\modeidx]\subset\real^\nw\}.
+\end{equation*}
+The full constrained switched system collects the modes and a directed graph to take the form
+\begin{equation*}
+\modes\triangleq\{\{\mode{\modeidx}\}_{\modeidx\in\idxset{\nummodes}}, \graph\}
+\end{equation*}
+where the labels of the graph correspond to the mode indexes, $\gnumlabels=\nummodes$.
+
 \subsection{Set Operations and Control Invariance}
-Set operations provide tools to analyze how a system can evolve under allowable inputs. Given a linear system with additive disturbances and state and input constraints, $\mode{\modeidx}\triangleq\{A_\modeidx, B_\modeidx, E_\modeidx,\xcon[\modeidx],\ucon[\modeidx]\}$ where $x(t+1)=A_\modeidx x(t)+ B_\modeidx u(t)+ E_\modeidx w(t)$, the following important set operations are introduced. 
+Set operations provide tools to analyze how a mode evolves under allowable inputs. Given a mode, $\mode{\modeidx}$, the following important set operations are introduced. 
 \begin{definition}[Robust Preset]\label{def:robust_preset}
-The $k$-step, robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ and disturbance constraint $w\in\wcon$ is given by
+The $k$-step, robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ is given by
 \begin{align}
-\Pre[\modeidx][0]{\mathcal{S},\wcon}&\triangleq\mathcal{S},\\
-\Pre[\modeidx][k]{\mathcal{S},\wcon}&\triangleq\{x\in\xcon\ |\ \exists u\in\ucon\text{ s.t. }\forall w\in\wcon,\nonumber\\ &A_\modeidx x+ B_\modeidx u+ E_\modeidx w\in\Pre[\modeidx][k-1]{\mathcal{S},\wcon}\}.
+\Pre[\modeidx][0]{\mathcal{S}}&\triangleq\mathcal{S},\\
+\Pre[\modeidx][k]{\mathcal{S}}&\triangleq\{x\in\xcon[\modeidx]\ |\ \exists u\in\ucon[\modeidx]\text{ s.t. }\forall w\in\wcon[\modeidx],\nonumber\\ &\qquad f_\modeidx(x,u,w)\in\Pre[\modeidx][k-1]{\mathcal{S}}\}.
 \end{align}
 \end{definition}
 \begin{definition}[Previewed Robust Preset]\label{def:prev_robust_preset}
-The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ and disturbance constraint $w\in\wcon$ is given by
+The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ is given by
 \begin{align}
-\PreviewedPre[\modeidx][0]{\mathcal{S},\wcon}&\triangleq\mathcal{S},\\
-\PreviewedPre[\modeidx][k]{\mathcal{S},\wcon}&\triangleq\{x\in\mathcal{X}|\forall w\in\mathcal{W},\exists u\in\mathcal{U}\text{ s.t. }\nonumber\\
-&A_\modeidx x+ B_\modeidx u+ E_\modeidx w\in\PreviewedPre[\modeidx][k-1]{\mathcal{S},\wcon}\}.
+\PreviewedPre[\modeidx][0]{\mathcal{S}}&\triangleq\mathcal{S},\\
+\PreviewedPre[\modeidx][k]{\mathcal{S}}&\triangleq\{x\in\xcon[\modeidx]|\forall w\in\wcon[\modeidx],\exists u\in\ucon[\modeidx]\text{ s.t. }\nonumber\\
+&\qquad f_\modeidx(x,u,w)\in\PreviewedPre[\modeidx][k-1]{\mathcal{S}}\}.
 \end{align}
 \end{definition}
-The previewed robust presets are used when the system is allowed a preview of the current disturbance. This preview can expand the size of the preset because the selected input need not handle every possible disturbance. Robust presets both with and without previews can be found using basic set operation such as the Minkowski sum and difference as shown below \cite{Borrelli2017}.
+The previewed robust presets are used when the system is allowed a preview of the current disturbance. This preview can expand the size of the preset because the selected input need not handle every possible disturbance. 
+
+For linear systems where $f_\modeidx(x,u,w) = A_\modeidx x + B_\modeidx u + E_\modeidx w$, robust presets both with and without previews can be found using basic set operation such as the Minkowski sum and difference as shown below \cite{Borrelli2017}.
 \begin{align}
-\Pre[][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\ominus A_w\circ\mathcal{W}\right)\oplus\left(-B\circ\mathcal{U}\right)\right)\circ A\right)\ \cap\ \mathcal{X},\\
-\PreviewedPre[][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\oplus\left(-B\circ\mathcal{U}\right)\right)\ominus A_w\circ\mathcal{W}\right)\circ A\right)\ \cap\ \mathcal{X}.
+\Pre[\modeidx][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\ominus E_\modeidx\circ\wcon[\modeidx]\right)\oplus\left(-B_\modeidx\circ\ucon[\modeidx]\right)\right)\circ A_\modeidx\right)\ \cap\ \xcon[\modeidx],\\
+\PreviewedPre[\modeidx][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\oplus\left(-B_\modeidx\circ\ucon[\modeidx]\right)\right)\ominus E_\modeidx\circ\wcon[\modeidx]\right)\circ A_\modeidx\right)\ \cap\ \xcon[\modeidx].
 \end{align}
 
 Preset operations are critical in the calculation of invariant sets commonly used in feasibility analysis. An invariant set is defined as follows.
 \begin{definition}[\Ac{ci} sets \cite{Dorea1999}]\label{def:ci_set}
-A set, $\mathcal{S}\subseteq\mathcal{X}_m$ is CI under mode $\mathcal{M}_m$ if for all $x\in\mathcal{S}$, there exists a $u\in\mathcal{U}_m$ such that $f_m(x,u)\in\mathcal{S}$. Equivalently, $\mathcal{S}$ is CI iff $\mathcal{S}\subseteq\Pre[m][1]{\mathcal{S}}$.
+A set, $\mathcal{S}\subseteq\xcon[\modeidx]$ is CI under mode $\mode{\modeidx}$ if for all $x\in\mathcal{S}$, there exists a $u\in\ucon[\modeidx]$ such that $f_\modeidx(x,u,w)\in\mathcal{S}$. Equivalently, $\mathcal{S}$ is CI iff $\mathcal{S}\subseteq\Pre[\modeidx][1]{\mathcal{S}}$.
 \end{definition}
 
 A final tool used in this paper is the convex hull of a set defined as follows.
 \begin{definition}[Convex Hull]
-Given a set $\mathcal{S}\subset\real^n$, the convex hull is defined as 
+Given a set $\mathcal{S}\subseteq\real^n$, the convex hull is defined as 
 \begin{align*}
-&\Call{ConHull}\left(\mathcal{S}\right)\triangleq\\&\{x\in\real^n\ |\ \exists\ a,b\in\mathcal{S},\ \gamma\in\real\rii{0,1}\ \text{s.t.}\ x=\gamma a + (1-\gamma)b\}.
+&\Call{ConHull}{\mathcal{S}}\triangleq\\&\{x\in\real^n\ |\ \exists\ a,b\in\mathcal{S},\ \gamma\in\real\rii{0}{1}\ \text{s.t.}\ x=\gamma a + (1-\gamma)b\}.
 \end{align*}
 \end{definition}
 \subsection{Feasibility Analysis}

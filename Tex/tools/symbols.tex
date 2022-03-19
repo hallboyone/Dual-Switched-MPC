@@ -96,6 +96,11 @@
 
 \renewcommand{\ss}{\ensuremath{{\sigma}}}
 \newcommand{\ssg}{\ensuremath{{\sigma^\mathcal{G}\text{\hspace{0pt-\widthof{$^\mathcal{G}$}}}}}}
+\NewDocumentCommand{\ssl}{o}{%
+	\IfNoValueTF{#1}{
+		\ensuremath{{\sigma^\mathcal{L}}}
+		}{
+		\ensuremath{{\sigma^\mathcal{L}_{#1}}}}}
 \newcommand{\sucset}[1]{\ensuremath{\mathcal{S}^{#1}}}
 \newcommand{\sucsetrow}[2]{\ensuremath{\sucset{#1}_{#2}}}
 \newcommand{\sucsetel}[3]{\ensuremath{{s_{#2,#3}^{#1}}}}
@@ -151,7 +156,7 @@
 % \nummodes --- Number of modes 
 % \modeidx ------ Index of a single mode \ss(t)=\modeidx
 
-% \nx ------------- The state dimension
+% \ ------------- The state dimension
 % \nu ------------- The input dimension
 
 \NewDocumentCommand{\modes}{o}{%
@@ -177,6 +182,7 @@
 		\ensuremath{\ensuremath{\mathcal{I}_{#1}^m}}}}
 \newcommand{\nx}{\ensuremath{{n_x}}}
 \renewcommand{\nu}{\ensuremath{{n_u}}}
+\newcommand{\nw}{\ensuremath{{n_w}}}
 \NewDocumentCommand{\futstate}{ o o o o}{%
 	\IfNoValueTF{#3}%
 		{\ensuremath{x{(#1,#2)}}}
