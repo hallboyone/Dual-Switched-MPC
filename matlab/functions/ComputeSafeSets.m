@@ -48,8 +48,8 @@ for m=1:numel(safe_sets)
         if plot_tf
             subplot(numel(safe_sets),row_len,(m-1)*row_len+i)
             plot(safe_sets{m}{i}, 'alpha', 0.2)
-            xlim([-2.5, 2.5])
-            ylim([-2.5, 2.5])
+            xlim([-5.5, 5.5])
+            ylim([-5.5, 5.5])
             xlabel("$c_c$",'Interpreter','latex','fontsize',15);
             ylabel("$c_k$",'Interpreter','latex','fontsize',15);
             title(['$\mathcal{S}_{(', num2str(m),',',num2str(i),')}$'],'Interpreter','latex','fontsize',15)

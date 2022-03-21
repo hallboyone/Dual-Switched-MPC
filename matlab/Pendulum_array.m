@@ -1,6 +1,6 @@
 addpath ./functions/
 
-Ts = 0.1;
+Ts = 0.3;
 
 num_modes = 3;
 
@@ -13,10 +13,10 @@ A = cell(num_modes, 1);
 B = cell(num_modes, 1);
 Mk = zeros(num_elm);
 Mc = zeros(num_elm);
-K = 1*rand(num_elm, 4);
+K = 2.5*rand(num_elm, 4);
 C = 0.5*rand(num_elm, 4);
 for m_idx = 1:num_modes
-    m = 1.5*(1+rand(num_elm, 1))*sqrt(2);
+    m = 1*(1+rand(num_elm, 1))*sqrt(2);
     B{m_idx} = zeros(2*num_elm, num_elm);
     for n = 1:num_elm
         if n+num_col <= num_elm
@@ -66,7 +66,7 @@ X = cell(num_elm, 1);
 for a_idx = 1:num_elm
     X{a_idx} = cell(num_modes, 1);
     for m_idx = 1:num_modes
-        X{a_idx}{m_idx} = Polyhedron([eye(2);-eye(2)], 2*[1;1;1;1]);
+        X{a_idx}{m_idx} = Polyhedron([eye(2);-eye(2)], 2.5*(1+m_idx/(num_modes))*[1;1;1;1]);
     end
 end
 
@@ -75,7 +75,7 @@ U = cell(num_elm, 1);
 for a_idx = 1:num_elm
     U{a_idx} = cell(num_modes, 1);
     for m_idx = 1:num_modes
-        U{a_idx}{m_idx} = Polyhedron([1;-1], 20*[1, 1]');
+        U{a_idx}{m_idx} = Polyhedron([1;-1], 25*[1, 1]');
     end
 end
 
@@ -86,7 +86,7 @@ for a_idx = 1:num_elm
                                   Node(1, 3, 2),...
                                   Node(1, [4,6], 2),...
                                   Node(1, [5, 12], 2),...
-                                  Node(1, [6, 12], 2),...
+                                  Node(1, [6, 12, 5], 2),...
                                   Node(2, 7, 2),...
                                   Node(2, 8, 2),...
                                   Node(2, [9, 11], 2),...
@@ -99,8 +99,12 @@ for a_idx = 1:num_elm
                                   Node(3, [1,6], 2)});
 end
 
-system = BuildSystem(A, B, X, U, G); 
-system{1}.graph.node{6}.save_fig_to = 'fig_1_6_';
+system = BuildSystem(A, B, X, U, G);
+for a_idx = 1:num_elm
+    for n_idx = 1:G{1}.numnodes
+        system{a_idx}.graph.node{n_idx}.save_fig_to = ['sim_fig/fig_', int2str(a_idx), '_',  int2str(n_idx), '_'];
+    end
+end
 
 plot_inner = false;
 plot_outer = true;
