@@ -2,7 +2,6 @@ build/
 **/*.asv
 .DS_Store
 Tex/.DS_Store
-*.mat
 .DS_Store
 .DS_Store
 matlab/.DS_Store
