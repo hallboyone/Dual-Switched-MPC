@@ -1,34 +1,49 @@
-\documentclass[conference]{IEEEtran}
+\documentclass[letterpaper, 10 pt, conference]{ieeeconf} 
+\overrideIEEEmargins 
+\IEEEoverridecommandlockouts 
+
+
 \input{./tools/packages}
-\bibliography{./bib/bibliography}
+%\bibliographystyle{IEEEtran}
+\bibliography{./bib/IEEEabrv,./bib/bibliography}
+%\bibliography{./bib/bibliography}
 \input{./tools/symbols}
 \input{./tools/acros.tex}
 \input{./tools/custom_commands}
 
 \pgfplotsset{compat=1.17}
+\pdfminorversion=4
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
-    
-\begin{document}
-\title{Persistent Feasibility in High Dimension, Externally Switched Systems}
 
-\author{\IEEEauthorblockN{1\textsuperscript{st} Richard A Hall}
-\IEEEauthorblockA{\textit{Thomas Lord MEMS Department} \\
-\textit{Duke University}\\
-Durham, NC, USA \\
-0000-0003-3512-6941}
-\and
-\IEEEauthorblockN{2\textsuperscript{nd} Leila Bridgeman}
-\IEEEauthorblockA{\textit{Thomas Lord MEMS Department} \\
-\textit{Duke University}\\
-Durham, NC, USA \\
-0000-0002-9367-7218}
+\title{\LARGE \bf Persistent Feasibility in High Dimension, Externally Switched Systems}
+\author{Richard A Hall$^{1}$ and Dr. Leila Bridgeman$^{2}$% <-this % stops a space
+\thanks{$^{1}$Richard A Hall is a Ph.D student in the Thomas Lord MEMS Department, Duke University, Durham NC, USA
+        {\tt\small rah75@duke.edu}}%
+\thanks{$^{2}$Leila Bridgeman is an associate professor with the the Thomas Lord MEMS Department, Duke University, Durham NC, USA {\tt\small leila.bridgeman@duke.edu}}%
 }
+
+\begin{document}
 \maketitle
+\thispagestyle{empty}
+\pagestyle{empty}
+%\author{\IEEEauthorblockN{1\textsuperscript{st} Richard A Hall}
+%\IEEEauthorblockA{\textit{Thomas Lord MEMS Department} \\
+%\textit{Duke University}\\
+%Durham, NC, USA \\
+%0000-0003-3512-6941}
+%\and
+%\IEEEauthorblockN{2\textsuperscript{nd} Leila Bridgeman}
+%\IEEEauthorblockA{\textit{Thomas Lord MEMS Department} \\
+%\textit{Duke University}\\
+%Durham, NC, USA \\
+%0000-0002-9367-7218}
+%}
+%\maketitle
 \input{abstract}
 \input{Introduction}
 \input{Literature_Review}
-%\input{Symbol_table}
+%%\input{Symbol_table}
 \input{Preliminaries}
 \input{System_Description}
 \input{Algorithm_Design}
