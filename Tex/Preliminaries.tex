@@ -31,14 +31,14 @@ The full constrained switched system collects the modes and a directed graph to 
 where the labels of the graph correspond to the mode indexes, $\gnumlabels=\nummodes$.
 
 \subsection{Set Operations and Control Invariance}
-Set operations provide tools to analyze how a mode evolves under allowable inputs. Given a mode, $\mode{\modeidx}$, the following important set operations are introduced. 
-\begin{definition}[Robust Preset]\label{def:robust_preset}
-The $k$-step, robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ is given by
-\begin{align}
-\Pre[\modeidx][0]{\mathcal{S}}&\triangleq\mathcal{S},\\
-\Pre[\modeidx][k]{\mathcal{S}}&\triangleq\{x\in\xcon[\modeidx]\ |\ \exists u\in\ucon[\modeidx]\text{ s.t. }\forall w\in\wcon[\modeidx],\nonumber\\ &\qquad f_\modeidx(x,u,w)\in\Pre[\modeidx][k-1]{\mathcal{S}}\}.
-\end{align}
-\end{definition}
+Set operations provide tools to analyze how a mode evolves under allowable inputs. Given a mode, $\mode{\modeidx}$, the following important set operation is introduced. 
+%\begin{definition}[Robust Preset]\label{def:robust_preset}
+%The $k$-step, robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ is given by
+%\begin{align}
+%\Pre[\modeidx][0]{\mathcal{S}}&\triangleq\mathcal{S},\\
+%\Pre[\modeidx][k]{\mathcal{S}}&\triangleq\{x\in\xcon[\modeidx]\ |\ \exists u\in\ucon[\modeidx]\text{ s.t. }\forall w\in\wcon[\modeidx],\nonumber\\ &\qquad f_\modeidx(x,u,w)\in\Pre[\modeidx][k-1]{\mathcal{S}}\}.
+%\end{align}
+%\end{definition}
 \begin{definition}[Previewed Robust Preset]\label{def:prev_robust_preset}
 The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrained dynamics $\mode{\modeidx}$ is given by
 \begin{align}
@@ -47,11 +47,10 @@ The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrain
 &\qquad f_\modeidx(x,u,w)\in\PreviewedPre[\modeidx][k-1]{\mathcal{S}}\}.
 \end{align}
 \end{definition}
-The previewed robust presets are used when the system is allowed a preview of the current disturbance. This preview can expand the size of the preset because the selected input need not handle every possible disturbance. 
+Comparing this to the more common robust preset operator, the previewed robust preset is allowed to select the input based on a known disturbance. The previewed robust preset is used when the system is allowed a preview of the current disturbance. This preview can expand the size of the preset because the selected input need not handle every possible disturbance. 
 
-For linear systems where $f_\modeidx(x,u,w) = A_\modeidx x + B_\modeidx u + E_\modeidx w$, robust presets both with and without previews can be found using basic set operation such as the Minkowski sum and difference as shown below \cite{Borrelli2017}.
+For linear systems where $f_\modeidx(x,u,w) = A_\modeidx x + B_\modeidx u + E_\modeidx w$, previewed robust presets can be found using basic set operation such as the Minkowski sum and difference as shown below and adapted from \cite{Borrelli2017}.
 \begin{align}
-\Pre[\modeidx][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\ominus E_\modeidx\circ\wcon[\modeidx]\right)\oplus\left(-B_\modeidx\circ\ucon[\modeidx]\right)\right)\circ A_\modeidx\right)\ \cap\ \xcon[\modeidx],\\
 \PreviewedPre[\modeidx][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\oplus\left(-B_\modeidx\circ\ucon[\modeidx]\right)\right)\ominus E_\modeidx\circ\wcon[\modeidx]\right)\circ A_\modeidx\right)\ \cap\ \xcon[\modeidx].
 \end{align}
 
