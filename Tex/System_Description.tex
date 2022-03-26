@@ -4,7 +4,7 @@
 %\end{figure*}
 
 \section{System Description}
-In the previous sections, the systems have only contained a single switching signal. In general, however, systems may contain many switching signals. Consider a collection of $\numagents\in\int\rgeq{1}$ external switching signals each respecting their own directed graph, $\ssl[\agentidx](t)\in\Sigma(\graph^\agentidx)\ \agentidx\in\idxset{\numagents}$. Further, consider a system with all these signals and dynamics taking the form
+In the previous sections, the systems have only contained a single switching signal. In general, however, systems may contain many independent switching signals. Consider a collection of $\numagents\in\int\rgeq{1}$ external switching signals each respecting their own directed graph, $\ssl[\agentidx](t)\in\Sigma(\graph^\agentidx)\ \agentidx\in\idxset{\numagents}$. Further, consider a system with all these signals and dynamics taking the form
 \begin{align}
 A(t)&=\begin{bmatrix}
 A^{11}_{\ssl[1](t)}&A^{12}_{\ssl[1](t)}&\cdots&A^{1\numagents}_{\ssl[1](t)},\\
@@ -13,17 +13,16 @@ A^{21}_{\ssl[2](t)}&A^{22}_{\ssl[2](t)}&\cdots&A^{2\numagents}_{\ssl[2](t)},\\
 A^{\numagents 1}_{\ssl[\numagents](t)} & A^{\numagents 2}_{\ssl[\numagents](t)} &\cdots & A^{\numagents \numagents}_{\ssl[\numagents](t)} 
 \end{bmatrix},\\
 B(t)&=\begin{bmatrix}
-B^{1}_{\ssl[1](t)}&0&\cdots&0,\\
-0&B^{2}_{\ssl[2](t)}&\cdots&0,\\
-\vdots&\vdots & \ddots & \vdots\\
-0 & 0 &\cdots & B^{\numagents}_{\ssl[\numagents](t)} 
+B^{1}_{\ssl[1](t)} & \cdots & 0\\
+\vdots             & \ddots & \vdots\\
+0                  & \cdots & B^{\numagents}_{\ssl[\numagents](t)}
 \end{bmatrix},\\
 \xcon(t)&=\xcon[\ssl[1](t)]^1\times\cdots\times\xcon[\ssl[\numagents](t)]^\numagents,\\
 \ucon(t)&=\ucon[\ssl[1](t)]^1\times\cdots\times\ucon[\ssl[\numagents](t)]^\numagents.
 \end{align}
 This structure is motivated by distributed systems with coupling in the system's states. Note how each block-row is governed by a single switching signal. This makes intuitive sense because local switching signals are more likely to effect how neighboring states impact the local agent rather then how local states will effect neighboring agents.
 
-The objective of this work is to design a safe-set collection for systems with the above structure. A naive solution would simply be to define a new switching signal with states corresponding to all the realizable permutations of the independent signals. While this would work in theory, it creates an exponential growth in the cardinality of the safe-set collection. A second challenge arrizes when the probable size of the state space is considered. Having even just three block-rows of three dimensions each leads to a six dimension system and will tax the naive implementation. These concerns will be addressed by splitting the system into block-rows and looking for safe-set collections, $\mathcal{S}^{\agentidx}=\{\mathcal{S}^\agentidx_n\}_{n\in\gnumnodes[\agentidx]}$, for each separately. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
+The objective of this work is to design a safe-set collection for systems with the above structure. As mentioned in the introduction, defining a signal representing all possible states of every switching signal is one possible solution. It can now be seen that corresponding to the exponential growth in the number of signal states is an exponential growth in the cardinality of the safe-set collection. This is computationally untenable. A second challenge arises when the probable size of the state space is considered. Having even just three block-rows of three dimensions each leads to a six dimension system and will tax the naive implementation. These concerns will be addressed by splitting the system into block-rows and looking for safe-set collections, $\mathcal{S}^{\agentidx}=\{\mathcal{S}^\agentidx_n\}_{n\in\gnumnodes[\agentidx]}$, for each separately. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
 
 \subsection{Block-row Dynamics}
 Looking only at the block row indexed by $\agentidx$, the dynamics can be rewritten as 

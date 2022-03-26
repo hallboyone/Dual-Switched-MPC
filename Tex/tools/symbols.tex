@@ -18,16 +18,24 @@
 		}}{% #1 and #2
 			\ensuremath{\text{Pre}^{#2}_{#1}\left(#3\right)}
 		}}
+%\NewDocumentCommand{\PreviewedPre}{ o o m }{%
+%	\IfNoValueTF{#2}{%
+%		\IfNoValueTF{#1}{% No #1 or #2
+%			\ensuremath{\text{Pre}^{\text{\tiny\faEye},1\hspace{-0.1cm}}\left(#3\right)}
+%		}{% #1 but no #2
+%			\ensuremath{\text{Pre}_{#1}^{\text{\tiny\faEye},1\hspace{-0.1cm}}\left(#3\right)}
+%		}}{% #1 and #2
+%			\ensuremath{\text{Pre}^{\text{\tiny\faEye}, #2\hspace{-0.1cm}}_{#1}\left(#3\right)}
+%		}}
 \NewDocumentCommand{\PreviewedPre}{ o o m }{%
 	\IfNoValueTF{#2}{%
 		\IfNoValueTF{#1}{% No #1 or #2
-			\ensuremath{\text{Pre}^{\text{\tiny\faEye},1\hspace{-0.1cm}}\left(#3\right)}
+			\ensuremath{\text{Pre}^{1\hspace{-0.1cm}}\left(#3\right)}
 		}{% #1 but no #2
-			\ensuremath{\text{Pre}_{#1}^{\text{\tiny\faEye},1\hspace{-0.1cm}}\left(#3\right)}
+			\ensuremath{\text{Pre}_{#1}^{1\hspace{-0.1cm}}\left(#3\right)}
 		}}{% #1 and #2
-			\ensuremath{\text{Pre}^{\text{\tiny\faEye}, #2\hspace{-0.1cm}}_{#1}\left(#3\right)}
-		}}
-		
+			\ensuremath{\text{Pre}^{#2\hspace{-0.1cm}}_{#1}\left(#3\right)}
+		}}		
 			
 % ========================== Ranges =========================
 \newcommand{\rgeq}[1]{\ensuremath{_{\geq #1}}}
