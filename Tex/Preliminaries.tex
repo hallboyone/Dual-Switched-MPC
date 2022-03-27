@@ -50,9 +50,9 @@ The $k$-step, previewed robust preset of a set $\mathcal{S}$ under the constrain
 Comparing this to the more common robust preset operator, the previewed robust preset is allowed to select the input based on a known disturbance. The previewed robust preset is used when the system is allowed a preview of the current disturbance. This preview can expand the size of the preset because the selected input need not handle every possible disturbance. 
 
 For linear systems where $f_\modeidx(x,u,w) = A_\modeidx x + B_\modeidx u + E_\modeidx w$, previewed robust presets can be found using basic set operation such as the Minkowski sum and difference as shown below and adapted from \cite{Borrelli2017}.
-\begin{align}
+\begin{align*}
 \PreviewedPre[\modeidx][1]{\mathcal{S}} &= \left(\left(\left(\mathcal{S}\oplus\left(-B_\modeidx\circ\ucon[\modeidx]\right)\right)\ominus E_\modeidx\circ\wcon[\modeidx]\right)\circ A_\modeidx\right)\ \cap\ \xcon[\modeidx].
-\end{align}
+\end{align*}
 
 Preset operations are critical in the calculation of invariant sets commonly used in feasibility analysis. An invariant set is defined as follows.
 \begin{definition}[\Ac{ci} sets \cite{Dorea1999}]\label{def:ci_set}
