@@ -1,10 +1,10 @@
 \section{Algorithm Design}
-Before addressing the circular dependency mentioned in the previous section, an algorithm to find the safe-sets of a single agent is developed. To avoid the circular dependency, it is assumed that the other agents have fixed safe-sets. Then the disturbance caused by the neighboring agents can be bound with
+The reader may have noticed that a circular dependency arose in the previous discussion -- the safe-set collection for agent $\agentidx$ depends on the safe-set collection for agent ${\tilde{\agentidx}}$ which depends on the safe-set collection for agent $\agentidx$. Before addressing this, however, an algorithm to find the safe-sets of a single agent is developed. To avoid the circular dependency, it is assumed that the other agents have fixed safe-sets. Then the disturbance caused by the neighboring agents can be bounded with
 \begin{equation}
 \wcon[\agentidx][\modeidx]=\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Call{ConHull}{\cup\mathcal{S}^{\tilde{\agentidx}}}.
 \end{equation}
 With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for this mode. 
-\begin{algorithm}[t]
+\begin{algorithm}[h]
 \caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
 \begin{algorithmic}[1]
 \Procedure {AgentSafeSets}{$\agent{\agentidx}$}
@@ -32,7 +32,7 @@ An important distinction between this algorithm and previous algorithms focused 
 Given any agent, $\agent{\agentidx}$, $\Call{AgentSafeSets}{\agent{\agentidx}}$ returns the maximal safe-set collection.
 \end{lemma}
 \begin{proof}
-Follows the logic of \cite[Theorem 2]{Danielson2019} but with previewed preset operations.
+Follows the logic of \cite[Theorem 2]{Danielson2019}, sketched here, but with previewed preset operations. The first part of the proof uses the definition of safe-set collections and shows the produced sets are safe-set collections. To show that it is maximal, a contradiction is constructed by assuming a state outside the generated sets satisfy the safe-set definition. The algorithm can be iterated backward to show that this state must be outside the state constraints and thereby violates the original assumption.
 \end{proof}
 \begin{lemma}
 Let $\agent{\tilde\agentidx}$ and $\agent{\hat\agentidx}$ be two switched systems that are equivalent except for their disturbance bounds which satisfy $E_{\modeidx}^{\agentidx}\circ\wconset{\tilde\agentidx}_\modeidx\subseteq E_{\modeidx}^{\agentidx}\circ\wconset{\hat\agentidx}_\modeidx$ for each mode where $E_{\modeidx}^{\agentidx}=E_{\modeidx}^{\tilde\agentidx}=E_{\modeidx}^{\hat\agentidx}$. Then the relationship
@@ -83,7 +83,7 @@ where the decorations on the $\agentidx$ have been dropped on equivalent values 
 \end{algorithm}
 
 \begin{lemma}
-The algorithm $\Call{SystemSafeSets}{\agents}$ produces a valid safe-set collection for every $k\in\int\rgeq{0}$. 
+For systems taking the form of \ref{eq:sys} split into block rows as in Equation \autoref{eq:block-row-dyn}, algorithm $\Call{SystemSafeSets}{\agents}$ produces a valid safe-set collection for every $k\in\int\rgeq{0}$. 
 \end{lemma}
 \begin{proof}
 This holds trivially for $\Omega^0$. The following induction steps complete the proof.
