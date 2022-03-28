@@ -154,7 +154,7 @@
 % ================== System Agents ==================
 \newcommand{\agents}{\ensuremath{\mathcal{M}}}
 \newcommand{\agent}[1]{\ensuremath{\agents^{#1}}}
-\newcommand{\numagents}{\ensuremath{{C_a}}}
+\newcommand{\numagents}{\ensuremath{{N_a}}}
 \newcommand{\agentidx}{\ensuremath{\alpha}}
 \newcommand{\agentidxset}{\ensuremath{\mathcal{I}^a}}
 
@@ -179,9 +179,9 @@
 		\ensuremath{\modes[#1]_{#2}}}}
 \NewDocumentCommand{\nummodes}{o}{%
 	\IfNoValueTF{#1}{
-		\ensuremath{C_m}
+		\ensuremath{|\modes|}
 		}{
-		\ensuremath{{C_m^#1}}}}
+		\ensuremath{{|\modes^{#1}|}}}}
 \newcommand{\modeidx}{{\ensuremath{\mu}}}
 \NewDocumentCommand{\modeidxset}{o}{%
 	\IfNoValueTF{#1}{
@@ -218,8 +218,8 @@
 \NewDocumentCommand{\graph}{}{\ensuremath{\mathcal{G}}}
 \NewDocumentCommand{\gnumnodes}{o}{
 	\IfNoValueTF{#1}
-		{\ensuremath{C_n^{\graph}}}
-		{\ensuremath{C_n^{\graph^{#1}}}}}
+		{\ensuremath{|\graph|}}
+		{\ensuremath{|\graph^{#1}|}}}
 \NewDocumentCommand{\gedges}{}{\ensuremath{\mathcal{E}}}
 \NewDocumentCommand{\gnodeedges}{o m}{
 	\IfNoValueTF{#1}
@@ -227,4 +227,4 @@
 		{\ensuremath{\gedges_{#2}^{#1}}}}
 \NewDocumentCommand{\glabels}{}{\ensuremath{\mathcal{L}}}
 \NewDocumentCommand{\gnodelabel}{m}{\ensuremath{\glabels_{#1}}}
-\NewDocumentCommand{\gnumlabels}{}{\ensuremath{C_l^{\graph}}}
+\NewDocumentCommand{\gnumlabels}{}{\ensuremath{\overline{\graph}}}

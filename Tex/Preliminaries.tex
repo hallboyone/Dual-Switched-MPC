@@ -1,16 +1,14 @@
 \section{Preliminaries}
 \subsection{Notation}
-The set of integers and real numbers are denoted $\int$ and $\real$ respectively. A ranged subset of a space is denoted with $\mathbb{S}\rii{i}{j}=\{s\in\mathbb{S}|i\leq s\leq j\}$. Parenthesis are used in place of brackets to denote strict inequalities. Open bounds are defined using notation such as $\mathbb{S}\rgeq{i}$ where any comparison operator can be substituted for $\geq$. A set of integers starting at 1 and going to $k\in\int\rgeq{1}$ is denoted with $\idxset{k}\triangleq\int\rii{1}{k}$. Use $\PowerSet{\cdot}$ to denote the power set of a set. 
+The set of integers and real numbers are denoted $\int$ and $\real$ respectively. A ranged subset of a space is denoted with $\mathbb{S}\rii{i}{j}=\{s\in\mathbb{S}|i\leq s\leq j\}$. Parenthesis are used in place of brackets to denote strict inequalities. Open bounds are defined using notation such as $\mathbb{S}\rgeq{i}$ where any comparison operator can be substituted for $\geq$. Define the set of integers from $1$ to $k>1$ as $\idxset{k}\triangleq\int\rii{1}{k}$. Use $\PowerSet{\cdot}$ to denote the power set of a finite set. Let the class of all discrete, disturbed dynamics be denoted $\mathcal{D}^{\nx,\nu,\nw}\triangleq\{f:\real^\nx\times\real^\nu\times\real^\nw\rightarrow\real^\nx\}$. 
 
-Let $\mathcal{S}=\{\{\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}\}_{j\in\mathcal{I}_{J}(i)}\}_{i\in\mathcal{I}_I}$, $\mathcal{S}\subseteq\real^n$ be a nested collection of subsets of the $n$-dimensional, real-valued numbers. The first and second level sub-collections are denoted as $\mathcal{S}_{(i)}=\{\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}\}_{j\in\mathcal{I}_{J}(i)}$ and $\mathcal{S}_{(i,j)}=\{\mathcal{S}_{(i,j,k)}\}_{k\in\mathcal{I}_{K}(i,j)}$. Operations preformed between nested collections require the collections be of equal size and are preformed elementwise. For example, $\mathcal{S}_{(i)}$ equals $\tilde{\mathcal{S}}_{(i)}$ if they are the same size and every element in both is equivalent. Operations preformed between a nested collection and a single element behave as if the single element where an appropriate sized collection with elements equal to the single element. For example, setting $\mathcal{S}=\underline{0}$ sets every element of $\mathcal{S}$ to $\underline{0}$. Finally, union operations are preformed on every element of the nested collection. For example, $\cup \mathcal{S}_{(i)}$ is the union of all the elements of $\mathcal{S}_{(i)}$.
-
-Let the class of all discrete, disturbed dynamics be denoted $\mathcal{D}^{\nx,\nu,\nw}\triangleq\{f:\real^\nx\times\real^\nu\times\real^\nw\rightarrow\real^\nx\}$. 
-
-\subsection{Directed Graphs}
-A directed graph, $\graph$, is comprised of $\gnumnodes\in\int\geq{1}$ nodes. Node $i\in\idxset{\gnumnodes}$ is defined by a list of edges leading to successor nodes, $\gnodeedges{i}\in\PowerSet{\idxset{\gnumnodes}}$, and a label, $\gnodelabel{i}=\idxset{\gnumlabels}^n$, where $\gnumlabels$ is the number of labels in the graph. If $j\in\mathcal{E}_i$, then transitioning from node $i$ to node $j$ is valid in a single time step. A time varying function mapping to nodes, $f:\int\rgeq{0}\rightarrow\idxset{\gnumnodes}$, is said to respect a graph $\mathcal{G}$ if $f(t)=i$ implies that $f(t+1)\in\gnodeedges{i}$. A time varying function mapping to labels, $g:\int\rgeq{0}\rightarrow\idxset{\gnumlabels}$, is said to respect a graph $\mathcal{G}$ if  there exists a function respecting $\mathcal{G}$, $f(t)$, such that $g(t)=\gnodelabel{f(t)}$. The set of all such functions is denoted $\Sigma(\mathcal{G})\triangleq\{g:\int\rgeq{0}\rightarrow\idxset{\gnumlabels}\ |\ g(\cdot)\text{ respects }\graph\}$. 
+A directed graph is defined as $\graph\triangleq\{(\gnodeedges{n},\gnodelabel{n})\}_{n\in\idxset{\gnumnodes}}$ where $\gnodeedges{n}\in\PowerSet{\idxset{\gnumnodes}}$ lists the successor nodes of node $n$ and $\gnodelabel{n}=\idxset{\gnumlabels}$ is the node's label. A discrete, time varying function, $f(t)$, mapping to a graph's nodes is said to respect the graph if $f(t)=n$ implies that $f(t+1)\in\gnodeedges{n}$. The set of all such functions for a specific graph, $\graph$ is denoted $\Sigma(\mathcal{G})\triangleq\{g:\int\rgeq{0}\rightarrow\idxset{\gnumnodes}\ |\ g(\cdot)\text{ respects }\graph\}$. 
+\begin{remark}
+Note that a function $f(\cdot)\in\Sigma(\graph)$ maps to a node, not the node's label. The active label at time $t$ can be accessed with $\gnodelabel{f(t)}$. 
+\end{remark}
 
 \subsection{Switching Signals}
-An external switching signal is any function respecting a graph, $\graph$, that takes the current time as an input, $\left(\ss:\int\rgeq{0}\rightarrow\int\rii{1}{\gnumnodes}\right)\in\Sigma(\graph)$. The state of the switching signal can then be defined by the label of the current node, $\ssl(t)\triangleq \gnodelabel{\ss(t)}$. Prior knowledge of the switching signal is not required, but its value at time $t$ is known immediately.
+An external switching signal is any discrete function, $\ss(\cdot)$ that is uninfluenced by the system's state and control inputs and causes elements of the plant and/or controller to switch. In this work, it is assumed that the signal respects some graph, $\ss(\cdot)\in\Sigma(\graph)$ that is known at design time. The state of the switching signal can then be defined by the label of the current node, $\ssl(t)\triangleq \gnodelabel{\ss(t)}$. Prior knowledge of the switching signal is not required, but its value at time $t$ is known immediately.
 \begin{remark}
 Using directed graphs to constrain the switching signal is a generalizations of dwell time and successor constraints from previous literature that allows a richer set of constraints to be represented. For example, the graph below represents a 2-mode system where the first mode has a minimum dwell time of 2 while the second mode can only be left during odd dwell times.
 \begin{figure}[h!]
@@ -28,7 +26,7 @@ The full constrained switched system collects the modes and a directed graph to 
 \begin{equation*}
 \modes\triangleq\{\{\mode{\modeidx}\}_{\modeidx\in\idxset{\nummodes}}, \graph\}
 \end{equation*}
-where the labels of the graph correspond to the mode indexes, $\gnumlabels=\nummodes$.
+where the labels of the graph correspond to a mode index, $\gnumlabels=\nummodes$.
 
 \subsection{Set Operations and Control Invariance}
 Set operations provide tools to analyze how a mode evolves under allowable inputs. Given a mode, $\mode{\modeidx}$, the following important set operation is introduced. 
@@ -58,6 +56,7 @@ Preset operations are critical in the calculation of invariant sets commonly use
 \begin{definition}[\Ac{ci} sets \cite{Dorea1999}]\label{def:ci_set}
 A set, $\mathcal{S}\subseteq\xcon[\modeidx]$ is CI under mode $\mode{\modeidx}$ if for all $x\in\mathcal{S}$, there exists a $u\in\ucon[\modeidx]$ such that $f_\modeidx(x,u,w)\in\mathcal{S}$. Equivalently, $\mathcal{S}$ is CI iff $\mathcal{S}\subseteq\Pre[\modeidx][1]{\mathcal{S}}$.
 \end{definition}
+This definition holds regardless of if the preset operator is nominal, robust, or previewed robust. 
 
 A final tool used in this paper is the convex hull of a set defined as follows.
 \begin{definition}[Convex Hull]
@@ -71,7 +70,7 @@ In constrained systems, it is extremely important that the controller can satisf
 
 In centralized, unswitched systems, persistent feasibility can be established by constraining the system to be within a \ac{ci} set, $\mathcal{C}\subseteq\mathcal{X}$ \cite{Blanchini1999}. Relying on constant, control invariant sets become difficult in externally switched systems, however. The \ac{ci} set must be common to all system modes or else persistent feasibility is lost. This concern can be addressed using time varying, control invariant sets that take advantage of constraints on the switching signal. For example, in \cite{Danielson2019,Santis2004}, time varying, control invariant sets were developed that force the system to move during the dwell time between switches to a region from which a switch to any successor mode will preserve persistent feasibility. By lower bounding the dwell time, the system had additional time to reach these safe regions thereby loosening the state constraints. These results have been further expanded to include the robust case \cite{Lavaei2021}.
 
-The ideas presented in the previous literature can be described using safe-set collections. These are collections of sets, indexed by the switching signal, that serve as time-varying state constraints of the system. To establish persistent feasibility, every safe-set must be within the 1-step preset of all possible successor safe-sets. This is presented formally in the following definition.
+The approaches used in the previous literature can be described using safe-set collections. These are collections of sets, indexed by the switching signal, that serve as time-varying state constraints of the system. To establish persistent feasibility, every safe-set must be within the 1-step preset of all possible successor safe-sets. This is presented formally in the following definition.
 \begin{definition}[Safe-set collection]
 Let the external switching signal, $\ss\in\Sigma(\graph)$ govern the system $\modes\triangleq\{\{\mode{\modeidx}\}_{\modeidx\in\idxset{\nummodes}}, \graph\}$. A collection of sets indexed by the nodes of $\graph$, $\mathcal{S}=\{\mathcal{S}_{i}\}_{i\in\idxset{\gnumnodes}}$ is a safe-set collection if
 $$\mathcal{S}_{i}\subseteq\Pre[\gnodelabel{j}][1]{\mathcal{S}_{j}}\ \forall\ i\in\idxset{\gnumnodes},\ j\in \gnodeedges{i}$$
