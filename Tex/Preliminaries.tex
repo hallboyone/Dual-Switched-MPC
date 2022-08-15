@@ -55,9 +55,9 @@ For linear systems where $f_\modeidx(x,u,w) = A_\modeidx x + B_\modeidx u + E_\m
 
 Preset operations are critical in the calculation of invariant sets commonly used in feasibility analysis. An invariant set is defined as follows.
 \begin{definition}[\Ac{ci} sets \cite{Dorea1999}]\label{def:ci_set}
-A set, $\mathcal{S}\subseteq\xcon[\modeidx]$ is CI under mode $\mode{\modeidx}$ if for all $x\in\mathcal{S}$, there exists a $u\in\ucon[\modeidx]$ such that $f_\modeidx(x,u,w)\in\mathcal{S}$. Equivalently, $\mathcal{S}$ is CI iff $\mathcal{S}\subseteq\Pre[\modeidx][1]{\mathcal{S}}$.
+A set, $\mathcal{S}\subseteq\xcon[\modeidx]$ is CI under mode $\mode{\modeidx}$ if for all $x\in\mathcal{S}$, there exists a $u\in\ucon[\modeidx]$ such that \edit{$f_\modeidx(x,u,w)\in\mathcal{S}$.}{$f_\modeidx(x,u,0)\in\mathcal{S}$. Likewise, a set $\mathcal{S}\subseteq\xcon[\modeidx]$ is a previewed robust CI (PR-CI) set if, for all $x\in\mathcal{S}$ and $w\in\mathcal{W}_\modeidx$, there exists a $u\in\ucon[\modeidx]$ such that $f_\modeidx(x,u,w)\in\mathcal{S}$.} Equivalently, $\mathcal{S}$ is CI\edit{}{ (PR-CI)} iff $\mathcal{S}\subseteq\Pre[\modeidx][1]{\mathcal{S}}$\edit{.}{ where the preset operator is nominal (previewed robust).}
 \end{definition}
-This definition holds regardless of if the preset operator is nominal, robust, or previewed robust. 
+\edit{ This definition holds regardless of if the preset operator is nominal, robust, or previewed robust.}{}
 
 A final tool used in this paper is the convex hull of a set defined as follows.
 \begin{definition}[Convex Hull]
