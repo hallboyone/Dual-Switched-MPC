@@ -218,8 +218,8 @@
 \NewDocumentCommand{\graph}{}{\ensuremath{\mathcal{G}}}
 \NewDocumentCommand{\gnumnodes}{o}{
 	\IfNoValueTF{#1}
-		{\ensuremath{|\graph|}}
-		{\ensuremath{|\graph^{#1}|}}}
+		{\ensuremath{G}}
+		{\ensuremath{G^{#1}}}}
 \NewDocumentCommand{\gedges}{}{\ensuremath{\mathcal{E}}}
 \NewDocumentCommand{\gnodeedges}{o m}{
 	\IfNoValueTF{#1}
@@ -227,4 +227,4 @@
 		{\ensuremath{\gedges_{#2}^{#1}}}}
 \NewDocumentCommand{\glabels}{}{\ensuremath{\mathcal{L}}}
 \NewDocumentCommand{\gnodelabel}{m}{\ensuremath{\glabels_{#1}}}
-\NewDocumentCommand{\gnumlabels}{}{\ensuremath{\overline{\graph}}}
+\NewDocumentCommand{\gnumlabels}{}{\ensuremath{L}}
