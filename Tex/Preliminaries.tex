@@ -24,9 +24,9 @@ Switched systems \edit{}{in the context of this work} are comprised of modes and
 \mode{\modeidx}\triangleq\{f_\modeidx\in \mathcal{D}^{\nx,\nu,\nw}, \xcon[\modeidx]\subseteq\real^\nx, \ucon[\modeidx]\subseteq\real^\nu, \wcon[\modeidx]\subset\real^\nw\}
 \end{equation*}
 where $\mathcal{D}^{\nx,\nu,\nw}\triangleq\{f:\real^{\nx\times\nu\times\nw}\rightarrow\real^\nx\}$ defines the set of discrete dynamics,  and $\xcon[\modeidx]$, $\ucon[\modeidx]$, and  $\wcon[\modeidx]$ are the state, input, and disturbance constraints respectively. The full constrained switched system collects the modes and a directed graph to take the form
-\begin{equation*}
+\begin{equation}\label{eq:basic_switched_sys}
 \modes\triangleq\{\{\mode{\modeidx}\}_{\modeidx\in\idxset{\nummodes}}, \graph\}
-\end{equation*}
+\end{equation}
 where the labels of the graph correspond to \edit{a mode index, $\gnumlabels=\nummodes$}{ the system's mode indices, $\idxset{\gnumlabels}=\idxset{\nummodes}$}.
 
 \subsection{Set Operations and Control Invariance}
