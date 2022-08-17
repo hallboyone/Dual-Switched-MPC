@@ -127,7 +127,7 @@ end
 
 plot_inner = false;
 plot_outer = true;
-par_inner = false;
+par_inner  = false;
 system = ComputeSafeSets(system, plot_outer, plot_inner, par_inner);
 
 function M = remapDynamics(M)
