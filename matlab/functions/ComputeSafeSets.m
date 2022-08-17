@@ -13,12 +13,12 @@ while true
         % Extract the union of each agent's safe-sets into a cell array
         safe_set_unions = ExtractFrom(system, "safe_set_union");
         % For each agent, compute its safe-sets using the current safe-set unions
-        ppm = ParforProgressbar(numel(system),'showWorkerProgress',true);
+        % ppm = ParforProgressbar(numel(system),'showWorkerProgress',true);
         parfor a=1:numel(system)
             system{a} = AgentSafeSets(system{a}, safe_set_unions, plot_inner, par_inner);
-            ppm.increment();
+            %ppm.increment();
         end
-        delete(ppm)
+        %delete(ppm)
     end
 
     % Save any requested figures

@@ -28,3 +28,7 @@
 \algnewcommand\algorithmicendparfor{\textbf{end\ parfor}}
 \algrenewtext{ParFor}[1]{\algorithmicparfor\ #1\ \algorithmicpardo}
 \algrenewtext{EndParFor}{\algorithmicendparfor}
+
+
+%\NewDocumentCommand{\edit}{m m}{#2}
+\NewDocumentCommand{\edit}{m m}{{\color{red}#1 }{\color{blue}#2}}
