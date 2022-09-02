@@ -30,5 +30,17 @@
 \algrenewtext{EndParFor}{\algorithmicendparfor}
 
 
-%\NewDocumentCommand{\edit}{m m}{#2}
-\NewDocumentCommand{\edit}{m m}{{\color{red}#1 }{\color{blue}#2}}
+\NewDocumentCommand{\edit}{m m}{#2}
+%\NewDocumentCommand{\edit}{m m}{{\color{red}#1 }{\color{blue}#2}}
+
+\newlength{\myl}
+\let\origequation=\equation
+\let\origendequation=\endequation
+\RenewEnviron{equation}{
+  \settowidth{\myl}{$\BODY$}                       % calculate width and save as \myl
+  \origequation
+  \ifdimcomp{\the\linewidth}{>}{\the\myl}
+  {\ensuremath{\BODY}}                             % True
+  {\resizebox{\linewidth}{!}{\ensuremath{\BODY}}}  % False
+  \origendequation
+}
