@@ -1,4 +1,5 @@
 addpath ./functions/
+mkdir('sim_fig')
 
 Ts = 0.3;
 
