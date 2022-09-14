@@ -1,6 +1,6 @@
 \section{Preliminaries}
 
-\subsection{Notation}
+\subsection{Notation}\label{sec:notation}
 The set of integers and real numbers are denoted $\int$ and $\real$ respectively. A ranged subset of a space is denoted with $\mathbb{S}\rii{i}{j}=\{s\in\mathbb{S}|i\leq s\leq j\}$. Open bounds are defined using notation such as $\mathbb{S}\rgeq{i}$. Define the set of integers from $1$ to $k>1$ as $\idxset{k}\triangleq\int\rii{1}{k}$.
 
 A directed graph with $\gnumnodes\in\int\rgeq{1}$ nodes is defined as $\graph\triangleq\{(\gnodeedges{n},\gnodelabel{n})\}_{n\in\idxset{\gnumnodes}}$ where $\gnodeedges{n}\subseteq\idxset{\gnumnodes}$ lists the successor nodes of node $n$ and $\gnodelabel{n}\in\idxset{\gnumlabels}$ is an integer label assigned to node $n$ where $\gnumlabels$ is the max integer label. A discrete, time varying function, $f:\int\rgeq{0}\rightarrow\idxset{\gnumnodes}$, is said to respect the graph if $f(t)=n$ implies that $f(t+1)\in\gnodeedges{n}$. The set of all such functions for a specific graph, $\graph$ is denoted $\Sigma(\mathcal{G})\triangleq\{g:\int\rgeq{0}\rightarrow\idxset{\gnumnodes}\ |\ g(\cdot)\text{ respects }\graph\}$. 

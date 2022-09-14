@@ -1,14 +1,11 @@
 \section{Algorithm Design}
 The reader may have noticed that a circular dependency arose in the previous discussion -- the safe-set collection for agent $\agentidx$ depends on the safe-set collection for agent ${\tilde{\agentidx}}$ which depends on the safe-set collection for agent $\agentidx$. Before addressing this, however, an algorithm to find the safe-sets of a single agent is developed. To avoid the circular dependency, it is assumed that the other agents have fixed safe-sets. Then the disturbance caused by the neighboring agents can be bounded with
-\edit{\begin{equation}
-\wcon[\agentidx][\modeidx]=\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[\tilde{\agentidx}]}}\mathcal{S}^{\tilde{\agentidx}}}.
-\end{equation}}{
 \begin{equation}
 \wcon[\agentidx][\modeidx]=\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[\tilde{\agentidx}]}}\mathcal{S}^{\tilde{\agentidx}}_n}
 \end{equation}
 where $\mathcal{S}^{\tilde\alpha}_n$ is the $n^{\text{th}}$ element of agent $\tilde\alpha$'s safe-set collection, $\mathcal{S}^{\tilde\alpha}$, and $\gnumnodes[{\tilde\alpha}]$ is the number of nodes in $\graph^{\tilde\alpha}$ (extending the original graph notation from \autoref{sec:notation}).
-}
-With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for \edit{this mode}{agent $\agent{\agentidx}$}. 
+
+With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for agent $\agent{\agentidx}$. 
 \begin{algorithm}[h]
 \caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
 \begin{algorithmic}[1]
