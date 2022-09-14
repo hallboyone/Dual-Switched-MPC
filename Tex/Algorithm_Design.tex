@@ -3,9 +3,7 @@ The reader may have noticed that a circular dependency arose in the previous dis
 \begin{equation}
 \wcon[\agentidx][\modeidx]=\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[\tilde{\agentidx}]}}\mathcal{S}^{\tilde{\agentidx}}_n}
 \end{equation}
-where $\mathcal{S}^{\tilde\alpha}_n$ is the $n^{\text{th}}$ element of agent $\tilde\alpha$'s safe-set collection, $\mathcal{S}^{\tilde\alpha}$, and $\gnumnodes[{\tilde\alpha}]$ is the number of nodes in $\graph^{\tilde\alpha}$ (extending the original graph notation from \autoref{sec:notation}).
-
-With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for agent $\agent{\agentidx}$. 
+where $\mathcal{S}^{\tilde\alpha}_n$ is the $n^{\text{th}}$ element of agent $\tilde\alpha$'s safe-set collection, $\mathcal{S}^{\tilde\alpha}$, and $\gnumnodes[{\tilde\alpha}]$ is the number of nodes in $\graph^{\tilde\alpha}$ (extending the original graph notation from \autoref{sec:notation}). With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for agent $\agent{\agentidx}$. 
 \begin{algorithm}[h]
 \caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
 \begin{algorithmic}[1]
@@ -56,7 +54,7 @@ Since $E_{\gnodelabel{n_{k-1}}}^{\agentidx}\circ\wconset{\tilde\agentidx}_{\gnod
 \end{proof}
 \begin{figure}[t]
 	\centering
-	\includegraphics[width=0.75\columnwidth]{./figures/alg2_diag}
+	\includegraphics[width=0.65\columnwidth]{./figures/alg2_diag}
 	\caption{Illustration of one iteration of \autoref{alg:safe_sets} from the perspective of a single agent. The algorithm is initialized with safe-set unions of $\underline{0}$ (see line 3 of \autoref{alg:safe_sets}). The algorithm continues until running this loop does not change any of the agents' safe set collection (line 17 of \autoref{alg:safe_sets})}
 \end{figure}
 \autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned previously, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. Starting from an initial, trivial guess for feasible, safe-set collections, the algorithm first generates safe-sets that are too large and infeasible and then safe-sets that are small but feasible. This process is repeated until a convergence criteria is met. Critically, the algorithm can be parallelized along the different block-rows. As block-rows are added, the computational complexity grows at a near linear rate as opposed to the exponential rate of the centralized case. Furthermore, as shown in the following lemma, the algorithm produces a feasible collection of safe-sets after each complete iteration. This allows the user to terminate after any complete iteration and produce valid results. 
