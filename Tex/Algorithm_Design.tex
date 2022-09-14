@@ -1,14 +1,11 @@
 \section{Algorithm Design}
 The reader may have noticed that a circular dependency arose in the previous discussion -- the safe-set collection for agent $\agentidx$ depends on the safe-set collection for agent ${\tilde{\agentidx}}$ which depends on the safe-set collection for agent $\agentidx$. Before addressing this, however, an algorithm to find the safe-sets of a single agent is developed. To avoid the circular dependency, it is assumed that the other agents have fixed safe-sets. Then the disturbance caused by the neighboring agents can be bounded with
-\edit{\begin{equation}
-\wcon[\agentidx][\modeidx]=\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[\tilde{\agentidx}]}}\mathcal{S}^{\tilde{\agentidx}}}.
-\end{equation}}{
 \begin{equation}
 \wcon[\agentidx][\modeidx]=\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[\tilde{\agentidx}]}}\mathcal{S}^{\tilde{\agentidx}}_n}
 \end{equation}
 where $\mathcal{S}^{\tilde\alpha}_n$ is the $n^{\text{th}}$ element of agent $\tilde\alpha$'s safe-set collection, $\mathcal{S}^{\tilde\alpha}$, and $\gnumnodes[{\tilde\alpha}]$ is the number of nodes in $\graph^{\tilde\alpha}$ (extending the original graph notation from \autoref{sec:notation}).
-}
-With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for \edit{this mode}{agent $\agent{\agentidx}$}. 
+
+With these sets, \autoref{alg:node_safe_sets} is introduced to compute the maximal safe-set collections for agent $\agent{\agentidx}$. 
 \begin{algorithm}[h]
 \caption{Nodal safe-sets with previewed disturbances}\label{alg:node_safe_sets}
 \begin{algorithmic}[1]
@@ -57,12 +54,12 @@ A_{\gnodelabel{n_{k-1}}}^\agentidx x_k+B_{\gnodelabel{n_{k-1}}}^\agentidx u + E_
 \end{align*}
 Since $E_{\gnodelabel{n_{k-1}}}^{\agentidx}\circ\wconset{\tilde\agentidx}_{\gnodelabel{n_{k-1}}}\subseteq E_{\gnodelabel{n_{k-1}}}^{\agentidx}\circ\wconset{\hat\agentidx}_{\gnodelabel{n_{k-1}}}$, the second statement above would hold even if $\wcon[{\gnodelabel{n_{k-1}}}]^{\hat{\agentidx}}$ were replaced with $\wcon[{\gnodelabel{n_{k-1}}}]^{\tilde{\agentidx}}$. Let $x_{k-1}$ be the corresponding point for which $\exists w\in\wcon[{\gnodelabel{n_{k-1}}}]^{\tilde{\agentidx}},\ u\in\ucon[{\gnodelabel{n_{k-1}}}]^\agentidx$ such that $x_{k-1}\not\in\tilde\Omega^{k-1}_{n_{k-1}}\ \land\ x_{k-1}\in\hat\Omega^{k-1}_{n_{k-1}}$. This is equivalent to the starting condition only with a decremented index. The logic can be iterated until $k=0$ and the contradiction $x_0\not\in\tilde\Omega^{0}_{n_0}=\xcon[\gnodelabel{n_0}]\ \land\ x_0\in\hat\Omega^{0}_{n_0}=\xcon[\gnodelabel{n_0}]$ is arrived at, concluding the proof. 
 \end{proof}
-\edit{}{\begin{figure}[b]
+\begin{figure}[t]
 	\centering
-	\includegraphics[width=0.55\columnwidth]{./figures/alg2_diag}
-	\caption{\edit{}{Illustration of one iteration of \autoref{alg:safe_sets} from the perspective of a single agent. The algorithm is initialized with safe-set unions of $\underline{0}$ (see line 3 of \autoref{alg:safe_sets}). The algorithm continues until running this loop does not change any of the agents' safe set collection (line 17 of \autoref{alg:safe_sets})}}
-\end{figure}}
-\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned \edit{in the }{}previously, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. Starting from an initial, trivial guess for feasible, safe-set collections, the algorithm first generates safe-sets that are too large and infeasible and then safe-sets that are small but feasible. This process is repeated until a convergence criteria is met. Critically, the algorithm can be parallelized along the different block-rows. As block-rows are added, the computational complexity grows at a near linear rate as opposed to the exponential rate of the centralized case. Furthermore, as shown in the following lemma, the algorithm produces a feasible collection of safe-sets after each complete iteration. This allows the user to terminate after any complete iteration and produce valid results. 
+	\includegraphics[width=0.75\columnwidth]{./figures/alg2_diag}
+	\caption{Illustration of one iteration of \autoref{alg:safe_sets} from the perspective of a single agent. The algorithm is initialized with safe-set unions of $\underline{0}$ (see line 3 of \autoref{alg:safe_sets}). The algorithm continues until running this loop does not change any of the agents' safe set collection (line 17 of \autoref{alg:safe_sets})}
+\end{figure}
+\autoref{alg:node_safe_sets} is an important tool but requires that the safe-sets of the other block-rows are already known. As mentioned previously, there is a circular dependency where the neighboring safe-sets depend on the local safe-sets which, using \autoref{alg:node_safe_sets}, depends on the neighboring safe-sets. This circular dependency is addressed in \autoref{alg:safe_sets}. Starting from an initial, trivial guess for feasible, safe-set collections, the algorithm first generates safe-sets that are too large and infeasible and then safe-sets that are small but feasible. This process is repeated until a convergence criteria is met. Critically, the algorithm can be parallelized along the different block-rows. As block-rows are added, the computational complexity grows at a near linear rate as opposed to the exponential rate of the centralized case. Furthermore, as shown in the following lemma, the algorithm produces a feasible collection of safe-sets after each complete iteration. This allows the user to terminate after any complete iteration and produce valid results. 
 \begin{algorithm}[t]
 \caption{Distributed safe-set collection for system in \autoref{eq:agent_notation}}\label{alg:safe_sets}
 \begin{algorithmic}[1]
@@ -71,21 +68,18 @@ Since $E_{\gnodelabel{n_{k-1}}}^{\agentidx}\circ\wconset{\tilde\agentidx}_{\gnod
 \State $\Phi^0\gets\{\underline{0}\}_{\agentidx\in\idxset{\numagents}}$
 \State $k\gets0$
 \Repeat
-%	\ParFor{$\agentidx\in\mathcal{I}_\agentidx$}
-%		\State $\wcon[\modeidx]^\agentidx\gets\prod_{\tilde{\agentidx}\in\idxset{\numagents}}\Phi^{k}_{(\tilde\agentidx)}$ for all $\modeidx\in\idxset{\nummodes[\agentidx]}$
-%	\EndParFor
-	\ParFor{\edit{}{each agent, }$\agentidx\in\idxset{\numagents}$}
+	\ParFor{each agent, $\agentidx\in\idxset{\numagents}$}
 		\State $\wcon[\modeidx]^\agentidx\gets\prod_{\tilde{\agentidx}\in\idxset{\numagents}\setminus \agentidx}\Phi^{k}_{\tilde\agentidx}$ for all $\modeidx\in\idxset{\nummodes[\agentidx]}$
 		\State $\Omega^{k+0.5}_{\agentidx}\gets\Call{AgentSafeSets}{\modes[\agentidx]}$
 		\State $\Phi^{k+0.5}_{\agentidx}\gets\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[{\agentidx}]}}\Omega^{k+0.5}_{({\agentidx},n)}}$
 	\EndParFor
-	\ParFor{\edit{}{each agent, }$\agentidx\in\idxset{\numagents}$}
+	\ParFor{each agent, $\agentidx\in\idxset{\numagents}$}
 		\State $\wcon[\modeidx]^\agentidx\gets\prod_{\tilde{\agentidx}\in\idxset{\numagents}\setminus \agentidx}\Phi^{k+0.5}_{\tilde\agentidx}$ for all $\modeidx\in\idxset{\nummodes[\agentidx]}$
 		\State $\Omega^{k+1}_{\agentidx}\gets\Call{AgentSafeSets}{\modes[\agentidx]}$
 		\State $\Phi^{k+1}_{\agentidx}\gets\Call{ConHull}{\cup_{n\in\idxset{\gnumnodes[{\agentidx}]}}\Omega^{k+1}_{({\agentidx},n)}}$
 	\EndParFor
 	\State $k\gets k+1$
-\Until{$\Omega_{(\agentidx)}^k=\Omega_{(\agentidx)}^{k-1}\ \forall\ \agentidx\in\mathcal{I}_\agentidx$}
+\Until{$\Omega_{(\agentidx)}^k=\Omega_{(\agentidx)}^{k-1}\ \forall\ \agentidx\in\idxset{\agentidx}$}
 
 \State $\safesets\gets\Omega^k$
 \EndProcedure
