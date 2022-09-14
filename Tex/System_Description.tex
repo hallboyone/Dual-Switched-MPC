@@ -22,7 +22,16 @@ B^{1}_{\ssl[1](t)},...,B^{\numagents}_{\ssl[\numagents](t)}\right),\label{eq:sys
 \ucon(t)&=\ucon[\ssl[1](t)]^1\times\cdots\times\ucon[\ssl[\numagents](t)]^\numagents\label{eq:sys_Y}.
 \end{align}
 \end{subequations}
-This structure is motivated by distributed systems with coupling in the system's states. The goal of this work is to design a safe-set collection for systems with the above structure. One possible solution could be to amalgamate the individual switching signals into a single signal and treat the system as centralized. By combining all the switching signals, the problem would return to the form of \autoref{eq:basic_switched_sys} and previous results could be used to compute a safe-set collection for the system \cite{Danielson2019}. However, the new switching signal would have exponentially more nodes than the original, separate signals which would be matched by exponentially more elements in the safe-set collection. Furthermore, by approaching the problem as a single, high dimensional problem, the required computations grow similarly. These increases make the centralized approach computationally untenable. These concerns will be addressed by splitting the system into block-rows and looking for safe-set collections, $\mathcal{S}^{\agentidx}=\{\mathcal{S}^\agentidx_n\}_{n\in\gnumnodes[\agentidx]}$, for each separately. Once found, the collections can be merged into a large collection with all possible switching signal states represented.
+
+This structure is motivated by distributed systems with coupling in the system's states. 
+The goal of this work is to design a safe-set collection for systems with the above structure. 
+One possible solution could be to amalgamate the individual switching signals into a single signal and treat the system as centralized. 
+By combining all the switching signals, the problem would return to the form of \autoref{eq:basic_switched_sys}, and previous results could be used to compute a safe-set collection for the system \cite{Danielson2019}. 
+However, the new switching signal would have exponentially more nodes than the original, separate signals which would be matched by exponentially more elements in the safe-set collection. 
+Furthermore, by approaching the problem as a single, high dimensional problem, the required computations grow similarly. 
+These increases make the centralized approach computationally untenable. 
+These concerns will be addressed by splitting the system into block-rows and looking for safe-set collections, $\mathcal{S}^{\agentidx}=\{\mathcal{S}^\agentidx_n\}_{n\in\gnumnodes[\agentidx]}$, for each separately. 
+Once found, the collections can be merged into a large collection with all possible switching signal states represented.
 
 Looking only at the block row indexed by $\agentidx$, the dynamics can be rewritten as 
 \begin{align}\label{eq:block-row-dyn}
