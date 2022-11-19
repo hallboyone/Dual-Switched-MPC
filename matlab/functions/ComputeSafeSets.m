@@ -1,7 +1,9 @@
-function system = ComputeSafeSets(system, plot_outer, plot_inner, par_inner)
+function [system, areas] = ComputeSafeSets(system, plot_outer, plot_inner, par_inner)
 % Run the algorithm to find safe-sets.
 k = 0;
 S = ExtractFrom(system, "safe_sets");
+
+areas = zeros(numel(system), 2);
 while true
     % Save the current safe-sets to compare later
     old_S = S;
@@ -14,6 +16,13 @@ while true
         safe_set_unions = ExtractFrom(system, "safe_set_union");
         % For each agent, compute its safe-sets using the current safe-set unions
         % ppm = ParforProgressbar(numel(system),'showWorkerProgress',true);
+        disp("area start")
+        for a=1:numel(system)
+            
+            areas(a, 2*k+i) = safe_set_unions{a}.volume;
+            
+        end
+        disp("area end")
         parfor a=1:numel(system)
             system{a} = AgentSafeSets(system{a}, safe_set_unions, plot_inner, par_inner);
             %ppm.increment();
@@ -27,6 +36,11 @@ while true
         S = system{figs_to_save{i}.a_idx}.graph.node{figs_to_save{i}.n_idx}.S;
         save([figs_to_save{i}.filename, int2str(k)], 'S');
     end
+    
+    plot(repmat(0:0.5:(k+0.5), numel(system), 1)', areas');
+    ylim([42, 45]);
+    xlim([0, k+0.5])
+    drawnow
 
     % Get the newly computed safe-sets and compare with the old safe-sets
     S = ExtractFrom(system, "safe_sets");
@@ -34,6 +48,7 @@ while true
         break
     end
     k = k+1;
+    areas = [areas, zeros(numel(system), 2)];
 end
 end
 

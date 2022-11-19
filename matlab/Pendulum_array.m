@@ -127,9 +127,9 @@ for a_idx = 1:num_elm
 end
 
 plot_inner = false;
-plot_outer = true;
+plot_outer = false;
 par_inner  = false;
-system = ComputeSafeSets(system, plot_outer, plot_inner, par_inner);
+[system, areas] = ComputeSafeSets(system, plot_outer, plot_inner, par_inner);
 
 function M = remapDynamics(M)
 num_elm = size(M,1)/2;
