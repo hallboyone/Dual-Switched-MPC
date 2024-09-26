@@ -4,7 +4,17 @@
 \newcommand{\st}{\ensuremath{\text{s.t.}}}
 % =========================== Sets ==========================
 \renewcommand{\int}{\ensuremath{\mathbb{Z}}}
-\newcommand{\real}{\ensuremath{\mathbb{R}}}
+\NewDocumentCommand{\real}{o o}{%
+	\IfNoValueTF{#2}{%
+		\IfNoValueTF{#1}{%
+			\ensuremath{\mathbb{R}}
+		}{%
+			\ensuremath{\mathbb{R}^{#1}}
+		}
+	}{%
+		\ensuremath{\mathbb{R}^{#1\times #2}}
+	}
+}
 \newcommand{\nat}{\ensuremath{\mathbb{N}}}
 \newcommand{\cset}{\ensuremath{\mathcal{C}}}
 \NewDocumentCommand{\idxset}{m}{\ensuremath{\int_{#1}}}
@@ -209,10 +219,10 @@
 \newcommand{\narroweq}{\ensuremath{\scalerel[1ex]{=}{\phantom{=}\hspace{-0.17cm}}}}
 
 % ============== Autoref Titles ================
-\renewcommand{\equationautorefname}{Equation}
-\renewcommand{\sectionautorefname}{Section}
-\newcommand{\remarkautorefname}{Remark}
-\newcommand{\algorithmautorefname}{Algorithm}
+\renewcommand{\equationcrefname}{Equation}
+\renewcommand{\sectioncrefname}{Section}
+\newcommand{\remarkcrefname}{Remark}
+\newcommand{\algorithmcrefname}{Algorithm}
 
 % ============== Directed Graph ================
 \NewDocumentCommand{\graph}{}{\ensuremath{\mathcal{G}}}
